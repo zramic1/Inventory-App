@@ -1,5 +1,6 @@
 package com.example.usermicroservice.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -15,30 +16,30 @@ import java.util.List;
 public class Customer {
     @Id
     @NotNull
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ID;
 
-    @Column(name="First_name")
+    @Column(name = "First_name")
     @NotEmpty(message = "First Name cannot be empty!")
-    @Size(min=1, max=45,message = "First Name must be between 1 and 45 characters long!")
+    @Size(min = 1, max = 45, message = "First Name must be between 1 and 45 characters long!")
     private String first_name;
 
-    @Column(name="Last_mame")
+    @Column(name = "Last_mame")
     @NotEmpty(message = "Last Name cannot be empty!")
-    @Size(min=1, max=45,message = "Last Name must be between 1 and 45 characters long!")
+    @Size(min = 1, max = 45, message = "Last Name must be between 1 and 45 characters long!")
     private String last_name;
 
-    @Column(name="Address")
+    @Column(name = "Address")
     @NotEmpty(message = "Address cannot be empty!")
-    @Size(min=1, max=45,message = "Address must be between 1 and 45 characters long!")
+    @Size(min = 1, max = 45, message = "Address must be between 1 and 45 characters long!")
     private String address;
 
-    @Column(name="Phone")
+    @Column(name = "Phone")
     @NotEmpty(message = "Phone cannot be empty!")
-    @Size(min=1, max=45,message = "Phone must be between 1 and 45 characters long!")
+    @Size(min = 1, max = 45, message = "Phone must be between 1 and 45 characters long!")
     private String phone;
 
-    @Column(name="Email")
+    @Column(name = "Email")
     @NotEmpty(message = "Email cannot be empty!")
     @Email
     private String email;
@@ -91,10 +92,52 @@ public class Customer {
         this.email = email;
     }
 
+    @JsonBackReference(value="userIDFromCustomer")
+    public User getUserID() {
+        return userID;
+    }
+
+    public void setUserID(User userID) {
+        this.userID = userID;
+    }
+
+    @Transient
+    private int idUser;
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
+    public Customer() {
+    }
+
+    public Customer(String first_name, String last_name, String address, String phone, String email, User userID) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.userID = userID;
+    }
+
+    public Customer(String first_name, String last_name, String address, String phone, String email, int idUser) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.idUser = idUser;
+    }
 
     @ManyToOne()
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn (name="UserID")
+    @JoinColumn(name = "UserID")
     private User userID;
+
+
 
 }
