@@ -19,4 +19,6 @@ public interface UserService {
     ResponseEntity updateUser(Long id, User user);
 
     ResponseEntity deleteUser(Long id);
+
+    ResponseEntity getUserRoleByUsername(String username);
 }

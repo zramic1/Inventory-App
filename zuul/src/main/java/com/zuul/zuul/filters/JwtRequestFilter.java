@@ -1,5 +1,6 @@
 package com.zuul.zuul.filters;
 
+import com.zuul.zuul.Models.Role;
 import com.zuul.zuul.Services.UserDetailsServiceImpl;
 import com.zuul.zuul.Util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -31,14 +32,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
-        String requestURI = request.getRequestURI();
-        String[] split = requestURI.split("/");
-
-        String parametarId;
-        String parametarUsername = null;
-        if(split != null && split.length > 4 && split[3].equals("username")){
-            parametarUsername = split[4];
-        }
 
         String username = null;
         String jwt = null;

@@ -101,7 +101,7 @@ public class Customer {
         this.userID = userID;
     }
 
-    @Transient
+    /*@Transient
     private int idUser;
 
     public int getIdUser() {
@@ -110,7 +110,7 @@ public class Customer {
 
     public void setIdUser(int idUser) {
         this.idUser = idUser;
-    }
+    }*/
 
     public Customer() {
     }
@@ -124,14 +124,14 @@ public class Customer {
         this.userID = userID;
     }
 
-    public Customer(String first_name, String last_name, String address, String phone, String email, int idUser) {
+    /*public Customer(String first_name, String last_name, String address, String phone, String email, int idUser) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.address = address;
         this.phone = phone;
         this.email = email;
         this.idUser = idUser;
-    }
+    }*/
 
     @ManyToOne()
     @OnDelete(action = OnDeleteAction.CASCADE)

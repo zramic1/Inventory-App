@@ -50,4 +50,9 @@ public class UserController {
     public ResponseEntity getByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
     }
+
+    @GetMapping(value = "/users/role/username/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getRoleByUsername(@PathVariable String username) {
+        return userService.getUserRoleByUsername(username);
+    }
 }

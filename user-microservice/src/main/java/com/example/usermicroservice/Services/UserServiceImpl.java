@@ -62,8 +62,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity saveUser(User user) {
         JSONObject objekat = new JSONObject();
-        if (!Integer.toString(user.getIdRole()).equals(Integer.toString(0))) {
-            Role uloga = roleRepository.findByID(Long.valueOf(user.getIdRole()));
+        if (!Long.toString(user.getRoleID().getID()).equals(Integer.toString(0))) {
+            Role uloga = roleRepository.findByID(Long.valueOf(user.getRoleID().getID()));
             if (uloga == null) {
                 throw new RecordNotFoundException("Role does not exist!");
             } else {
@@ -112,8 +112,8 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        if (!Integer.toString(user.getIdRole()).equals(Integer.toString(0))) {
-            Role uloga = roleRepository.findByID(Long.valueOf(user.getIdRole()));
+        if (!Long.toString(user.getRoleID().getID()).equals(Integer.toString(0))) {
+            Role uloga = roleRepository.findByID(Long.valueOf(user.getRoleID().getID()));
             if (uloga == null) {
                 throw new RecordNotFoundException("Role does not exist!");
             } else {
@@ -168,6 +168,16 @@ public class UserServiceImpl implements UserService {
                 e.printStackTrace();
             }
             return new ResponseEntity(objekat.toString(), HttpStatus.OK);
+        } else {
+            throw new RecordNotFoundException("User does not exist!");
+        }
+    }
+
+    @Override
+    public ResponseEntity getUserRoleByUsername(String username) {
+        if (userRepository.existsByUsername(username)) {
+            Role role=userRepository.findByUsername(username).getRoleID();
+            return new ResponseEntity(role, HttpStatus.OK);
         } else {
             throw new RecordNotFoundException("User does not exist!");
         }

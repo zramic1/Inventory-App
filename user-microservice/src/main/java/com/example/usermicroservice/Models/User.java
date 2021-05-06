@@ -183,7 +183,7 @@ public class User {
         this.customers = customers;
     }
 
-    @Transient
+   /* @Transient
     private int idRole;
 
     public int getIdRole() {
@@ -203,7 +203,7 @@ public class User {
 
     public void setIdWarehouse(int idWarehouse) {
         this.idWarehouse = idWarehouse;
-    }
+    }*/
 
     public User() { }
 
@@ -219,7 +219,7 @@ public class User {
         this.warehouseID = warehouseID;
     }
 
-    public User(String first_name, String last_name, String address, String phone, String email, String username, String password, int idRole, int idWarehouse) {
+    /*public User(String first_name, String last_name, String address, String phone, String email, String username, String password, int idRole, int idWarehouse) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.address = address;
@@ -229,6 +229,6 @@ public class User {
         this.password = password;
         this.idRole = idRole;
         this.idWarehouse = idWarehouse;
-    }
+    }*/
 
 }

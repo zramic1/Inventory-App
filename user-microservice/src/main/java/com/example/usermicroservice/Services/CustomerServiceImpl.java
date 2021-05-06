@@ -39,8 +39,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public ResponseEntity saveCustomer(Customer customer) {
-        if (!Integer.toString(customer.getIdUser()).equals(Integer.toString(0))) {
-            User user = userRepository.findByID(Long.valueOf(customer.getIdUser()));
+        if (!Long.toString(customer.getUserID().getID()).equals(Integer.toString(0))) {
+            User user = userRepository.findByID(Long.valueOf(customer.getUserID().getID()));
             if (user == null) {
                 throw new RecordNotFoundException("User does not exist!");
             } else {
@@ -76,8 +76,8 @@ public class CustomerServiceImpl implements CustomerService {
             }
         }
 
-        if (!Integer.toString(customer.getIdUser()).equals(Integer.toString(0))) {
-            User user = userRepository.findByID(Long.valueOf(customer.getIdUser()));
+        if (!Long.toString(customer.getUserID().getID()).equals(Integer.toString(0))) {
+            User user = userRepository.findByID(Long.valueOf(customer.getUserID().getID()));
             if (user == null) {
                 throw new RecordNotFoundException("User does not exist!");
             } else {

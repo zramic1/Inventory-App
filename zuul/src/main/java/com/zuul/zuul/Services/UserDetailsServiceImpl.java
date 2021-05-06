@@ -1,9 +1,8 @@
 package com.zuul.zuul.Services;
 
+import com.zuul.zuul.Models.Role;
 import com.zuul.zuul.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,9 +18,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
         User user = null;
         try {
             user= restTemplate.getForObject("http://user/users/username/" + s, User.class);
@@ -29,6 +25,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         catch(HttpClientErrorException e){
             throw new UsernameNotFoundException(s);
         }
+
+        Role role = null;
+        try {
+            role= restTemplate.getForObject("http://user/users/role/username/" + s, Role.class);
+        }
+        catch(HttpClientErrorException e){
+            throw new UsernameNotFoundException(s);
+        }
+        user.setRoleID(role);
         return (UserDetails) user;
     }
 }
+
