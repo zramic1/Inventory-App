@@ -3,6 +3,7 @@ package com.example.productmicroservice.Services;
 import com.example.productmicroservice.Exceptions.CategoryNotFoundException;
 import com.example.productmicroservice.Models.Category;
 import com.example.productmicroservice.Repositories.CategoryRepository;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,11 +60,19 @@ public class CategoryServiceImpl implements CategoryService {
 
         if(categoryRepository.existsByid(id)) {
             categoryRepository.deleteById(id);
-            object.put("message", "Category is successfully deleted");
+            try {
+                object.put("message", "Category is successfully deleted");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             return new ResponseEntity<>(object.toString(), HttpStatus.OK);
         }
 
-        object.put("message", "Category does not exist");
+        try {
+            object.put("message", "Category does not exist");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return new ResponseEntity<>(object.toString(), HttpStatus.NOT_FOUND);
     }
 }

@@ -3,6 +3,7 @@ package com.example.productmicroservice.Services;
 import com.example.productmicroservice.Exceptions.SupplierNotFoundException;
 import com.example.productmicroservice.Models.Supplier;
 import com.example.productmicroservice.Repositories.SupplierRepository;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,11 +67,19 @@ public class SupplierServiceImpl implements SupplierService {
 
         if(supplierRepository.existsByid(id)) {
             supplierRepository.deleteById(id);
-            object.put("message", "Supplier is successfully deleted");
+            try {
+                object.put("message", "Supplier is successfully deleted");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             return new ResponseEntity<>(object.toString(), HttpStatus.OK);
         }
 
-        object.put("message", "Supplier does not exist");
+        try {
+            object.put("message", "Supplier does not exist");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return new ResponseEntity<>(object.toString(), HttpStatus.NOT_FOUND);
     }
 }

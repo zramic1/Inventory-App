@@ -3,6 +3,7 @@ package com.example.productmicroservice.Services;
 import com.example.productmicroservice.Exceptions.ProductNotFoundException;
 import com.example.productmicroservice.Models.Product;
 import com.example.productmicroservice.Repositories.ProductRepository;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,11 +69,19 @@ public class ProductServiceImpl implements ProductService {
 
         if(productRepository.existsByid(id)) {
             productRepository.deleteById(id);
-            object.put("message", "Product is successfully deleted");
+            try {
+                object.put("message", "Product is successfully deleted");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             return new ResponseEntity<>(object.toString(), HttpStatus.OK);
         }
 
-        object.put("message", "Product does not exist");
+        try {
+            object.put("message", "Product does not exist");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return new ResponseEntity<>(object.toString(), HttpStatus.NOT_FOUND);
     }
 }
