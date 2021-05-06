@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import GridLayout from "./components/GridLayout.js";
-import Zaglavlje from "./components/Zaglavlje.js";
+import PageHeader from "./components/PageHeader.js";
 
 import "antd/dist/antd.css";
 import { Layout } from "antd";
@@ -21,7 +21,7 @@ ReactDOM.render(
           minHeight: "80px",
         }}
       >
-        <Zaglavlje />
+        <PageHeader />
       </Header>{" "}
       <GridLayout></GridLayout>{" "}
     </Layout>{" "}

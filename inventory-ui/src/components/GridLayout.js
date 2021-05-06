@@ -5,16 +5,19 @@ import {
   UserOutlined,
   InboxOutlined,
   UserAddOutlined,
-  ContainerOutlined,
-  FileTextOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
+
+import { BsPlusSquare } from "react-icons/bs";
+import { FaWarehouse, FaBoxOpen } from "react-icons/fa";
+import { CgDetailsMore } from "react-icons/cg";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Layout } from "antd";
 import Warehouse from "./Warehouse";
 import Order from "./Order";
 import Users from "./Users";
+import Dashboard from "./Dashboard";
 const { Sider, Content } = Layout;
 
 const { SubMenu } = Menu;
@@ -47,24 +50,24 @@ function GridLayout() {
                 </Menu.Item>
               </SubMenu>
               <SubMenu key="sub2" icon={<InboxOutlined />} title="Products">
-                <Menu.Item key="4">Add product</Menu.Item>
-                <Menu.Item key="5">
+                <Menu.Item key="4" icon={<BsPlusSquare />}>Add product</Menu.Item>
+                <Menu.Item key="5" icon={<CgDetailsMore />}>
                   <Link to="/products">Product details</Link>
                 </Menu.Item>
               </SubMenu>
               <SubMenu
                 key="sub3"
-                icon={<ContainerOutlined />}
+                icon={<FaWarehouse size={14} style={{ marginRight: "10px" }} />}
                 title="Warehouses"
               >
-                <Menu.Item key="6">Add warehouse</Menu.Item>
-                <Menu.Item key="7">
+                <Menu.Item key="6" icon={<BsPlusSquare />}>Add warehouse</Menu.Item>
+                <Menu.Item key="7" icon={<CgDetailsMore />}>
                   <Link to="/warehouses">Warehouse details</Link>
                 </Menu.Item>
               </SubMenu>
-              <SubMenu key="sub4" icon={<FileTextOutlined />} title="Orders">
-                <Menu.Item key="8">Add order</Menu.Item>
-                <Menu.Item key="9">
+              <SubMenu key="sub4" icon={<FaBoxOpen size={14} style={{ marginRight: "10px" }} />} title="Orders">
+                <Menu.Item key="8" icon={<BsPlusSquare />}>Add order</Menu.Item>
+                <Menu.Item key="9" icon={<CgDetailsMore />}>
                   <Link to="/orders">Order details</Link>
                 </Menu.Item>
               </SubMenu>
@@ -85,8 +88,7 @@ function Routes() {
   return (
     <Fragment>
       <Route exact path="/">
-        {/*<Dashboard />*/}
-        <div>dešbord</div>
+        <Dashboard />
       </Route>
       <Route exact path="/staff">
         <Users />

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Avatar, Row, Col } from 'antd';
 
-function Zaglavlje() {
+function PageHeader() {
     const [ikonicaAvatara, setIkonicaAvatara] = useState("U");
 
     return <Row style={{ display: "flex", alignItems: "center", lineHeight: "80px" }}>
@@ -21,4 +21,4 @@ function Zaglavlje() {
         </Col>
     </Row>
 }
-export default Zaglavlje;
+export default PageHeader;
