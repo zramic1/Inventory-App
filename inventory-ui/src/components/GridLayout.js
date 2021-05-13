@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Menu } from "antd";
 import {
   DashboardOutlined,
@@ -12,22 +12,27 @@ import { BsPlusSquare } from "react-icons/bs";
 import { FaWarehouse, FaBoxOpen } from "react-icons/fa";
 import { CgDetailsMore } from "react-icons/cg";
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import { Layout } from "antd";
-import Warehouse from "./Warehouse";
-import Order from "./Order";
-import Users from "./Users";
-import Dashboard from "./Dashboard";
+
+import Routes from "./Routes";
+
 const { Sider, Content } = Layout;
 
 const { SubMenu } = Menu;
 
 function GridLayout() {
+  const [logged, setLogged] = useState(false);
+
+  const userLogged = (truth) => {
+    setLogged(truth);
+  }
+
   return (
     <div style={{ height: "100vh" }}>
       <Router>
         <Layout>
-          <Sider>
+          {logged && <Sider>
             <Menu
               defaultSelectedKeys={["1"]}
               mode="inline"
@@ -72,39 +77,15 @@ function GridLayout() {
                 </Menu.Item>
               </SubMenu>
             </Menu>
-          </Sider>
+          </Sider>}
           <Content className="content">
             <Switch>
-              <Routes />
+              <Routes userLog={userLogged} log={logged} />
             </Switch>
           </Content>
         </Layout>
       </Router>
     </div>
-  );
-}
-
-function Routes() {
-  return (
-    <Fragment>
-      <Route exact path="/">
-        <Dashboard />
-      </Route>
-      <Route exact path="/staff">
-        <Users />
-        <div>stafovi</div>
-      </Route>
-      <Route exact path="/products">
-        {/*<Products />*/}
-        <div>produkti</div>
-      </Route>
-      <Route exact path="/warehouses">
-        <Warehouse />
-      </Route>
-      <Route exact path="/orders">
-        <Order />
-      </Route>
-    </Fragment>
   );
 }
 

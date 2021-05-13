@@ -9,7 +9,7 @@ import { Bar } from 'ant-design-pro/lib/Charts';
 const { Meta } = Card;
 
 const salesData = [];
-for (let i = 0; i < 12; i += 1) {
+for (let i = 0; i < 7; i += 1) {
     salesData.push({
         x: `${i + 1}`,
         y: Math.floor(Math.random() * 1000) + 200,
@@ -17,7 +17,7 @@ for (let i = 0; i < 12; i += 1) {
 }
 
 const salesData1 = [];
-for (let i = 0; i < 7; i += 1) {
+for (let i = 0; i < 12; i += 1) {
     salesData1.push({
         x: `${i + 1}`,
         y: Math.floor(Math.random() * 1000) + 200,
