@@ -1,11 +1,12 @@
-import React, { Fragment } from "react";
+import React from "react";
+import CreateStaffForm from "./CreateStaffForm";
 import DataGrid from "./TableGrid/DataGrid";
 
 function Users() {
   return (
     <div style={{ height: "100vh" }}>
       <DataGrid
-        props={{
+        data={{
           title: "Staff",
           addButtonText: "Add new staff member",
           columns: [
@@ -45,6 +46,8 @@ function Users() {
               key: "warehouse",
             },
           ],
+          Form: <CreateStaffForm />,
+          visible: false,
         }}
       ></DataGrid>
     </div>

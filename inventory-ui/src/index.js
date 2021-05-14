@@ -7,7 +7,7 @@ import PageHeader from "./components/PageHeader.js";
 import "antd/dist/antd.css";
 import { Layout } from "antd";
 
-const { Header, Sider, Content } = Layout;
+const { Header } = Layout;
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,12 +1,11 @@
-import React, { Fragment } from "react";
+import React from "react";
 import DataGrid from "./TableGrid/DataGrid";
-import Header from "./TableGrid/Header";
-
+import CreateWarehouseForm from "./CreateWarehouseForm";
 function Warehouse() {
   return (
     <div style={{ height: "100vh" }}>
       <DataGrid
-        props={{
+        data={{
           title: "Warehouses",
           addButtonText: "Add new warehouse",
           columns: [
@@ -43,6 +42,8 @@ function Warehouse() {
               key: "inventoryStartDate",
             },
           ],
+          Form: <CreateWarehouseForm />,
+          visible: false,
         }}
       ></DataGrid>
     </div>

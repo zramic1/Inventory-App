@@ -1,11 +1,12 @@
-import React, { Fragment } from "react";
+import React from "react";
 import DataGrid from "./TableGrid/DataGrid";
+import CreateOrderForm from "./CreateOrderForm";
 
 function Order() {
   return (
     <div style={{ height: "100vh" }}>
       <DataGrid
-        props={{
+        data={{
           title: "Orders",
           addButtonText: "Add new order",
           columns: [
@@ -30,6 +31,9 @@ function Order() {
               key: "supplier",
             },
           ],
+          //formInstance: Form.useForm(),
+          Form: <CreateOrderForm />,
+          visible: false,
         }}
       ></DataGrid>
     </div>

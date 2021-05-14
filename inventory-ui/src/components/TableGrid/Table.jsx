@@ -1,8 +1,7 @@
 import * as React from "react";
 import { Table as AntTable } from "ant-table-extensions";
 import { get } from "lodash";
-import { Button, Row, Col } from "antd";
-import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 
 const DataGridConstants = {
   PAGE_SIZE: 20,
