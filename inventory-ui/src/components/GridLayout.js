@@ -54,16 +54,16 @@ function GridLayout() {
                   <Link to="/">Dashboard</Link>
                 </Menu.Item>
                 <SubMenu key="sub1" icon={<UserOutlined />} title="Staff">
-                  <Menu.Item key="2" icon={<UserAddOutlined />}>
+                  {/*<Menu.Item key="2" icon={<UserAddOutlined />}>
                     Add staff
-                  </Menu.Item>
+          </Menu.Item>*/}
                   <Menu.Item key="3" icon={<TeamOutlined />}>
                     <Link to="/staff">Staff details</Link>
                   </Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub2" icon={<InboxOutlined />} title="Products">
                   <Menu.Item key="4" icon={<BsPlusSquare />}>
-                    Add product
+                    <Link to="/add-product">Add product</Link>
                   </Menu.Item>
                   <Menu.Item key="5" icon={<CgDetailsMore />}>
                     <Link to="/products">Product details</Link>
@@ -76,9 +76,10 @@ function GridLayout() {
                   }
                   title="Warehouses"
                 >
-                  <Menu.Item key="6" icon={<BsPlusSquare />}>
-                    Add warehouse
-                  </Menu.Item>
+                  {/*<Menu.Item key="6" icon={<BsPlusSquare />}>
+                Add warehouse
+              </Menu.Item> */}
+
                   <Menu.Item key="7" icon={<CgDetailsMore />}>
                     <Link to="/warehouses">Warehouse details</Link>
                   </Menu.Item>
@@ -88,9 +89,10 @@ function GridLayout() {
                   icon={<FaBoxOpen size={14} style={{ marginRight: "10px" }} />}
                   title="Orders"
                 >
-                  <Menu.Item key="8" icon={<BsPlusSquare />}>
-                    Add order
-                  </Menu.Item>
+                  {/* <Menu.Item key="8" icon={<BsPlusSquare />}>
+                Add order
+              </Menu.Item>*/}
+
                   <Menu.Item key="9" icon={<CgDetailsMore />}>
                     <Link to="/orders">Order details</Link>
                   </Menu.Item>

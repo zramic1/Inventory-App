@@ -205,6 +205,10 @@ code {
   margin-bottom: 12px;
 }
 
+.ant-card-cover {
+  height: 200px;
+}
+
 .ant-form-item {
   margin-bottom: 10px;
   padding-bottom: 0 !important;
