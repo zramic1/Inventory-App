@@ -23,21 +23,25 @@ import { Layout } from "antd";
 
 import Routes from "./Routes";
 
+import { useSelector } from "react-redux";
+
 const { Sider, Content } = Layout;
 
 const { SubMenu } = Menu;
 
 function GridLayout() {
-  const [logged, setLogged] = useState(true);
+  //const [logged, setLogged] = useState(false);
 
-  const userLogged = (truth) => {
+  /*const userLogged = (truth) => {
     setLogged(truth);
-  };
+  };*/
+
+  const logged = useSelector(state => state.logovani.logged);
 
   return (
-    <div style={{ height: "100vh" }}>
+    <div style={{ height: !logged ? "100vh" : "" }}>
       <Router>
-        <Layout>
+        <Layout style={{ height: !logged ? "100vh" : "" }}>
           {logged && (
             <Sider>
               <Menu
@@ -100,9 +104,13 @@ function GridLayout() {
               </Menu>
             </Sider>
           )}
-          <Content className="content">
+          <Content className="content" /*style={{
+            display: !logged ? "flex" : "",
+            justifyContent: !logged ? "center" : "",
+            alignItems: !logged ? "center" : ""
+          }}*/>
             <Switch>
-              <Routes userLog={userLogged} log={logged} />
+              <Routes />
             </Switch>
           </Content>
         </Layout>

@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import { Avatar, Row, Col } from "antd";
 
+import { useSelector } from "react-redux";
+
 function PageHeader() {
-  const [ikonicaAvatara, setIkonicaAvatara] = useState("U");
+  //const [ikonicaAvatara, setIkonicaAvatara] = useState("U");
+  const logged = useSelector(state => state.logovani.logged);
+  const ikonicaAvatara = useSelector(state => state.logovani.currentlyLoggedUser.username !== undefined &&
+    state.logovani.currentlyLoggedUser.username !== null ? state.logovani.currentlyLoggedUser.username.charAt(0).toUpperCase() : "");
 
   return (
     <Row style={{ display: "flex", alignItems: "center", lineHeight: "80px" }}>
-      <Col span="3">
+      <Col span="14" style={{ height: "80px" }}>
         <h1 style={{ color: "white", margin: "0px" }}>Inventory App</h1>
       </Col>
-      <Col span="2" offset="19" type="flex" style={{ alignItems: "center" }}>
-        <Avatar
+      <Col span="2" offset="8" type="flex" style={{ alignItems: "center" }}>
+        {logged ? <Avatar
           style={{
             color: "#f56a00",
             backgroundColor: "#fde3cf",
@@ -18,9 +23,9 @@ function PageHeader() {
           }}
         >
           {ikonicaAvatara}
-        </Avatar>
+        </Avatar> : ""}
       </Col>
-    </Row>
+    </Row >
   );
 }
 export default PageHeader;

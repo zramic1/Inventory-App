@@ -4,22 +4,26 @@ import { Form, Input, Button } from "antd";
 
 import axios from "axios";
 
+import { userLogged } from "./actions/loginActions";
+import { useDispatch } from "react-redux";
+
 const layout = {
   labelCol: {
-    span: 8,
+    span: 6,
   },
   wrapperCol: {
-    span: 10,
+    span: 15,
   },
 };
 const tailLayout = {
   wrapperCol: {
-    offset: 8,
-    span: 10,
+    offset: 17,
+    span: 4,
   },
 };
 
-function Login(props) {
+function Login() {
+  const dispatch = useDispatch();
   const [allValues, setAllValues] = useState({
     username: "",
     password: "",
@@ -39,6 +43,7 @@ function Login(props) {
   };
 
   const onSubmit = () => {
+    //dispatch(userLogged({ logged: true, user: { username: allValues.username, password: allValues.password } }));
     console.log("Username je: ", allValues.username);
     console.log("Password je: ", allValues.password);
     let url = "http://localhost:8060";
@@ -49,11 +54,12 @@ function Login(props) {
       })
       .then((res) => {
         localStorage.setItem("token", res.data.jwt);
-        props.data(true);
+        //props.data(true);
+        dispatch(userLogged({ logged: true, user: { username: allValues.username, password: allValues.password } }));
       })
       .catch((error) => {
         console.log("Status");
-        console.log(error.response.status);
+        //console.log(error.response.status);
         console.log("Greska!");
         console.log(error);
       });
@@ -72,6 +78,7 @@ function Login(props) {
       <Form.Item
         label="Username"
         name="usernameItem"
+        style={{ color: "red" }}
         rules={[
           {
             required: true,
@@ -110,7 +117,7 @@ function Login(props) {
             </Form.Item>*/}
 
       <Form.Item {...tailLayout}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
           Submit
         </Button>
       </Form.Item>
