@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { Form, Input, Button } from "antd";
 
@@ -6,6 +6,8 @@ import axios from "axios";
 
 import { userLogged } from "./actions/loginActions";
 import { useDispatch } from "react-redux";
+
+import { UrlContext } from "../urlContext";
 
 const layout = {
   labelCol: {
@@ -23,6 +25,7 @@ const tailLayout = {
 };
 
 function Login() {
+  const loginContext = useContext(UrlContext);
   const dispatch = useDispatch();
   const [allValues, setAllValues] = useState({
     username: "",
@@ -46,7 +49,8 @@ function Login() {
     //dispatch(userLogged({ logged: true, user: { username: allValues.username, password: allValues.password } }));
     console.log("Username je: ", allValues.username);
     console.log("Password je: ", allValues.password);
-    let url = "http://localhost:8060";
+    //let url = "http://localhost:8060";
+    let url = loginContext.gateway;
     axios
       .post(url + "/authenticate", {
         username: allValues.username,
@@ -55,7 +59,7 @@ function Login() {
       .then((res) => {
         localStorage.setItem("token", res.data.jwt);
         //props.data(true);
-        dispatch(userLogged({ logged: true, user: { username: allValues.username, password: allValues.password } }));
+        dispatch(userLogged({ logged: true, user: { username: allValues.username, password: allValues.password, jwt: res.data.jwt } }));
       })
       .catch((error) => {
         console.log("Status");

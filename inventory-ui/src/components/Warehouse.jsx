@@ -1,7 +1,39 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import DataGrid from "./TableGrid/DataGrid";
 import CreateWarehouseForm from "./CreateWarehouseForm";
+import { useDispatch, useSelector } from "react-redux";
+
+import { UrlContext } from "../urlContext";
+
+import axios from "axios";
+import { getAllWarehouses } from "./actions/loginActions";
+
 function Warehouse() {
+  const warehouseContext = useContext(UrlContext);
+  const dispatch = useDispatch();
+  const warehousi = useSelector(state => state.logovani.warehouses)
+
+  const getWarehouses = () => {
+    let url = warehouseContext.user;
+    axios
+      .get(url + "/warehouses", {
+        headers: { 'Authorization': `token ${localStorage.getItem('token')}` }
+      })
+      .then((res) => {
+        dispatch(getAllWarehouses(res.data));
+      })
+      .catch((error) => {
+        console.log("Status");
+        //console.log(error.response.status);
+        console.log("Greska!");
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    getWarehouses();
+  });
+
   return (
     <div style={{ height: "100vh" }}>
       <DataGrid

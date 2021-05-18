@@ -11,10 +11,23 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 
 import allReducers from "./components/reducers/indexReducer";
+import axios from "axios";
 
 const { Header } = Layout;
 
-const store = createStore(allReducers)
+const store = createStore(allReducers);
+
+
+axios.interceptors.request.use(function (config) {
+  console.log("Usao ovdje");
+  let token = "";
+  if (localStorage.getItem('token') !== "") {
+    token = 'Bearer '.concat(localStorage.getItem('token'));
+  }
+  config.headers.Authorization = token;
+
+  return config;
+});
 
 ReactDOM.render(
   /*<React.StrictMode>

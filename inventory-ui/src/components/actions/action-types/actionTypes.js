@@ -1,1 +1,2 @@
 export const USER_LOGGED = "USER_LOGGED";
+export const GET_ALL_WAREHOUSES = "GET_ALL_WAREHOUSES";

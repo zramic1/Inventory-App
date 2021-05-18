@@ -1,4 +1,4 @@
-import { USER_LOGGED } from "./action-types/actionTypes";
+import { USER_LOGGED, GET_ALL_WAREHOUSES } from "./action-types/actionTypes";
 
 export const userLogged = (user) => {
     return {
@@ -7,3 +7,9 @@ export const userLogged = (user) => {
     }
 }
 
+export const getAllWarehouses = (warehouses) => {
+    return {
+        type: GET_ALL_WAREHOUSES,
+        payload: warehouses
+    }
+}
