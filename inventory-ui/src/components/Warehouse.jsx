@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { UrlContext } from "../urlContext";
 
-import axios from "axios";
 import { getAllWarehouses } from "./actions/loginActions";
+import axiosInstance from "../api/axiosInstance";
 
 function Warehouse() {
   const warehouseContext = useContext(UrlContext);
@@ -15,10 +15,8 @@ function Warehouse() {
 
   const getWarehouses = () => {
     let url = warehouseContext.user;
-    axios
-      .get(url + "/warehouses", {
-        headers: { 'Authorization': `token ${localStorage.getItem('token')}` }
-      })
+    axiosInstance(url)
+      .get("/warehouses")
       .then((res) => {
         dispatch(getAllWarehouses(res.data));
       })

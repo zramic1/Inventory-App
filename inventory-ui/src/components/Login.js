@@ -2,12 +2,11 @@ import React, { useContext, useState } from "react";
 
 import { Form, Input, Button } from "antd";
 
-import axios from "axios";
-
 import { userLogged } from "./actions/loginActions";
 import { useDispatch } from "react-redux";
 
 import { UrlContext } from "../urlContext";
+import axiosInstance from "../api/axiosInstance";
 
 const layout = {
   labelCol: {
@@ -51,8 +50,8 @@ function Login() {
     console.log("Password je: ", allValues.password);
     //let url = "http://localhost:8060";
     let url = loginContext.gateway;
-    axios
-      .post(url + "/authenticate", {
+    axiosInstance(url)
+      .post("/authenticate", {
         username: allValues.username,
         password: allValues.password,
       })
