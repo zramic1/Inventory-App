@@ -37,7 +37,7 @@ export default class DataGrid extends React.Component {
         updateModalVisible,
       });
     }
-    console.log(createModalVisible);
+    //console.log(createModalVisible);
   }
 
   render() {
@@ -58,6 +58,7 @@ export default class DataGrid extends React.Component {
       Form,
       formInstance,
       formActions,
+      dataSource
     } = this.props.data;
 
     const showCreateModal = (e) => {
@@ -141,7 +142,7 @@ export default class DataGrid extends React.Component {
           addButtonText={addButtonText}
           showCreateModal={showCreateModal}
         ></Header>
-        <Table columns={columns}></Table>
+        <Table columns={columns} dataSource={dataSource}></Table>
         {createModalVisible && (
           <NewRecordDialog
             visible={createModalVisible}

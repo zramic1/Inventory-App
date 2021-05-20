@@ -19,6 +19,7 @@ function Warehouse() {
       .get("/warehouses")
       .then((res) => {
         dispatch(getAllWarehouses(res.data));
+        //console.log("Warehousi su: ", res.data);
       })
       .catch((error) => {
         console.log("Status");
@@ -29,6 +30,7 @@ function Warehouse() {
   }
 
   useEffect(() => {
+    console.log("Warehousi su: ", warehousi);
     getWarehouses();
   });
 
@@ -41,8 +43,8 @@ function Warehouse() {
           columns: [
             {
               title: "Company Name",
-              dataIndex: "companyName",
-              key: "companyName",
+              dataIndex: "company_name",
+              key: "company_name",
             },
             {
               title: "Location",
@@ -51,27 +53,11 @@ function Warehouse() {
             },
             {
               title: "Inventory Start Date",
-              dataIndex: "inventoryStartDate",
-              key: "inventoryStartDate",
+              dataIndex: "inventory_start_date",
+              key: "inventory_start_date",
             },
           ],
-          dataSource: [
-            {
-              title: "Company Name",
-              dataIndex: "companyName",
-              key: "companyName",
-            },
-            {
-              title: "Location",
-              dataIndex: "location",
-              key: "location",
-            },
-            {
-              title: "Inventory Start Date",
-              dataIndex: "inventoryStartDate",
-              key: "inventoryStartDate",
-            },
-          ],
+          dataSource: warehousi,
           Form: <CreateWarehouseForm />,
           visible: false,
         }}

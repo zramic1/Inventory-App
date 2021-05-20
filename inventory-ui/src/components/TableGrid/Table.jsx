@@ -45,6 +45,11 @@ export default class Table extends React.Component {
           : DataGridConstants.MIN_PAGE_SIZE,
     };
   }
+
+  componentDidMount() {
+    console.log("Ucitana je komponenta Table ", this.props);
+  }
+
   render() {
     const {
       searchEnabled = true,
@@ -72,9 +77,9 @@ export default class Table extends React.Component {
               sorter:
                 item.key !== "actions" && !item.sorter
                   ? (a, b) =>
-                      (String(get(a, item.dataIndex)) || "").localeCompare(
-                        String(get(b, item.dataIndex)) || ""
-                      )
+                    (String(get(a, item.dataIndex)) || "").localeCompare(
+                      String(get(b, item.dataIndex)) || ""
+                    )
                   : item.sorter ?? undefined,
             }))}
             dataSource={dataSource}
@@ -91,16 +96,16 @@ export default class Table extends React.Component {
             searchableProps={
               searchEnabled
                 ? {
-                    inputProps: {
-                      placeholder: searchTablePlaceholder,
-                      prefix: <SearchOutlined />,
-                      className: "datagrid-search",
-                    },
-                    fuseProps: {
-                      includeMatches: true,
-                      ignoreLocation: true,
-                    },
-                  }
+                  inputProps: {
+                    placeholder: searchTablePlaceholder,
+                    prefix: <SearchOutlined />,
+                    className: "datagrid-search",
+                  },
+                  fuseProps: {
+                    includeMatches: true,
+                    ignoreLocation: true,
+                  },
+                }
                 : undefined
             }
           />
