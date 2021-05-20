@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, Alert } from "antd";
 
-import { userLogged } from "./actions/loginActions";
+import { userLogged, getUserInformation } from "./actions/loginActions";
 import { useDispatch } from "react-redux";
 
 import { UrlContext } from "../urlContext";
@@ -30,6 +30,7 @@ function Login() {
     username: "",
     password: "",
   });
+  const [alertVisible, setAlertVisible] = useState(false);
 
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -57,10 +58,23 @@ function Login() {
       })
       .then((res) => {
         localStorage.setItem("token", res.data.jwt);
+        setAlertVisible(false);
         //props.data(true);
         dispatch(userLogged({ logged: true, user: { username: allValues.username, password: allValues.password, jwt: res.data.jwt } }));
+        let url1 = loginContext.user;
+        axiosInstance(url1).get(`/users/username/${allValues.username}`).then((res1) => {
+          dispatch(getUserInformation({
+            id: res1.data.id,
+            first_name: res1.data.first_name,
+            last_name: res1.data.last_name,
+            address: res1.data.address,
+            phone: res1.data.phone,
+            email: res1.data.email
+          }));
+        })
       })
       .catch((error) => {
+        setAlertVisible(true);
         console.log("Status");
         //console.log(error.response.status);
         console.log("Greska!");
@@ -69,62 +83,65 @@ function Login() {
   };
 
   return (
-    <Form
-      {...layout}
-      name="loginForm"
-      initialValues={{
-        remember: true,
-      }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-    >
-      <Form.Item
-        label="Username"
-        name="usernameItem"
-        style={{ color: "red" }}
-        rules={[
-          {
-            required: true,
-            message: "Please input your username!",
-          },
-        ]}
+    <>
+      <Form
+        {...layout}
+        name="loginForm"
+        initialValues={{
+          remember: true,
+        }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
       >
-        <Input
-          name="username"
-          onChange={(e) => {
-            onInputChange(e);
-          }}
-        />
-      </Form.Item>
+        <Form.Item
+          label="Username"
+          name="usernameItem"
+          style={{ color: "red" }}
+          rules={[
+            {
+              required: true,
+              message: "Please input your username!",
+            },
+          ]}
+        >
+          <Input
+            name="username"
+            onChange={(e) => {
+              onInputChange(e);
+            }}
+          />
+        </Form.Item>
 
-      <Form.Item
-        label="Password"
-        name="passwordItem"
-        rules={[
-          {
-            required: true,
-            message: "Please input your password!",
-          },
-        ]}
-      >
-        <Input.Password
-          name="password"
-          onChange={(e) => {
-            onInputChange(e);
-          }}
-        />
-      </Form.Item>
+        <Form.Item
+          label="Password"
+          name="passwordItem"
+          rules={[
+            {
+              required: true,
+              message: "Please input your password!",
+            },
+          ]}
+        >
+          <Input.Password
+            name="password"
+            onChange={(e) => {
+              onInputChange(e);
+            }}
+          />
+        </Form.Item>
 
-      {/*<Form.Item {...tailLayout} name="remember" valuePropName="checked">
+        {/*<Form.Item {...tailLayout} name="remember" valuePropName="checked">
                 <Checkbox>Remember me</Checkbox>
             </Form.Item>*/}
 
-      <Form.Item {...tailLayout}>
-        <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
-          Submit
+        <Form.Item {...tailLayout}>
+          <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+            Submit
         </Button>
-      </Form.Item>
-    </Form>
+        </Form.Item>
+      </Form>
+      {alertVisible ? <Alert message="Wrong username or password!" type="error" showIcon /> : ""}
+    </>
   );
 }
 

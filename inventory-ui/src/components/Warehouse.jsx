@@ -11,14 +11,28 @@ import axiosInstance from "../api/axiosInstance";
 function Warehouse() {
   const warehouseContext = useContext(UrlContext);
   const dispatch = useDispatch();
-  const warehousi = useSelector(state => state.logovani.warehouses)
+  const trenutniKorisnikId = useSelector(state => state.logovani.otherUserInformation.id);
+  const warehousi = useSelector(state => state.logovani.warehouses);
 
+  // treba promijeniti da vraca warehouse po korisnickom ID!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   const getWarehouses = () => {
     let url = warehouseContext.user;
+    console.log("Trenutno je u warehouse logovan: ", trenutniKorisnikId);
     axiosInstance(url)
-      .get("/warehouses")
+      .get(`/warehouses`)
       .then((res) => {
-        dispatch(getAllWarehouses(res.data));
+        console.log("Vrati warehouse od korisnika ", trenutniKorisnikId, res.data);
+        let noviWarehouseNiz = [];
+        for (let i = 0; i < res.data.length; i++) {
+          let wh = res.data[i];
+          console.log("Wh je: ", wh);
+          noviWarehouseNiz.push({
+            company_name: wh.company_name,
+            location: wh.location,
+            inventory_start_date: wh.inventory_start_date
+          })
+        }
+        dispatch(getAllWarehouses(noviWarehouseNiz));
         //console.log("Warehousi su: ", res.data);
       })
       .catch((error) => {

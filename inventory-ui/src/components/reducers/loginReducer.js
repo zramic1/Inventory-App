@@ -1,4 +1,4 @@
-import { GET_ALL_ORDERS, GET_ALL_USERS, GET_ALL_WAREHOUSES, USER_LOGGED } from "../actions/action-types/actionTypes"
+import { GET_ALL_ORDERS, GET_ALL_USERS, GET_ALL_WAREHOUSES, GET_USER_INFORMATION, USER_LOGGED } from "../actions/action-types/actionTypes"
 
 const initState = {
     logged: false,
@@ -9,9 +9,9 @@ const initState = {
         jwt: "",
     },
     warehouses: [{
-        companyName: "",
+        company_name: "",
         location: "",
-        inventoryStartDate: null
+        inventory_start_date: null
     }],
     allUsers: [{
         username: "",
@@ -26,7 +26,15 @@ const initState = {
         status: "",
         customer: "",
         supplier: ""
-    }]
+    }],
+    otherUserInformation: {
+        id: "",
+        first_name: "",
+        last_name: "",
+        address: "",
+        phone: "",
+        email: ""
+    }
 }
 
 export default function (state = initState, action) {
@@ -57,6 +65,12 @@ export default function (state = initState, action) {
         return {
             ...state,
             allOrders: action.payload
+        }
+    }
+    else if (action.type == GET_USER_INFORMATION) {
+        return {
+            ...state,
+            otherUserInformation: action.payload
         }
     }
 
