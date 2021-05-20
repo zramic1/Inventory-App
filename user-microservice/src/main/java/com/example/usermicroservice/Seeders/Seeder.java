@@ -54,8 +54,8 @@ public class Seeder {
         BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
         User korisnik1=new User("Damir","Pozderac","Adresa 1","Telefon 1", "dpozderac1@etf.unsa.ba", "dpozderac1",passwordEncoder.encode("Password1!"), uloga1,skladiste1);
         User korisnik2=new User("Azra","Ibric","Adresa 2","Telefon 2", "aibricc1@etf.unsa.ba", "aibric1",passwordEncoder.encode("Password2!"), uloga2,skladiste2);
-        User korisnik3=new User("Edina","Kovac","Adresa 3","Telefon 3", "akurtovic2@etf.unsa.ba", "akurtovic2",passwordEncoder.encode("Password3!"), uloga2,skladiste3);
-        User korisnik4=new User("Amina","Kurtovic","Adresa 4","Telefon 4", "ekovac2@etf.unsa.ba", "ekovac2",passwordEncoder.encode("Password4!"), uloga1,skladiste4);
+        User korisnik3=new User("Edina","Kovac","Adresa 3","Telefon 3", "ekovac2@etf.unsa.ba", "ekovac2",passwordEncoder.encode("Password3!"), uloga2,skladiste3);
+        User korisnik4=new User("Amina","Kurtovic","Adresa 4","Telefon 4", "akurtovic2@etf.unsa.ba", "akurtovic2",passwordEncoder.encode("Password4!"), uloga1,skladiste4);
         User korisnik5=new User("Zerina","Ramic","Adresa 5","Telefon 5", "zramic1@etf.unsa.ba", "zramic1",passwordEncoder.encode("Password5!"), uloga2,skladiste5);
 
         warehouseRepository.save(skladiste1);

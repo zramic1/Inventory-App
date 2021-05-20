@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -102,5 +105,20 @@ public class WarehouseServiceImpl implements  WarehouseService {
         } else {
             throw new RecordNotFoundException("Warehouse does not exist!");
         }
+    }
+
+    @Override
+    public ResponseEntity getWarehouseByUserId(Long id) {
+        List<Warehouse> sviWarehousi=warehouseRepository.findAll();
+        List<Warehouse> praviWarehousi= new ArrayList<>();
+        for(int i=0;i<sviWarehousi.size();i++){
+            for(int j=0;j<sviWarehousi.get(i).getUsers().size();j++) {
+                if (sviWarehousi.get(i).getUsers().get(j).getID().equals(id)) {
+                    praviWarehousi.add(sviWarehousi.get(i));
+                    break;
+                }
+            }
+        }
+        return new ResponseEntity(praviWarehousi,HttpStatus.OK);
     }
 }

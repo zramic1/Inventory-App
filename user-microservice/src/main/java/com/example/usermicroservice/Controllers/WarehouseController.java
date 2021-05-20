@@ -41,4 +41,9 @@ public class WarehouseController {
     public ResponseEntity updateWarehouse(@Valid @PathVariable Long id, @RequestBody Warehouse warehouse) {
         return warehouseService.updateWarehouse(id, warehouse);
     }
+
+    @GetMapping(value = "/warehouses/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity warehousesByUserId(@PathVariable Long id) {
+        return warehouseService.getWarehouseByUserId(id);
+    }
 }

@@ -15,4 +15,6 @@ public interface WarehouseService {
     ResponseEntity updateWarehouse(Long id, Warehouse warehouse);
 
     ResponseEntity deleteWarehouse(Long id);
+
+    ResponseEntity getWarehouseByUserId(Long id);
 }
