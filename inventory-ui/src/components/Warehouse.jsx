@@ -17,15 +17,15 @@ function Warehouse() {
   // treba promijeniti da vraca warehouse po korisnickom ID!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   const getWarehouses = () => {
     let url = warehouseContext.user;
-    console.log("Trenutno je u warehouse logovan: ", trenutniKorisnikId);
+    //console.log("Trenutno je u warehouse logovan: ", trenutniKorisnikId);
     axiosInstance(url)
-      .get(`/warehouses`)
+      .get(`/warehouses/user/${trenutniKorisnikId}`)
       .then((res) => {
         console.log("Vrati warehouse od korisnika ", trenutniKorisnikId, res.data);
         let noviWarehouseNiz = [];
         for (let i = 0; i < res.data.length; i++) {
           let wh = res.data[i];
-          console.log("Wh je: ", wh);
+          //console.log("Wh je: ", wh);
           noviWarehouseNiz.push({
             company_name: wh.company_name,
             location: wh.location,
@@ -44,9 +44,10 @@ function Warehouse() {
   }
 
   useEffect(() => {
-    console.log("Warehousi su: ", warehousi);
+    console.log("Poziva se mount");
+    //console.log("Warehousi su: ", warehousi);
     getWarehouses();
-  });
+  }, []);
 
   return (
     <div style={{ height: "100vh" }}>

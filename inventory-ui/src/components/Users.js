@@ -30,9 +30,8 @@ function Users() {
   }
 
   useEffect(() => {
-    console.log("Warehousi su: ", staff);
     getAllStaff();
-  });
+  }, []);
 
   return (
     <div style={{ height: "100vh" }}>

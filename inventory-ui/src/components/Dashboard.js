@@ -5,6 +5,8 @@ import { FaWarehouse, FaBoxOpen, FaReceipt, FaUsers } from "react-icons/fa";
 import 'ant-design-pro/dist/ant-design-pro.css';
 import { Bar } from 'ant-design-pro/lib/Charts';
 
+import { getAllUsers } from "./actions/loginActions";
+import { useSelector } from 'react-redux';
 
 const { Meta } = Card;
 
@@ -26,6 +28,10 @@ for (let i = 0; i < 12; i += 1) {
 
 function Dashboard() {
     const [loading, setLoading] = useState([false, false, false, false]);
+    const totalStaffMembers = useSelector(state => state.logovani.allUsers.length);
+    const totalOrders = useSelector(state => state.logovani.allOrders.length);
+    const totalWarehouses = useSelector(state => state.logovani.allUsers.length);
+    const totalProducts = useSelector(state => state.logovani.allProducts.length);
 
     function onChangeLoading(pozicija) {
         let load = loading;
@@ -41,7 +47,7 @@ function Dashboard() {
                         avatar={
                             <Avatar icon={<FaUsers size={40} />} style={{ color: "red", backgroundColor: "transparent", width: "50px", height: "50px" }} />
                         }
-                        title="0"
+                        title={totalStaffMembers}
                         description="Total staff members"
                     />
                 </Card>
@@ -53,7 +59,7 @@ function Dashboard() {
                         avatar={
                             <Avatar icon={<FaReceipt size={40} />} style={{ color: "blue", backgroundColor: "transparent", width: "50px", height: "50px" }} />
                         }
-                        title="0"
+                        title={totalOrders}
                         description="Total orders"
                     />
                 </Card>
@@ -65,7 +71,7 @@ function Dashboard() {
                         avatar={
                             <Avatar icon={<FaWarehouse size={40} />} style={{ color: "orange", backgroundColor: "transparent", width: "50px", height: "50px" }} />
                         }
-                        title="0"
+                        title={totalWarehouses}
                         description="Total warehouses"
                     />
                 </Card>
@@ -79,7 +85,7 @@ function Dashboard() {
                         avatar={
                             <Avatar icon={<FaBoxOpen size={40} />} style={{ color: "green", backgroundColor: "transparent", width: "50px", height: "50px" }} />
                         }
-                        title="0"
+                        title={totalProducts}
                         description="Total products"
                     />
                 </Card>

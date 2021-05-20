@@ -5,6 +5,7 @@ import Users from "./Users";
 import Product from "./Product";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
+import Register from "./Register";
 
 import { Route, Redirect } from "react-router-dom";
 import ProductDetails from "./ProductDetails";
@@ -65,6 +66,15 @@ function Routes() {
               <Card title={<Title level={2}>Login</Title>} style={{ textAlign: "center", fontSize: "20px" }}>
                 <Login />
               </Card>
+            </Col>
+          </Row>
+        </Route>
+      )}
+      {!logged && (
+        <Route exact path="/register">
+          <Row style={{ height: "100vh" }} justify="space-around" align="middle">
+            <Col span={24}>
+              <Register />
             </Col>
           </Row>
         </Route>

@@ -19,7 +19,6 @@ function Order() {
     axiosInstance(url)
       .get("/orders")
       .then((res) => {
-        console.log("Order odgovor je: ", res.data);
         let sviOrderi = [];
         for (let i = 0; i < res.data.length; i++) {
           let or = res.data[i];
@@ -44,7 +43,7 @@ function Order() {
   useEffect(() => {
     console.log("Orderi su: ", orderi);
     getOrders();
-  });
+  }, []);
 
   return (
     <div style={{ height: "100vh" }}>

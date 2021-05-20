@@ -18,8 +18,8 @@ const layout = {
 };
 const tailLayout = {
   wrapperCol: {
-    offset: 17,
-    span: 4,
+    offset: 16,
+    span: 5,
   },
 };
 
@@ -46,10 +46,8 @@ function Login() {
   };
 
   const onSubmit = () => {
-    //dispatch(userLogged({ logged: true, user: { username: allValues.username, password: allValues.password } }));
-    console.log("Username je: ", allValues.username);
-    console.log("Password je: ", allValues.password);
-    //let url = "http://localhost:8060";
+    //console.log("Username je: ", allValues.username);
+    //console.log("Password je: ", allValues.password);
     let url = loginContext.gateway;
     axiosInstance(url)
       .post("/authenticate", {
@@ -96,7 +94,6 @@ function Login() {
         <Form.Item
           label="Username"
           name="usernameItem"
-          style={{ color: "red" }}
           rules={[
             {
               required: true,
@@ -138,6 +135,7 @@ function Login() {
           <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
             Submit
         </Button>
+        Or <a href="/register">register now!</a>
         </Form.Item>
       </Form>
       {alertVisible ? <Alert message="Wrong username or password!" type="error" showIcon /> : ""}
