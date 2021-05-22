@@ -1,11 +1,26 @@
 import React from "react";
-import { List, Card } from "antd";
+import { List, Card, notification } from "antd";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 const { Meta } = Card;
 
 function Product() {
   const produkti = useSelector(state => state.logovani.allProducts);
+
+  const openNotification = () => {
+    notification.open({
+      message: 'Low Quantity',
+      description:
+        'There are products that are low on quantity',
+      placement: "topRight",
+      top: 80,
+      style: { marginTop: "80px" },
+      onClick: () => {
+        console.log('Notification Clicked!');
+      }
+    });
+  };
+
   return (
     <div className="datagrid">
       <List
@@ -33,6 +48,8 @@ function Product() {
           </Link>
         )}
       />
+      {produkti.some(el => el.quantity < 5) ? openNotification() : ""}
+      {/*<ProductsNotification />*/}
     </div>
   );
 }
