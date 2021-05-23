@@ -52,7 +52,7 @@ export default class EditorModal extends React.Component {
     if (formActions == null) {
       return undefined;
     }
-
+    console.log("tutu");
     return (
       <Row gutter={8}>
         <Col span={12}>
@@ -82,6 +82,7 @@ export default class EditorModal extends React.Component {
       rowData,
       okBtnDisabledRecordProp,
     } = this.props;
+
     formInstance?.setFieldsValue(rowData);
     return (
       <Modal
@@ -98,6 +99,7 @@ export default class EditorModal extends React.Component {
         onOk={async () => {
           try {
             let val = await formInstance?.validateFields();
+            console.log(val);
             let res = await onSubmit?.(val);
 
             this.props.onFinishEditing(res);

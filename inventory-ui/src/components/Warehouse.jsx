@@ -2,18 +2,36 @@ import React, { useContext, useEffect } from "react";
 import DataGrid from "./TableGrid/DataGrid";
 import CreateWarehouseForm from "./CreateWarehouseForm";
 import { useDispatch, useSelector } from "react-redux";
-
+import { Form } from "antd";
 import { UrlContext } from "../urlContext";
 
-import { getAllWarehouses } from "./actions/loginActions";
+import { getAllWarehouses, addNewWarehouse } from "./actions/loginActions";
 import axiosInstance from "../api/axiosInstance";
 
 function Warehouse() {
+  const [CreateForm] = Form.useForm();
   const warehouseContext = useContext(UrlContext);
   const dispatch = useDispatch();
-  const trenutniKorisnikId = useSelector(state => state.logovani.otherUserInformation.id);
-  const warehousi = useSelector(state => state.logovani.warehouses);
+  const trenutniKorisnikId = useSelector(
+    (state) => state.logovani.otherUserInformation.id
+  );
+  const warehousi = useSelector((state) => state.logovani.warehouses);
 
+  const addWarehouse = (companyName, inventoryStartDate, location) => {
+    let url = warehouseContext.user;
+    axiosInstance(url)
+      .post("/warehouse", { companyName, inventoryStartDate, location })
+      .then((res) => {
+        let sviOrderi = [];
+        dispatch(addNewWarehouse());
+        console.log("Warehouse je: ", res.data);
+      })
+      .catch((error) => {
+        console.log("Status");
+        console.log("Greska!");
+        console.log(error);
+      });
+  };
   // treba promijeniti da vraca warehouse po korisnickom ID!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   const getWarehouses = () => {
     let url = warehouseContext.user;
@@ -21,7 +39,11 @@ function Warehouse() {
     axiosInstance(url)
       .get(`/warehouses/user/${trenutniKorisnikId}`)
       .then((res) => {
-        console.log("Vrati warehouse od korisnika ", trenutniKorisnikId, res.data);
+        console.log(
+          "Vrati warehouse od korisnika ",
+          trenutniKorisnikId,
+          res.data
+        );
         let noviWarehouseNiz = [];
         for (let i = 0; i < res.data.length; i++) {
           let wh = res.data[i];
@@ -29,8 +51,8 @@ function Warehouse() {
           noviWarehouseNiz.push({
             company_name: wh.company_name,
             location: wh.location,
-            inventory_start_date: wh.inventory_start_date
-          })
+            inventory_start_date: wh.inventory_start_date,
+          });
         }
         dispatch(getAllWarehouses(noviWarehouseNiz));
         //console.log("Warehousi su: ", res.data);
@@ -41,7 +63,7 @@ function Warehouse() {
         console.log("Greska!");
         console.log(error);
       });
-  }
+  };
 
   useEffect(() => {
     console.log("Poziva se mount");
@@ -73,8 +95,15 @@ function Warehouse() {
             },
           ],
           dataSource: warehousi,
-          Form: <CreateWarehouseForm />,
+          Form: <CreateWarehouseForm form={CreateForm} />,
+          rowData: {
+            companyName: "",
+            inventoryStartDate: "",
+            location: "",
+          },
           visible: false,
+          onSubmit: addNewWarehouse,
+          formInstance: CreateForm,
         }}
       ></DataGrid>
     </div>

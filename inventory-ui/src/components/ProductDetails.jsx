@@ -1,18 +1,5 @@
 import React, { useState } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Radio,
-  Select,
-  Cascader,
-  DatePicker,
-  InputNumber,
-  TreeSelect,
-  Switch,
-  Divider,
-  Typography,
-} from "antd";
+import { Form, Input, Button, Select, Divider, Typography } from "antd";
 const { Title } = Typography;
 
 const ProductDetails = () => {
