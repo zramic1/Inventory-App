@@ -99,9 +99,8 @@ export default class EditorModal extends React.Component {
         onOk={async () => {
           try {
             let val = await formInstance?.validateFields();
-            console.log(val);
             let res = await onSubmit?.(val);
-
+            await formInstance?.resetFields();
             this.props.onFinishEditing(res);
           } catch (err) {
             console.log(err);

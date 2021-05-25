@@ -3,8 +3,11 @@ import {
   GET_ALL_WAREHOUSES,
   GET_ALL_USERS,
   GET_ALL_ORDERS,
+  GET_ALL_CUSTOMERS,
+  GET_ALL_SUPPLIERS,
   GET_USER_INFORMATION,
   ADD_NEW_WAREHOSE,
+  ADD_NEW_ORDER,
 } from "./action-types/actionTypes";
 
 export const userLogged = (user) => {
@@ -35,6 +38,20 @@ export const getAllOrders = (orders) => {
   };
 };
 
+export const getAllCustomers = (customers) => {
+  return {
+    type: GET_ALL_CUSTOMERS,
+    payload: customers,
+  };
+};
+
+export const getAllSuppliers = (suppliers) => {
+  return {
+    type: GET_ALL_SUPPLIERS,
+    payload: suppliers,
+  };
+};
+
 export const getUserInformation = (user) => {
   return {
     type: GET_USER_INFORMATION,
@@ -45,6 +62,13 @@ export const getUserInformation = (user) => {
 export const addNewWarehouse = () => {
   return {
     type: ADD_NEW_WAREHOSE,
+    payload: [],
+  };
+};
+
+export const addNewOrder = () => {
+  return {
+    type: ADD_NEW_ORDER,
     payload: [],
   };
 };

@@ -17,10 +17,16 @@ function Warehouse() {
   );
   const warehousi = useSelector((state) => state.logovani.warehouses);
 
-  const addWarehouse = (companyName, inventoryStartDate, location) => {
+  const addWarehouse = (val) => {
+    const { companyName, inventoryStartDate, location } = val;
+    console.log("Vrijednosti", companyName, inventoryStartDate, location);
     let url = warehouseContext.user;
     axiosInstance(url)
-      .post("/warehouse", { companyName, inventoryStartDate, location })
+      .post("/warehouse", {
+        company_name: companyName,
+        inventory_start_date: inventoryStartDate,
+        location: location,
+      })
       .then((res) => {
         let sviOrderi = [];
         dispatch(addNewWarehouse());
@@ -102,7 +108,7 @@ function Warehouse() {
             location: "",
           },
           visible: false,
-          onSubmit: addNewWarehouse,
+          onSubmit: addWarehouse,
           formInstance: CreateForm,
         }}
       ></DataGrid>

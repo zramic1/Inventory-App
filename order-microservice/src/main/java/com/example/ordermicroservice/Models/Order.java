@@ -17,7 +17,6 @@ public class Order {
     private Long id;
 
     @Column(name = "date_of_order")
-    @NotNull
     private Date dateOfOrder;
 
     @Column(name = "status")
@@ -28,7 +27,7 @@ public class Order {
     @ManyToOne()
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn (name = "supplier_id")
-    private Supplier userId;
+    private Supplier supplierId;
 
     @ManyToOne()
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -38,10 +37,10 @@ public class Order {
     public Order() { }
 
 
-    public Order(Date dateOfOrder, @NotEmpty(message = "Status may not be empty") String status, Supplier userId, Customer customerId) {
+    public Order(Date dateOfOrder, @NotEmpty(message = "Status may not be empty") String status, Supplier supplierId, Customer customerId) {
         this.dateOfOrder = dateOfOrder;
         this.status = status;
-        this.userId = userId;
+        this.supplierId = supplierId;
         this.customerId = customerId;
     }
 
@@ -70,11 +69,11 @@ public class Order {
     }
 
     public Supplier getUserId() {
-        return userId;
+        return supplierId;
     }
 
     public void setUserId(Supplier userId) {
-        this.userId = userId;
+        this.supplierId = userId;
     }
 
     public Customer getCustomerId() {
