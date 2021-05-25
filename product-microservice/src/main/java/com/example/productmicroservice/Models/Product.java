@@ -30,12 +30,10 @@ public class Product {
 
     @Column(name = "price")
     @NotNull
-    @NotEmpty(message = "Price may not be empty")
     private Double price;
 
     @Column(name = "quantity")
     @NotNull
-    @NotEmpty(message = "Quantity may not be empty")
     private Integer quantity;
 
     @Column(name = "status")
@@ -46,6 +44,10 @@ public class Product {
     @Column(name = "order_details")
     @NotNull
     private String orderDetails;
+
+    @Column(name="image_url")
+    @NotNull
+    private String imageUrl;
 
     @ManyToOne()
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -64,7 +66,7 @@ public class Product {
 
     public Product() { }
 
-    public Product(String name, String description, String unit, Double price, Integer quantity, String status, String orderDetails, Warehouse warehouseId, Category categoryId, Supplier supplierId) {
+    public Product(String name, String description, String unit, Double price, Integer quantity, String status, String orderDetails, String imageUrl, Warehouse warehouseId, Category categoryId, Supplier supplierId) {
         this.name = name;
         this.description = description;
         this.unit = unit;
@@ -72,6 +74,7 @@ public class Product {
         this.quantity = quantity;
         this.status = status;
         this.orderDetails = orderDetails;
+        this.imageUrl=imageUrl;
         this.warehouseId = warehouseId;
         this.categoryId = categoryId;
         this.supplierId = supplierId;
@@ -163,5 +166,13 @@ public class Product {
 
     public void setSupplierId(Supplier supplierId) {
         this.supplierId = supplierId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

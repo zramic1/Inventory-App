@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public List<Customer> getAllCustomers() {
@@ -39,7 +43,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public ResponseEntity saveCustomer(Customer customer) {
-        if (!Long.toString(customer.getUserID().getID()).equals(Integer.toString(0))) {
+        if (customer.getUserID()!=null && !Long.toString(customer.getUserID().getID()).equals(Integer.toString(0))) {
             User user = userRepository.findByID(Long.valueOf(customer.getUserID().getID()));
             if (user == null) {
                 throw new RecordNotFoundException("User does not exist!");
@@ -57,6 +61,12 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         customerRepository.save(customer);
+
+        // poziv za order mikroservis
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Customer> request = new HttpEntity<>(customer, headers);
+        Customer customer1 = restTemplate.postForObject("http://order/customer", request, Customer.class);
 
         return new ResponseEntity(customer, HttpStatus.CREATED);
     }
@@ -76,7 +86,7 @@ public class CustomerServiceImpl implements CustomerService {
             }
         }
 
-        if (!Long.toString(customer.getUserID().getID()).equals(Integer.toString(0))) {
+        if (customer.getUserID()!=null && !Long.toString(customer.getUserID().getID()).equals(Integer.toString(0))) {
             User user = userRepository.findByID(Long.valueOf(customer.getUserID().getID()));
             if (user == null) {
                 throw new RecordNotFoundException("User does not exist!");
@@ -106,6 +116,12 @@ public class CustomerServiceImpl implements CustomerService {
 
         customerRepository.save(kupac);
 
+        // poziv za order mikroservis
+        HttpHeaders httpHeaders=new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Customer> request=new HttpEntity<>(customer,httpHeaders);
+        restTemplate.put("http://order/updateCustomer/"+id.toString(),request);
+
         return new ResponseEntity<>(kupac, HttpStatus.OK);
     }
 
@@ -119,6 +135,8 @@ public class CustomerServiceImpl implements CustomerService {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            // poziv za order mikroservis
+            restTemplate.delete("http://order/deleteCustomer/"+id.toString());
             return new ResponseEntity(objekat.toString(), HttpStatus.OK);
         } else {
             throw new RecordNotFoundException("Customer does not exist!");

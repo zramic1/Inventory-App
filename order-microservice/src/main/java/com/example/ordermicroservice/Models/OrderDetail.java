@@ -18,27 +18,22 @@ public class OrderDetail {
 
     @Column(name = "unit_price")
     @NotNull
-    @NotEmpty(message = "Unit price may not be empty")
     private Double unitPrice;
 
     @Column(name = "size")
     @NotNull
-    @NotEmpty(message = "Size may not be empty")
     private Integer size;
 
     @Column(name = "quantity")
     @NotNull
-    @NotEmpty(message = "Quantity may not be empty")
     private Integer quantity;
 
     @Column(name = "total")
     @NotNull
-    @NotEmpty(message = "Total may not be empty")
     private Double total;
 
     @Column(name = "date")
     @NotNull
-    @NotEmpty(message = "Date may not be empty")
     private Date date;
 
     @ManyToOne()
@@ -58,7 +53,7 @@ public class OrderDetail {
 
     public OrderDetail() { }
 
-    public OrderDetail(@NotEmpty(message = "Unit price may not be empty") Double unitPrice, @NotEmpty(message = "Size may not be empty") Integer size, @NotEmpty(message = "Quantity may not be empty") Integer quantity, @NotEmpty(message = "Total may not be empty") Double total, @NotEmpty(message = "Date may not be empty") Date date, Order orderId, Payment paymentId, Product productId) {
+    public OrderDetail(Double unitPrice, Integer size, @NotEmpty(message = "Quantity may not be empty") Integer quantity, @NotEmpty(message = "Total may not be empty") Double total, @NotEmpty(message = "Date may not be empty") Date date, Order orderId, Payment paymentId, Product productId) {
         this.unitPrice = unitPrice;
         this.size = size;
         this.quantity = quantity;

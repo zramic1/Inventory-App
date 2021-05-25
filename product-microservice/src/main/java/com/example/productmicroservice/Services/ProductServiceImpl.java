@@ -2,13 +2,14 @@ package com.example.productmicroservice.Services;
 
 import com.example.productmicroservice.Exceptions.ProductNotFoundException;
 import com.example.productmicroservice.Models.Product;
+import com.example.productmicroservice.Models.Supplier;
 import com.example.productmicroservice.Repositories.ProductRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -24,6 +25,9 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     @Override
     public Product show(Long id)
     {
@@ -35,6 +39,12 @@ public class ProductServiceImpl implements ProductService {
     public ResponseEntity<Product> store(Product product)
     {
         productRepository.save(product);
+
+        // poziv za order mikroservis
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Product> request = new HttpEntity<>(product, headers);
+        Product product1 = restTemplate.postForObject("http://order/products", request, Product.class);
 
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
@@ -51,9 +61,17 @@ public class ProductServiceImpl implements ProductService {
                     product.setQuantity(newProduct.getQuantity());
                     product.setStatus(newProduct.getStatus());
                     product.setOrderDetails(newProduct.getOrderDetails());
+                    product.setImageUrl(newProduct.getImageUrl());
                     product.setWarehouseId(newProduct.getWarehouseId());
                     product.setCategoryId(newProduct.getCategoryId());
                     product.setSupplierId(newProduct.getSupplierId());
+
+                    // poziv za order mikroservis
+                    HttpHeaders httpHeaders=new HttpHeaders();
+                    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+                    HttpEntity<Product> request=new HttpEntity<>(product,httpHeaders);
+                    restTemplate.put("http://order/products/"+id.toString(),request);
+
                     return productRepository.save(product);
                 })
                 .orElseGet(() -> {
@@ -74,6 +92,8 @@ public class ProductServiceImpl implements ProductService {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            // poziv za order mikroservis
+            restTemplate.delete("http://order/products/"+id.toString());
             return new ResponseEntity<>(object.toString(), HttpStatus.OK);
         }
 

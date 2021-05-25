@@ -6,9 +6,9 @@ import com.example.productmicroservice.Repositories.SupplierRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -24,6 +24,10 @@ public class SupplierServiceImpl implements SupplierService {
         return supplierRepository.findAll();
     }
 
+    @Autowired
+    private RestTemplate restTemplate;
+
+
     @Override
     public Supplier show(Long id)
     {
@@ -35,6 +39,12 @@ public class SupplierServiceImpl implements SupplierService {
     public ResponseEntity<Supplier> store(Supplier supplier)
     {
         supplierRepository.save(supplier);
+
+        // poziv za order mikroservis
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Supplier> request = new HttpEntity<>(supplier, headers);
+        Supplier supplier1 = restTemplate.postForObject("http://order/suppliers", request, Supplier.class);
 
         return new ResponseEntity<>(supplier, HttpStatus.CREATED);
 
@@ -52,6 +62,13 @@ public class SupplierServiceImpl implements SupplierService {
                     supplier.setEmail(newSupplier.getEmail());
                     supplier.setOtherDetails(newSupplier.getOtherDetails());
                     supplier.setUserId(newSupplier.getUserId());
+
+                    // poziv za order mikroservis
+                    HttpHeaders httpHeaders=new HttpHeaders();
+                    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+                    HttpEntity<Supplier> request=new HttpEntity<>(supplier,httpHeaders);
+                    restTemplate.put("http://order/suppliers/"+id.toString(),request);
+
                     return supplierRepository.save(supplier);
                 })
                 .orElseGet(() -> {
@@ -72,6 +89,8 @@ public class SupplierServiceImpl implements SupplierService {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            // poziv za order mikroservis
+            restTemplate.delete("http://order/suppliers/"+id.toString());
             return new ResponseEntity<>(object.toString(), HttpStatus.OK);
         }
 

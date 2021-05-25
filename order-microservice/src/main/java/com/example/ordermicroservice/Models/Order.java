@@ -18,7 +18,6 @@ public class Order {
 
     @Column(name = "date_of_order")
     @NotNull
-    @NotEmpty(message = "Date of order may not be empty")
     private Date dateOfOrder;
 
     @Column(name = "status")
@@ -39,7 +38,7 @@ public class Order {
     public Order() { }
 
 
-    public Order(@NotEmpty(message = "Date of order may not be empty") Date dateOfOrder, @NotEmpty(message = "Status may not be empty") String status, Supplier userId, Customer customerId) {
+    public Order(Date dateOfOrder, @NotEmpty(message = "Status may not be empty") String status, Supplier userId, Customer customerId) {
         this.dateOfOrder = dateOfOrder;
         this.status = status;
         this.userId = userId;

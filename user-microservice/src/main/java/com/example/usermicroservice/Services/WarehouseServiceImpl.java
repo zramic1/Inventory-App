@@ -9,9 +9,9 @@ import com.example.usermicroservice.Repositories.WarehouseRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +26,9 @@ public class WarehouseServiceImpl implements  WarehouseService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public List<Warehouse> getAllWarehouses() {
@@ -54,6 +57,11 @@ public class WarehouseServiceImpl implements  WarehouseService {
             }
         }
         warehouseRepository.save(warehouse);
+        // poziv za product mikroservis
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Warehouse> request = new HttpEntity<>(warehouse, headers);
+        Warehouse warehouse1 = restTemplate.postForObject("http://product/warehouse", request, Warehouse.class);
         return new ResponseEntity(warehouse, HttpStatus.CREATED);
     }
 
@@ -80,6 +88,11 @@ public class WarehouseServiceImpl implements  WarehouseService {
         }
 
         warehouseRepository.save(trenutnaWarehouse);
+        // poziv za product mikroservis
+        HttpHeaders httpHeaders=new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Warehouse> request=new HttpEntity<>(warehouse,httpHeaders);
+        restTemplate.put("http://product/updateWarehouse/"+id.toString(),request);
         return new ResponseEntity(trenutnaWarehouse, HttpStatus.OK);
     }
 
@@ -101,6 +114,8 @@ public class WarehouseServiceImpl implements  WarehouseService {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            // poziv za product mikroservis
+            restTemplate.delete("http://product/deleteWarehouse/"+id.toString());
             return new ResponseEntity(object.toString(), HttpStatus.OK);
         } else {
             throw new RecordNotFoundException("Warehouse does not exist!");
