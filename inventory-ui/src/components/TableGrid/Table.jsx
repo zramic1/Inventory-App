@@ -2,6 +2,7 @@ import * as React from "react";
 import { Table as AntTable } from "ant-table-extensions";
 import { get } from "lodash";
 import { SearchOutlined } from "@ant-design/icons";
+import { renderGridActionDropdown } from "./ActionsDropdown";
 
 const DataGridConstants = {
   PAGE_SIZE: 20,
@@ -55,16 +56,52 @@ export default class Table extends React.Component {
       searchEnabled = true,
       searchTablePlaceholder,
       isTableInvisible,
-      keyProperty,
       loading,
       locale,
       expandedRowRender,
       showHeader,
       onChange,
       dataSource,
+      showUpdateModal,
+      showDeleteModal,
     } = this.props;
 
+    let _actions = [
+      {
+        id: "details",
+        type: "primary",
+        label: "Actions",
+        onClick: (record) => (e) => {},
+      },
+      {
+        type: "link",
+        label: "Update item",
+        onClick: (record) => (e) => showUpdateModal(e, record),
+        enable: (record) => true,
+      },
+      {
+        type: "link",
+        label: "Delete item",
+        onClick: (record) => (e) => showDeleteModal(e, record),
+      },
+    ];
+
     let { columns } = this.props;
+    console.log("Data source", dataSource);
+    if (dataSource) {
+      columns = [
+        ...columns,
+        {
+          dataIndex: "",
+          key: "actions",
+          width: 100,
+          fixed: "right",
+          render: (text, record) => {
+            return renderGridActionDropdown(_actions, record);
+          },
+        },
+      ];
+    }
 
     return (
       <div className={"datagrid-table"}>
@@ -77,9 +114,9 @@ export default class Table extends React.Component {
               sorter:
                 item.key !== "actions" && !item.sorter
                   ? (a, b) =>
-                    (String(get(a, item.dataIndex)) || "").localeCompare(
-                      String(get(b, item.dataIndex)) || ""
-                    )
+                      (String(get(a, item.dataIndex)) || "").localeCompare(
+                        String(get(b, item.dataIndex)) || ""
+                      )
                   : item.sorter ?? undefined,
             }))}
             dataSource={dataSource}
@@ -96,16 +133,16 @@ export default class Table extends React.Component {
             searchableProps={
               searchEnabled
                 ? {
-                  inputProps: {
-                    placeholder: searchTablePlaceholder,
-                    prefix: <SearchOutlined />,
-                    className: "datagrid-search",
-                  },
-                  fuseProps: {
-                    includeMatches: true,
-                    ignoreLocation: true,
-                  },
-                }
+                    inputProps: {
+                      placeholder: searchTablePlaceholder,
+                      prefix: <SearchOutlined />,
+                      className: "datagrid-search",
+                    },
+                    fuseProps: {
+                      includeMatches: true,
+                      ignoreLocation: true,
+                    },
+                  }
                 : undefined
             }
           />

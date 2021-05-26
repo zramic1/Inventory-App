@@ -1,10 +1,25 @@
 import { Input, Form, Select, DatePicker } from "antd";
-import { useEffect } from "react";
+import moment from "moment";
+import { useEffect, useState } from "react";
 const { Option } = Select;
 
 function CreateOrderForm(props) {
+  let [customerId, setCustomerId] = useState("");
   useEffect(() => {
     console.log(props);
+    props?.data?.customers?.map((customer) => {
+      if (
+        `${customer.first_name} ${customer.last_name}` ===
+        props?.rowData?.customer
+      )
+        setCustomerId(customer.id);
+    });
+    console.log(
+      "Vrijednost: ",
+      props.rowData?.customer,
+      props?.data?.customers,
+      customerId
+    );
   }, []);
 
   return (
@@ -19,7 +34,7 @@ function CreateOrderForm(props) {
       <Form.Item
         label="Date of Order"
         name="dateOfOrder"
-        initialValue={props.rowData?.dateOfOrder}
+        initialValue={moment(props.rowData?.date_of_order)}
         rules={[
           {
             required: true,
@@ -45,7 +60,7 @@ function CreateOrderForm(props) {
       <Form.Item
         label="Customer"
         name="customer"
-        initialValue={props.rowData?.customer}
+        initialValue={customerId}
         rules={[
           {
             required: true,
@@ -53,7 +68,7 @@ function CreateOrderForm(props) {
           },
         ]}
       >
-        <Select>
+        <Select value={customerId}>
           {props.data?.customers?.map((customer, i) => (
             <Option value={i}>
               {customer?.first_name} {customer?.last_name}

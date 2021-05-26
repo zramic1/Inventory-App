@@ -2,6 +2,9 @@ import Table from "./Table";
 import * as React from "react";
 import Header from "./Header";
 import NewRecordDialog from "./NewRecordDialog";
+import DeleteRecordDialog from "./DeleteRecordDialog";
+import UpdateRecordDialog from "./UpdateRecordDialog";
+
 export default class DataGrid extends React.Component {
   constructor(props) {
     super(props);
@@ -58,7 +61,12 @@ export default class DataGrid extends React.Component {
       Form,
       formInstance,
       formActions,
-      dataSource
+      dataSource,
+      updateOnSubmit,
+      UpdateForm,
+      updateFormInstance,
+      updateFormActions,
+      onDelete,
     } = this.props.data;
 
     const showCreateModal = (e) => {
@@ -76,6 +84,7 @@ export default class DataGrid extends React.Component {
     };
 
     const showUpdateModal = (e, rowData) => {
+      console.log("Row data", rowData);
       if (this.props.data.onStartUpdate) {
         this.props.data.onStartUpdate(rowData);
       }
@@ -142,7 +151,12 @@ export default class DataGrid extends React.Component {
           addButtonText={addButtonText}
           showCreateModal={showCreateModal}
         ></Header>
-        <Table columns={columns} dataSource={dataSource}></Table>
+        <Table
+          columns={columns}
+          dataSource={dataSource}
+          showUpdateModal={showUpdateModal}
+          showDeleteModal={showDeleteModal}
+        ></Table>
         {createModalVisible && (
           <NewRecordDialog
             visible={createModalVisible}
@@ -153,6 +167,26 @@ export default class DataGrid extends React.Component {
             onFinishEditing={endCreateModal}
             rowData={rowData}
             formActions={formActions}
+          />
+        )}
+        {updateModalVisible && (
+          <UpdateRecordDialog
+            visible={updateModalVisible}
+            onCancel={cancelUpdateModal}
+            onSubmit={updateOnSubmit}
+            Form={UpdateForm}
+            rowData={rowData}
+            formInstance={updateFormInstance}
+            onFinishEditing={endUpdateModal}
+            formActions={updateFormActions}
+          />
+        )}
+        {deleteModalVisible && (
+          <DeleteRecordDialog
+            visible={deleteModalVisible}
+            onCancel={cancelDeleteModal}
+            onDelete={onDelete}
+            rowData={rowData}
           />
         )}
       </div>

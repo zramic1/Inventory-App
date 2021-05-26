@@ -16,31 +16,9 @@ const initState = {
     password: "",
     jwt: "",
   },
-  warehouses: [
-    {
-      company_name: "",
-      location: "",
-      inventory_start_date: null,
-    },
-  ],
-  allUsers: [
-    {
-      username: "",
-      first_name: "",
-      last_name: "",
-      address: "",
-      phone: "",
-      email: "",
-    },
-  ],
-  allOrders: [
-    {
-      dateOfOrder: null,
-      status: "",
-      customer: "",
-      supplier: "",
-    },
-  ],
+  warehouses: [],
+  allUsers: [],
+  allOrders: [],
   otherUserInformation: {
     id: "",
     first_name: "",

@@ -11,7 +11,7 @@ import axiosInstance from "../api/axiosInstance";
 function Users() {
   const usersContext = useContext(UrlContext);
   const dispatch = useDispatch();
-  const staff = useSelector(state => state.logovani.allUsers)
+  const staff = useSelector((state) => state.logovani.allUsers);
 
   const getAllStaff = () => {
     let url = usersContext.user;
@@ -19,7 +19,7 @@ function Users() {
       .get("/users")
       .then((res) => {
         dispatch(getAllUsers(res.data));
-        //console.log("Warehousi su: ", res.data);
+        console.log("Useri su: ", res.data);
       })
       .catch((error) => {
         console.log("Status");
@@ -27,10 +27,11 @@ function Users() {
         console.log("Greska!");
         console.log(error);
       });
-  }
+  };
 
   useEffect(() => {
     getAllStaff();
+    console.log("Useri", staff);
   }, []);
 
   return (
@@ -69,7 +70,7 @@ function Users() {
               title: "Email",
               dataIndex: "email",
               key: "email",
-            }
+            },
           ],
           dataSource: staff,
           Form: <CreateStaffForm />,

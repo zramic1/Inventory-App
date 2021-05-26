@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { DatePicker } from "antd";
 import { Input, Form, Select } from "antd";
+import moment from "moment";
 
 const CreateWarehouseForm = (props) => (
   <Form layout={"vertical"} form={props.form}>
@@ -14,7 +15,7 @@ const CreateWarehouseForm = (props) => (
     <Form.Item
       label={"Company Name"}
       name="companyName"
-      initialValue={props.rowData?.companyName}
+      initialValue={props.rowData?.company_name}
       rules={[
         {
           required: true,
@@ -40,7 +41,7 @@ const CreateWarehouseForm = (props) => (
     <Form.Item
       label="Inventory Start Date"
       name="inventoryStartDate"
-      initialValue={props.rowData?.inventoryStartDate}
+      initialValue={moment(props.rowData?.inventory_start_date)}
       rules={[
         {
           required: true,

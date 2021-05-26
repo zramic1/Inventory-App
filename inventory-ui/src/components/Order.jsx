@@ -16,6 +16,7 @@ import axiosInstance from "../api/axiosInstance";
 
 function Order() {
   const [CreateForm] = Form.useForm();
+  const [UpdateForm] = Form.useForm();
   const orderContext = useContext(UrlContext);
   const dispatch = useDispatch();
   const orderi = useSelector((state) => state.logovani.allOrders);
@@ -30,15 +31,32 @@ function Order() {
         let sviOrderi = [];
         for (let i = 0; i < res.data.length; i++) {
           let or = res.data[i];
+          console.log(or);
           sviOrderi.push({
-            dateOfOrder: or.dateOfOrder,
+            id: or.id,
+            date_of_order: or.dateOfOrder,
             status: or.status,
-            customer: `${or.customerId.first_name} ${or.customerId.last_name}`,
-            supplier: or.userId.name,
+            customer: `${or.customerId?.first_name} ${or.customerId?.last_name}`,
+            supplier: or.userId?.name,
           });
         }
         dispatch(getAllOrders(sviOrderi));
-        //console.log("Warehousi su: ", res.data);
+      })
+      .catch((error) => {
+        console.log("Status");
+        //console.log(error.response.status);
+        console.log("Greska!");
+        console.log(error);
+      });
+  };
+  const deleteOrder = (rowData) => {
+    const { id } = rowData;
+    let url = orderContext.order;
+    axiosInstance(url)
+      .delete(`/orders/${id}`)
+      .then((res) => {
+        getOrders();
+        dispatch(deleteOrder());
       })
       .catch((error) => {
         console.log("Status");
@@ -110,7 +128,30 @@ function Order() {
         userId: supplieri[supplier],
       })
       .then((res) => {
-        let sviOrderi = [];
+        getOrders();
+        dispatch(addNewOrder());
+        console.log("Order je: ", res.data);
+      })
+      .catch((error) => {
+        console.log("Status");
+        console.log("Greska!");
+        console.log(error);
+      });
+  };
+
+  const updateOrder = (val) => {
+    const { id, dateOfOrder, status, customer, supplier } = val;
+    console.log("Vrijednosti", id, dateOfOrder, status, customer, supplier);
+    let url = orderContext.order;
+    axiosInstance(url)
+      .put(`/orders/${id}`, {
+        dateOfOrder: dateOfOrder,
+        status: status,
+        customerId: customeri[customer],
+        userId: supplieri[supplier],
+      })
+      .then((res) => {
+        getOrders();
         dispatch(addNewOrder());
         console.log("Order je: ", res.data);
       })
@@ -139,8 +180,8 @@ function Order() {
           columns: [
             {
               title: "Date Of Order",
-              dataIndex: "dateOfOrder",
-              key: "dateOfOrder",
+              dataIndex: "date_of_order",
+              key: "date_of_order",
             },
             {
               title: "Status",
@@ -176,6 +217,23 @@ function Order() {
           ),
           visible: false,
           onSubmit: addOrder,
+          onDelete: deleteOrder,
+          updateOnSubmit: updateOrder,
+          updateFormInstance: UpdateForm,
+          UpdateForm: (
+            <CreateOrderForm
+              form={UpdateForm}
+              data={{
+                customers: customeri,
+                suppliers: supplieri,
+                dateOfOrder: "",
+                id: "",
+                status: "",
+                customer: "",
+                supplier: "",
+              }}
+            />
+          ),
         }}
       ></DataGrid>
     </div>

@@ -8,6 +8,7 @@ import {
   GET_USER_INFORMATION,
   ADD_NEW_WAREHOSE,
   ADD_NEW_ORDER,
+  DELETE_ORDER,
 } from "./action-types/actionTypes";
 
 export const userLogged = (user) => {
@@ -35,6 +36,13 @@ export const getAllOrders = (orders) => {
   return {
     type: GET_ALL_ORDERS,
     payload: orders,
+  };
+};
+
+export const deleteOrder = () => {
+  return {
+    type: DELETE_ORDER,
+    payload: [],
   };
 };
 
