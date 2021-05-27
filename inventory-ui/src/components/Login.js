@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 
 import { Form, Input, Button, Alert } from "antd";
 
-import { userLogged, getUserInformation } from "./actions/loginActions";
+import { userLogged, getUserInformation, getUserIsSupplier } from "./actions/loginActions";
 import { useDispatch } from "react-redux";
 
 import { UrlContext } from "../urlContext";
@@ -67,8 +67,14 @@ function Login() {
             last_name: res1.data.last_name,
             address: res1.data.address,
             phone: res1.data.phone,
-            email: res1.data.email
+            email: res1.data.email,
+            customers: res1.data.customers
           }));
+          let url2 = loginContext.product;
+          axiosInstance(url2).get(`/suppliers/user/${res1.data.id}`).then((res2) => {
+            console.log("Odgovor za suppliere je: ", res2.data);
+            dispatch(getUserIsSupplier(res2.data));
+          })
         })
       })
       .catch((error) => {

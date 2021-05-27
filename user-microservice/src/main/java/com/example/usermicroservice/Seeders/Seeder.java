@@ -70,9 +70,9 @@ public class Seeder {
         userRepository.save(korisnik4);
         userRepository.save(korisnik5);
 
-        Customer customer1=new Customer("Ime 1", "Prezime 1","Adresa 1", "Telefon 1","kupac1@gmail.com",korisnik1);
-        Customer customer2=new Customer("Ime 2", "Prezime 2","Adresa 2", "Telefon 2","kupac1@gmail.com",korisnik1);
-        Customer customer3=new Customer("Ime 3", "Prezime 3","Adresa 3", "Telefon 3","kupac1@gmail.com",korisnik2);
+        Customer customer1=new Customer("Ime 1", "Prezime 1","Adresa 1", "Telefon 1","kupac1@gmail.com",korisnik2);
+        Customer customer2=new Customer("Ime 2", "Prezime 2","Adresa 2", "Telefon 2","kupac1@gmail.com",korisnik2);
+        Customer customer3=new Customer("Ime 3", "Prezime 3","Adresa 3", "Telefon 3","kupac1@gmail.com",korisnik3);
         Customer customer4=new Customer("Ime 4", "Prezime 4","Adresa 4", "Telefon 4","kupac1@gmail.com",korisnik3);
 
         customerRepository.save(customer1);

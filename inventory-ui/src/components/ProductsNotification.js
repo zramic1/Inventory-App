@@ -11,50 +11,6 @@ import NoticeIcon from 'ant-design-pro/lib/NoticeIcon';
 import { Tag } from 'antd';
 import { BellOutlined } from '@ant-design/icons';
 
-
-const data = [
-    {
-        id: '000000001',
-        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png',
-        title: '你收到了 14 份新周报',
-        datetime: '2017-08-09',
-        type: 'notification',
-        status: 'doing',
-        extra: 'dodatni tekst'
-    },
-    {
-        id: '000000002',
-        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/OKJXDXrmkNshAMvwtvhu.png',
-        title: '你推荐的 曲妮妮 已通过第三轮面试',
-        datetime: '2017-08-08',
-        type: 'notification',
-        status: 'urgent',
-        extra: 'dodatni'
-    },
-    /*{
-        id: '000000003',
-        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/kISTdvpyTAhtGxpovNWd.png',
-        title: '这种模板可以区分多种通知类型',
-        datetime: '2017-08-07',
-        read: true,
-        type: 'notification',
-    },
-    {
-        id: '000000004',
-        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/GvqBnKhFgObvnSGkDsje.png',
-        title: '左侧图标用于区分不同的类型',
-        datetime: '2017-08-07',
-        type: 'notification',
-    },
-    {
-        id: '000000005',
-        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png',
-        title: '内容不要超过两行字，超出时自动截断',
-        datetime: '2017-08-07',
-        type: 'notification',
-    },*/
-];
-
 function onItemClick(item, tabProps) {
     console.log(item, tabProps);
 }
@@ -103,11 +59,19 @@ function getNoticeData(notices) {
 function ProductsNotification() {
     const allProductsLowOnQuantity = useSelector(state => state.logovani.allProducts).filter(el => el.quantity < 5);
     const numberOfNotifications = allProductsLowOnQuantity.length;
+    const getCurrentDate = (separator = '-') => {
+        let newDate = new Date()
+        let date = newDate.getDate();
+        let month = newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+
+        return `${year}${separator}${month < 10 ? `0${month}` : `${month}`}${separator}${date}`
+    }
     const data = allProductsLowOnQuantity.map((product, index) => ({
         id: index,
         avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png',
         title: `Product ${product.title} is low on quantity`,
-        datetime: '2021-05-22',
+        datetime: getCurrentDate().toString(),
         type: 'notification',
         status: 'urgent',
         extra: 'low on quantity'

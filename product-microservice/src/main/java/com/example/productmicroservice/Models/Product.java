@@ -1,11 +1,14 @@
 package com.example.productmicroservice.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -41,18 +44,18 @@ public class Product {
     @NotEmpty(message = "Status may not be empty")
     private String status;
 
-    @Column(name = "order_details")
+    /*@Column(name = "order_details")
     @NotNull
-    private String orderDetails;
+    private String orderDetails;*/
 
     @Column(name="image_url")
     @NotNull
     private String imageUrl;
 
-    @ManyToOne()
+    /*@ManyToOne()
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn (name = "warehouse_id")
-    private Warehouse warehouseId;
+    private Warehouse warehouseId;*/
 
     @ManyToOne()
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -64,16 +67,24 @@ public class Product {
     @JoinColumn (name = "supplier_id")
     private Supplier supplierId;
 
+    @ManyToOne()
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "warehouse_id")
+    private Warehouse warehouseId;
+
+    @OneToMany(mappedBy = "productId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetails;
+
+
     public Product() { }
 
-    public Product(String name, String description, String unit, Double price, Integer quantity, String status, String orderDetails, String imageUrl, Warehouse warehouseId, Category categoryId, Supplier supplierId) {
+    public Product(String name, String description, String unit, Double price, Integer quantity, String status, String imageUrl, Warehouse warehouseId, Category categoryId, Supplier supplierId) {
         this.name = name;
         this.description = description;
         this.unit = unit;
         this.price = price;
         this.quantity = quantity;
         this.status = status;
-        this.orderDetails = orderDetails;
         this.imageUrl=imageUrl;
         this.warehouseId = warehouseId;
         this.categoryId = categoryId;
@@ -136,21 +147,13 @@ public class Product {
         this.status = status;
     }
 
-    public String getOrderDetails() {
-        return orderDetails;
-    }
-
-    public void setOrderDetails(String orderDetails) {
-        this.orderDetails = orderDetails;
-    }
-
-    public Warehouse getWarehouseId() {
+    /*public Warehouse getWarehouseId() {
         return warehouseId;
     }
 
     public void setWarehouseId(Warehouse warehouseId) {
         this.warehouseId = warehouseId;
-    }
+    }*/
 
     public Category getCategoryId() {
         return categoryId;
@@ -174,5 +177,21 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    @JsonBackReference(value="warehouseIdFromProduct")
+    public Warehouse getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Warehouse warehouseID) {
+        this.warehouseId = warehouseID;
+    }
+
+    @JsonManagedReference(value="productIDFromOrderDetails")
+    public List<OrderDetail> getOrderDetails(){return orderDetails;}
+
+    public void setOrderDetails(List<OrderDetail> orderDetails){
+        this.orderDetails=orderDetails;
     }
 }

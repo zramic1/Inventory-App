@@ -51,4 +51,11 @@ public class SupplierController {
     {
         return supplierService.delete(id);
     }
+
+    @GetMapping("/suppliers/user/{id}")
+    @ApiOperation("Returns a specific Supplier by User identifier. 404 if does not exist.")
+    public Supplier getSupplierByUserId(@PathVariable Long id)
+    {
+        return supplierService.getSupplierByUserId(id);
+    }
 }

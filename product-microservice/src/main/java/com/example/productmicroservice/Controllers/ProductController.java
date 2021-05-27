@@ -51,4 +51,19 @@ public class ProductController {
     {
         return productService.delete(id);
     }
+
+
+    @GetMapping("/products/warehouse/{id}")
+    @ApiOperation("Returns list of Products in Warehouse by Warehouse identifier. 404 if does not exist.")
+    public List<Product> getProductsByWarehouseId(@PathVariable Long id)
+    {
+        return productService.getProductsByWarehouseId(id);
+    }
+
+    @GetMapping("/products/user/{id}")
+    @ApiOperation("Returns list of Products in Warehouses where User belongs, specified by User identifier. 404 if does not exist.")
+    public List<Product> getProductsByUserId(@PathVariable Long id)
+    {
+        return productService.getProductsByUserId(id);
+    }
 }

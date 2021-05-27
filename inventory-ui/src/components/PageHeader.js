@@ -13,12 +13,12 @@ function PageHeader() {
 
   return (
     <Row style={{ display: "flex", alignItems: "center", lineHeight: "80px" }}>
-      <Col span="20" style={{ height: "80px" }}>
+      <Col span="22" style={{ height: "80px" }}>
         <h1 style={{ color: "white", margin: "0px" }}>Inventory App</h1>
       </Col>
-      <Col span="2">
+      {/*<Col span="2">
         {logged ? <ProductsNotification /> : ""}
-      </Col>
+      </Col>*/}
       <Col span="2" type="flex" style={{ alignItems: "center" }}>
         {logged ? <Avatar
           style={{

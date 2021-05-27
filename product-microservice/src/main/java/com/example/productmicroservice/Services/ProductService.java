@@ -11,4 +11,6 @@ public interface ProductService {
     ResponseEntity<Product> store(Product product);
     Product update(Product product, Long id);
     ResponseEntity delete(Long id);
+    List<Product> getProductsByWarehouseId(Long id);
+    List<Product> getProductsByUserId(Long id);
 }

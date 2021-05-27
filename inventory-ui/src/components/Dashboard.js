@@ -31,7 +31,7 @@ function Dashboard() {
     const totalStaffMembers = useSelector(state => state.logovani.allUsers.length);
     const totalOrders = useSelector(state => state.logovani.allOrders.length);
     const totalWarehouses = useSelector(state => state.logovani.allUsers.length);
-    const totalProducts = useSelector(state => state.logovani.allProducts.length);
+    const totalProducts = useSelector(state => state.logovani.allProductsForUser.length);
 
     function onChangeLoading(pozicija) {
         let load = loading;

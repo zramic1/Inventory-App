@@ -1,8 +1,11 @@
 package com.example.productmicroservice.Services;
 
 import com.example.productmicroservice.Exceptions.SupplierNotFoundException;
+import com.example.productmicroservice.Exceptions.UserNotFoundException;
 import com.example.productmicroservice.Models.Supplier;
+import com.example.productmicroservice.Models.User;
 import com.example.productmicroservice.Repositories.SupplierRepository;
+import com.example.productmicroservice.Repositories.UserRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +21,17 @@ public class SupplierServiceImpl implements SupplierService {
     @Autowired
     private SupplierRepository supplierRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
     @Override
     public List<Supplier> index()
     {
         return supplierRepository.findAll();
     }
-
-    @Autowired
-    private RestTemplate restTemplate;
-
 
     @Override
     public Supplier show(Long id)
@@ -61,7 +66,6 @@ public class SupplierServiceImpl implements SupplierService {
                     supplier.setFax(newSupplier.getFax());
                     supplier.setEmail(newSupplier.getEmail());
                     supplier.setOtherDetails(newSupplier.getOtherDetails());
-                    supplier.setUserId(newSupplier.getUserId());
 
                     // poziv za order mikroservis
                     HttpHeaders httpHeaders=new HttpHeaders();
@@ -101,4 +105,18 @@ public class SupplierServiceImpl implements SupplierService {
         }
         return new ResponseEntity<>(object.toString(), HttpStatus.NOT_FOUND);
     }
+
+
+    @Override
+    public Supplier getSupplierByUserId(Long id) {
+        if(userRepository.existsByID(id)){
+            //List<Supplier>=userRepository.findByID(id);
+            return userRepository.findByID(id).getSupplierID();
+        }
+        else{
+            throw new UserNotFoundException(id);
+        }
+    }
+
+
 }

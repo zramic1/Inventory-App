@@ -16,6 +16,7 @@ function Warehouse() {
     (state) => state.logovani.otherUserInformation.id
   );
   const warehousi = useSelector((state) => state.logovani.warehouses);
+  const userIsSupplier = useSelector(state => state.logovani.userIsSupplier);
 
   const addWarehouse = (companyName, inventoryStartDate, location) => {
     let url = warehouseContext.user;
@@ -32,12 +33,13 @@ function Warehouse() {
         console.log(error);
       });
   };
-  // treba promijeniti da vraca warehouse po korisnickom ID!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
   const getWarehouses = () => {
     let url = warehouseContext.user;
+    let putanja = userIsSupplier.id !== undefined && userIsSupplier.id !== null ? `/warehouses` : `/warehouses/user/${trenutniKorisnikId}`;
     //console.log("Trenutno je u warehouse logovan: ", trenutniKorisnikId);
     axiosInstance(url)
-      .get(`/warehouses/user/${trenutniKorisnikId}`)
+      .get(putanja)
       .then((res) => {
         console.log(
           "Vrati warehouse od korisnika ",
@@ -49,6 +51,7 @@ function Warehouse() {
           let wh = res.data[i];
           //console.log("Wh je: ", wh);
           noviWarehouseNiz.push({
+            id: wh.id,
             company_name: wh.company_name,
             location: wh.location,
             inventory_start_date: wh.inventory_start_date,
@@ -78,6 +81,11 @@ function Warehouse() {
           title: "Warehouses",
           addButtonText: "Add new warehouse",
           columns: [
+            {
+              title: "Warehouse id",
+              dataIndex: "id",
+              key: "id",
+            },
             {
               title: "Company Name",
               dataIndex: "company_name",
