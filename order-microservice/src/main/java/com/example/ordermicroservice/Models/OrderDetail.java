@@ -1,4 +1,5 @@
 package com.example.ordermicroservice.Models;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -112,14 +113,6 @@ public class OrderDetail {
         this.date = date;
     }
 
-    public Order getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Order orderId) {
-        this.orderId = orderId;
-    }
-
     public Payment getPaymentId() {
         return paymentId;
     }
@@ -134,5 +127,14 @@ public class OrderDetail {
 
     public void setProductId(Product productId) {
         this.productId = productId;
+    }
+
+    @JsonBackReference(value="orderIDFromOrderDetail")
+    public Order getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Order orderId) {
+        this.orderId = orderId;
     }
 }

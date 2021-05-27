@@ -47,15 +47,17 @@ public class Seeder {
         supplierRepository.save(suplajer1);
         supplierRepository.save(suplajer2);
 
-        Product produkt1=new Product("kiwi","opis1");
-        Product produkt2=new Product("tomato","opis2");
-        Product produkt3=new Product("chair","opis3");
-        Product produkt4=new Product("goat","opis4");
+        Product produkt1=new Product("Kiwi","opis1");
+        Product produkt2=new Product("Tomato","opis2");
+        Product produkt3=new Product("Chair","opis3");
+        Product produkt4=new Product("Goat","opis4");
+        Product produkt5=new Product("Sheep","opis5");
 
         productRepository.save(produkt1);
         productRepository.save(produkt2);
         productRepository.save(produkt3);
         productRepository.save(produkt4);
+        productRepository.save(produkt5);
 
         Payment payment1=new Payment("cash","detalji1");
         Payment payment2=new Payment("credit card","detalji1");
@@ -64,14 +66,14 @@ public class Seeder {
         paymentRepository.save(payment2);
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Order order1=new Order(format.parse("2021-05-24"),"arrived",suplajer1,customer1);
+        Order order1=new Order(format.parse("2021-05-24"),"approved",suplajer1,customer1);
         Order order2=new Order(format.parse("2021-05-20"),"transit",suplajer2,customer2);
 
         orderRepository.save(order1);
         orderRepository.save(order2);
 
         OrderDetail detalji1=new OrderDetail(2.0,2,2,4.0,format.parse("2021-05-24"),order1,payment1,produkt1);
-        OrderDetail detalji2=new OrderDetail(1.0,1,2,2.0,format.parse("2021-05-20"),order2,payment2,produkt2);
+        OrderDetail detalji2=new OrderDetail(1.0,1,2,2.0,format.parse("2021-05-20"),order2,payment2,produkt5);
 
         orderDetailsRepository.save(detalji1);
         orderDetailsRepository.save(detalji2);

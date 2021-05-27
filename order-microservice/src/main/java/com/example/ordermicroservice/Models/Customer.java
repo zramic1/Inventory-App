@@ -1,5 +1,6 @@
 package com.example.ordermicroservice.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name="Customers")
@@ -41,6 +43,18 @@ public class Customer {
     @NotEmpty(message = "Email cannot be empty!")
     @Email
     private String email;
+
+    @OneToMany(mappedBy = "customerId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Order> order;
+
+    @JsonManagedReference(value="customerIDFromOrder")
+    public List<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<Order> order) {
+        this.order = order;
+    }
 
     public Customer() {
     }

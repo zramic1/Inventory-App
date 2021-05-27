@@ -1,21 +1,33 @@
 package com.example.ordermicroservice.Services;
+import com.example.ordermicroservice.Exceptions.CustomerNotFoundException;
 import com.example.ordermicroservice.Exceptions.OrderDetailNotFoundException;
 import com.example.ordermicroservice.Exceptions.OrderNotFoundException;
 import com.example.ordermicroservice.Models.Order;
+import com.example.ordermicroservice.Models.OrderDetail;
+import com.example.ordermicroservice.Repositories.CustomerRepository;
 import com.example.ordermicroservice.Repositories.OrderRepository;
+import com.example.ordermicroservice.Repositories.SupplierRepository;
+import com.netflix.discovery.converters.Auto;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private SupplierRepository supplierRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Override
     public ResponseEntity<Order> create(Order order){
@@ -32,10 +44,18 @@ public class OrderServiceImpl implements OrderService {
     public Order update(Order newOrder, Long id){
         return orderRepository.findById(id)
                 .map(order -> {
-                    order.setDateOfOrder(newOrder.getDateOfOrder());
-                    order.setStatus(newOrder.getStatus());
-                    order.setUserId(newOrder.getUserId());
-                    order.setCustomerId(newOrder.getCustomerId());
+                    if (newOrder.getDateOfOrder() != null) {
+                        order.setDateOfOrder(newOrder.getDateOfOrder());
+                    }
+                    if(!newOrder.getStatus().isEmpty()) {
+                        order.setStatus(newOrder.getStatus());
+                    }
+                    if(newOrder.getSupplierId()!=null) {
+                        order.setSupplierId(newOrder.getSupplierId());
+                    }
+                    if(newOrder.getCustomerId()!=null) {
+                        order.setCustomerId(newOrder.getCustomerId());
+                    }
 
                     return orderRepository.save(order);
                 })
@@ -60,5 +80,36 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> readAll(){
         return orderRepository.findAll();
+    }
+
+    @Override
+    public Order changeStatus(Order newOrder,Long id) {
+        if(orderRepository.existsByid(id)){
+            Order order1=orderRepository.findByid(id);
+            order1.setStatus(newOrder.getStatus());
+            List<OrderDetail> orderDetails=order1.getOrderDetail();
+            return order1;
+        }
+        else{
+            throw new OrderNotFoundException(id);
+        }
+    }
+
+    @Override
+    public List<Order> getOrdersBySupplierId(Long id) {
+        if(supplierRepository.existsByid(id)){
+            return supplierRepository.findByid(id).getOrder();
+        }
+        else throw new OrderNotFoundException(id);
+    }
+
+    @Override
+    public List<Order> getOrdersByCustomerId(Long id) {
+        if(customerRepository.existsByID(id)){
+            return customerRepository.findByID(id).getOrder();
+        }
+        else{
+            throw new CustomerNotFoundException(id);
+        }
     }
 }

@@ -50,4 +50,18 @@ public class OrderController {
     public ResponseEntity delete(@PathVariable Long id) throws JSONException {
         return orderService.delete(id);
     }
+
+    @GetMapping("/orders/supplier/{id}")
+    @ApiOperation("Returns list of Orders by Supplier identifier. 404 if does not exist.")
+    public List<Order> getOrdersBySupplierId(@PathVariable Long id)
+    {
+        return orderService.getOrdersBySupplierId(id);
+    }
+
+    @GetMapping("/orders/customer/{id}")
+    @ApiOperation("Returns list of Orders by Customer identifier. 404 if does not exist.")
+    public List<Order> getOrdersByCustomerId(@PathVariable Long id)
+    {
+        return orderService.getOrdersByCustomerId(id);
+    }
 }

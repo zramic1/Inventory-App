@@ -12,4 +12,7 @@ public interface OrderService {
     Order update(Order newOrder, Long id);
     ResponseEntity delete(Long id) throws JSONException;
     List<Order> readAll();
+    Order changeStatus(Order newOrder, Long id);
+    List<Order> getOrdersBySupplierId(Long id);
+    List<Order> getOrdersByCustomerId(Long id);
 }

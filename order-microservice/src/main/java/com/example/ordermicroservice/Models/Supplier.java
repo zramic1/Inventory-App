@@ -1,5 +1,6 @@
 package com.example.ordermicroservice.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Entity
 @Table(name = "suppliers")
@@ -31,6 +33,19 @@ public class Supplier {
     @NotNull
     @Email
     private String email;
+
+
+    @OneToMany(mappedBy = "supplierId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Order> order;
+
+    @JsonManagedReference(value="supplierIDFromOrder")
+    public List<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<Order> order) {
+        this.order = order;
+    }
 
     public Supplier() { }
 
