@@ -99,9 +99,8 @@ export default class EditorModal extends React.Component {
         onOk={async () => {
           try {
             let val = await formInstance?.validateFields();
-            console.log(val);
             let res = await onSubmit?.(val);
-
+            await formInstance?.resetFields();
             this.props.onFinishEditing(res);
           } catch (err) {
             console.log(err);
@@ -114,6 +113,7 @@ export default class EditorModal extends React.Component {
         }}
       >
         <FormComponent Form={Form} rowData={rowData} />
+        {console.log(";LADFHK;SFLAFHASKLFHAKLAHSFKLASHFKLASFKLASHKLFHASKLFHSF", rowData)}
       </Modal>
     );
   }

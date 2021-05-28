@@ -20,7 +20,6 @@ public class Order {
     private Long id;
 
     @Column(name = "date_of_order")
-    @NotNull
     private Date dateOfOrder;
 
     @Column(name = "status")
@@ -32,6 +31,9 @@ public class Order {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn (name = "customerId")
     private Customer customerId;
+
+    /*@JoinColumn (name = "supplier_id")
+    private Supplier supplierId;*/
 
     @ManyToOne()
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -80,6 +82,15 @@ public class Order {
     public void setStatus(String status) {
         this.status = status;
     }
+
+
+    /*public Supplier getUserId() {
+        return supplierId;
+    }
+
+    public void setUserId(Supplier userId) {
+        this.supplierId = userId;
+    }*/
 
     @JsonBackReference(value="customerIDFromOrder")
     public Customer getCustomerId() {

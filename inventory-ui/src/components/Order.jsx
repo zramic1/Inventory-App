@@ -5,8 +5,14 @@ import CreateOrderForm from "./CreateOrderForm";
 import { useDispatch, useSelector } from "react-redux";
 
 import { UrlContext } from "../urlContext";
-
-import { getAllOrders, getAllWarehouses } from "./actions/loginActions";
+import { Form } from "antd";
+import {
+  getAllOrders,
+  getAllCustomers,
+  getAllSuppliers,
+  addNewOrder,
+  getAllWarehouses
+} from "./actions/loginActions";
 import axiosInstance from "../api/axiosInstance";
 import { Button, Menu, Dropdown } from "antd";
 import axios from "axios";
@@ -17,6 +23,8 @@ import { FaWarehouse } from "react-icons/fa";
 import { DownOutlined } from '@ant-design/icons';
 
 function Order() {
+  const [CreateForm] = Form.useForm();
+  const [UpdateForm] = Form.useForm();
   const orderContext = useContext(UrlContext);
   const dispatch = useDispatch();
   const orderi = useSelector(state => state.logovani.allOrders);
@@ -59,6 +67,8 @@ function Order() {
     setDropdownText(`Warehouse ${e.key}`);
     console.log('click', e);
   }
+  const customeri = useSelector((state) => state.logovani.allCustomers);
+  const supplieri = useSelector((state) => state.logovani.allSuppliers);
 
   const getOrders = () => {
     let url = orderContext.order;
@@ -71,7 +81,7 @@ function Order() {
             let or = res.data[i];
             sviOrderi.push({
               id: or.id,
-              dateOfOrder: or.dateOfOrder,
+              date_of_order: or.dateOfOrder,
               status: or.status,
               /*customer: `${or.customerId.first_name} ${or.customerId.last_name}`,
               supplier: or.userId.name,
@@ -134,7 +144,7 @@ function Order() {
             let or = data[i][j];
             sviOrderi.push({
               id: or.id,
-              dateOfOrder: or.dateOfOrder,
+              date_of_order: or.dateOfOrder,
               status: or.status,
               /*customer: `${or.customerId.first_name} ${or.customerId.last_name}`,
               supplier: or.userId.name,
@@ -149,9 +159,10 @@ function Order() {
   }
 
   useEffect(() => {
-    console.log("Orderi su: ", orderi);
+    console.log("POZVAN DRUGIIIIIIIIIII");
+    let kol = kolone;
     if (userIsSupplier.id !== undefined && userIsSupplier.id !== null) {
-      kolone.push(
+      kol.push(
         {
           title: "Change status",
           dataIndex: "changeStatus",
@@ -172,7 +183,131 @@ function Order() {
         }
       )
     }
+    setKolone(kol);
+    console.log("KOLONE SU: ", kolone);
+  }, [])
+
+  const deleteOrder = (rowData) => {
+    const { id } = rowData;
+    let url = orderContext.order;
+    axiosInstance(url)
+      .delete(`/orders/${id}`)
+      .then((res) => {
+        getOrders();
+        dispatch(deleteOrder());
+      })
+      .catch((error) => {
+        console.log("Status");
+        //console.log(error.response.status);
+        console.log("Greska!");
+        console.log(error);
+      });
+  };
+
+  const getCustomers = () => {
+    let url = orderContext.user;
+    axiosInstance(url)
+      .get("/customers")
+      .then((res) => {
+        let sviCustomeri = [];
+        for (let i = 0; i < res.data.length; i++) {
+          let or = res.data[i];
+          sviCustomeri.push({
+            id: or.id,
+            address: or.address,
+            email: or.email,
+            first_name: or.first_name,
+            last_name: or.last_name,
+            phone: or.phone,
+          });
+        }
+        dispatch(getAllCustomers(sviCustomeri));
+      })
+      .catch((error) => {
+        console.log("Status");
+        console.log("Greska!");
+        console.log(error);
+      });
+  };
+
+  const getSuppliers = () => {
+    let url = orderContext.product;
+    axiosInstance(url)
+      .get("/suppliers")
+      .then((res) => {
+        let sviSupplieri = [];
+        for (let i = 0; i < res.data.length; i++) {
+          let or = res.data[i];
+          sviSupplieri.push({
+            id: or.id,
+            name: or.name,
+            phone: or.phone,
+            email: or.email,
+          });
+        }
+        dispatch(getAllSuppliers(sviSupplieri));
+      })
+      .catch((error) => {
+        console.log("Status");
+        console.log("Greska!");
+        console.log(error);
+      });
+  };
+
+  const addOrder = (val) => {
+    const { date_of_order, status, customer, supplier } = val;
+    console.log("Vrijednosti", date_of_order, status, customer, supplier);
+    let url = orderContext.order;
+    axiosInstance(url)
+      .post("/orders", {
+        dateOfOrder: date_of_order,
+        status: status,
+        customerId: customeri[customer],
+        userId: supplieri[supplier],
+      })
+      .then((res) => {
+        getOrders();
+        dispatch(addNewOrder());
+        console.log("Order je: ", res.data);
+      })
+      .catch((error) => {
+        console.log("Status");
+        console.log("Greska!");
+        console.log(error);
+      });
+  };
+
+  const updateOrder = (val) => {
+    const { id, date_of_order, status, customer, supplier } = val;
+    console.log("Vrijednosti", id, date_of_order, status, customer, supplier);
+    let url = orderContext.order;
+    axiosInstance(url)
+      .put(`/orders/${id}`, {
+        dateOfOrder: date_of_order,
+        status: status,
+        customerId: customeri[customer],
+        userId: supplieri[supplier],
+      })
+      .then((res) => {
+        getOrders();
+        dispatch(addNewOrder());
+        console.log("Order je: ", res.data);
+      })
+      .catch((error) => {
+        console.log("Status");
+        console.log("Greska!");
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    console.log("POZVANO OKURRRRR!");
+    console.log("Orderi su: ", orderi);
+    console.log("Customeri su: ", customeri);
+    console.log("Supplieri su: ", supplieri);
     getOrders();
+    getSuppliers();
+    getCustomers();
   }, []);
 
   const approveOrder = (order) => {
@@ -222,17 +357,17 @@ function Order() {
       })
   }
 
-  const kolone = [
+  const [kolone, setKolone] = useState([
     {
       title: "Date Of Order",
-      dataIndex: "dateOfOrder",
-      key: "dateOfOrder",
+      dataIndex: "date_of_order",
+      key: "date_of_order",
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
-    },
+    }
     /*{
       title: "Customer",
       dataIndex: "customer",
@@ -242,7 +377,7 @@ function Order() {
       title: "Supplier",
       dataIndex: "supplier",
       key: "supplier",
-    }*/,
+    }*/
     /*userIsSupplier.id !== undefined && userIsSupplier.id !== null ? {
       title: "Change status",
       dataIndex: "changeStatus",
@@ -261,7 +396,7 @@ function Order() {
           </>
           : <Button type="primary" style={{ marginLeft: "17%" }} disabled>Approved</Button>
     } : {}*/
-  ];
+  ]);
 
   return (
     <div style={{ height: "100vh" }}>
@@ -271,12 +406,43 @@ function Order() {
           addButtonText: "Add new order",
           columns: kolone,
           dataSource: orderi,
-          //formInstance: Form.useForm(),
-          Form: <CreateOrderForm />,
+          formInstance: CreateForm,
+          Form: (
+            <CreateOrderForm
+              form={CreateForm}
+              data={{
+                customers: customeri,
+                suppliers: supplieri,
+                date_of_order: "",
+                id: "",
+                status: "",
+                customer: "",
+                supplier: "",
+              }}
+            />
+          ),
           visible: false,
+          onSubmit: addOrder,
+          onDelete: deleteOrder,
+          updateOnSubmit: updateOrder,
+          updateFormInstance: UpdateForm,
+          UpdateForm: (
+            <CreateOrderForm
+              form={UpdateForm}
+              data={{
+                customers: customeri,
+                suppliers: supplieri,
+                date_of_order: "",
+                id: "",
+                status: "",
+                customer: "",
+                supplier: "",
+              }}
+            />
+          ),
         }}
       ></DataGrid>
-      {console.log("Orderi iz rendera su: ", orderi.map(obj => ({ ...obj, changeStatus: "nesto" })))}
+      {console.log("Kolone se mijenjaju: ", kolone)}
     </div>
   );
 }

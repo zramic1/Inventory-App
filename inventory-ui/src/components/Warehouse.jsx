@@ -10,6 +10,7 @@ import axiosInstance from "../api/axiosInstance";
 
 function Warehouse() {
   const [CreateForm] = Form.useForm();
+  const [UpdateForm] = Form.useForm();
   const warehouseContext = useContext(UrlContext);
   const dispatch = useDispatch();
   const trenutniKorisnikId = useSelector(
@@ -17,22 +18,6 @@ function Warehouse() {
   );
   const warehousi = useSelector((state) => state.logovani.warehouses);
   const userIsSupplier = useSelector(state => state.logovani.userIsSupplier);
-
-  const addWarehouse = (companyName, inventoryStartDate, location) => {
-    let url = warehouseContext.user;
-    axiosInstance(url)
-      .post("/warehouse", { companyName, inventoryStartDate, location })
-      .then((res) => {
-        let sviOrderi = [];
-        dispatch(addNewWarehouse());
-        console.log("Warehouse je: ", res.data);
-      })
-      .catch((error) => {
-        console.log("Status");
-        console.log("Greska!");
-        console.log(error);
-      });
-  };
 
   const getWarehouses = () => {
     let url = warehouseContext.user;
@@ -63,6 +48,29 @@ function Warehouse() {
       .catch((error) => {
         console.log("Status");
         //console.log(error.response.status);
+        console.log("Greska!");
+        console.log(error);
+      });
+  };
+
+  const addWarehouse = (val) => {
+    const { companyName, inventoryStartDate, location } = val;
+    console.log("Vrijednosti", companyName, inventoryStartDate, location);
+    let url = warehouseContext.user;
+    axiosInstance(url)
+      .post("/warehouse", {
+        company_name: companyName,
+        inventory_start_date: inventoryStartDate,
+        location: location,
+      })
+      .then((res) => {
+        getWarehouses();
+        let sviOrderi = [];
+        dispatch(addNewWarehouse());
+        console.log("Warehouse je: ", res.data);
+      })
+      .catch((error) => {
+        console.log("Status");
         console.log("Greska!");
         console.log(error);
       });
@@ -110,8 +118,11 @@ function Warehouse() {
             location: "",
           },
           visible: false,
-          onSubmit: addNewWarehouse,
+          onSubmit: addWarehouse,
           formInstance: CreateForm,
+          updateFormInstance: UpdateForm,
+          UpdateForm: <CreateWarehouseForm form={UpdateForm} />,
+          //onDelete: deleteWarehouse,
         }}
       ></DataGrid>
     </div>

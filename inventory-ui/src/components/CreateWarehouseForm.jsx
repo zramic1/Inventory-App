@@ -1,16 +1,21 @@
 import React, { useContext } from "react";
+import { DatePicker } from "antd";
 import { Input, Form, Select } from "antd";
-const { Option } = Select;
+import moment from "moment";
 
-const CreateWarehouseForm = (rowData, form) => (
-  <Form layout={"vertical"} form={form}>
-    <Form.Item style={{ display: "none" }} name="id" initialValue={rowData?.id}>
+const CreateWarehouseForm = (props) => (
+  <Form layout={"vertical"} form={props.form}>
+    <Form.Item
+      style={{ display: "none" }}
+      name="id"
+      initialValue={props.rowData?.id}
+    >
       <Input />
     </Form.Item>
     <Form.Item
       label={"Company Name"}
       name="companyName"
-      initialValue={rowData?.companyName}
+      initialValue={props.rowData?.company_name}
       rules={[
         {
           required: true,
@@ -23,7 +28,7 @@ const CreateWarehouseForm = (rowData, form) => (
     <Form.Item
       label="Location"
       name="location"
-      initialValue={rowData?.location}
+      initialValue={props.rowData?.location}
       rules={[
         {
           required: true,
@@ -35,8 +40,8 @@ const CreateWarehouseForm = (rowData, form) => (
     </Form.Item>
     <Form.Item
       label="Inventory Start Date"
-      name="inventroyStartDate"
-      initialValue={rowData?.inventroyStartDate}
+      name="inventoryStartDate"
+      initialValue={moment(props.rowData?.inventory_start_date)}
       rules={[
         {
           required: true,
@@ -44,7 +49,7 @@ const CreateWarehouseForm = (rowData, form) => (
         },
       ]}
     >
-      <Input />
+      <DatePicker />
     </Form.Item>
   </Form>
 );
