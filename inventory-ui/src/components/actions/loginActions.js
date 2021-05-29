@@ -13,6 +13,8 @@ import {
   GET_UNIQUE_PRODUCTS_FOR_USER,
   ADD_NEW_ORDER,
   DELETE_ORDER,
+  GET_WEEKLY_STATS,
+  GET_MONTHLY_STATS,
 } from "./action-types/actionTypes";
 
 export const userLogged = (user) => {
@@ -110,5 +112,19 @@ export const addNewOrder = () => {
   return {
     type: ADD_NEW_ORDER,
     payload: [],
+  };
+};
+
+export const getWeeklyStats = (weeklyStats) => {
+  return {
+    type: GET_WEEKLY_STATS,
+    payload: weeklyStats
+  };
+};
+
+export const getMonthlyStats = (monthlyStats) => {
+  return {
+    type: GET_MONTHLY_STATS,
+    payload: monthlyStats
   };
 };

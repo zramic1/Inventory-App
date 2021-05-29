@@ -1,4 +1,4 @@
-import { GET_ALL_CUSTOMERS, GET_ALL_ORDERS, GET_ALL_PRODUCTS_FOR_USER, GET_ALL_SUPPLIERS, GET_ALL_USERS, GET_ALL_WAREHOUSES, GET_UNIQUE_PRODUCTS_FOR_USER, GET_USER_INFORMATION, GET_USER_IS_SUPPLIER, SHOW_NOTIFICATION_FOR_LOW_QUANTITY, USER_LOGGED } from "../actions/action-types/actionTypes"
+import { GET_ALL_CUSTOMERS, GET_ALL_ORDERS, GET_ALL_PRODUCTS_FOR_USER, GET_ALL_SUPPLIERS, GET_ALL_USERS, GET_ALL_WAREHOUSES, GET_MONTHLY_STATS, GET_UNIQUE_PRODUCTS_FOR_USER, GET_USER_INFORMATION, GET_USER_IS_SUPPLIER, GET_WEEKLY_STATS, SHOW_NOTIFICATION_FOR_LOW_QUANTITY, USER_LOGGED } from "../actions/action-types/actionTypes"
 
 const initState = {
   logged: false,
@@ -149,6 +149,19 @@ export default function (state = initState, action) {
     return {
       ...state,
       allCustomers: action.payload
+    }
+  }
+  else if (action.type === GET_WEEKLY_STATS) {
+    return {
+      ...state,
+      weeklyStats: action.payload
+    }
+  }
+  else if (action.type === GET_MONTHLY_STATS) {
+    console.log("Payload je: ", action.payload);
+    return {
+      ...state,
+      monthlyStats: action.payload
     }
   }
 
