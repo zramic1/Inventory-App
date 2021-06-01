@@ -1,7 +1,9 @@
 package com.example.usermicroservice.Models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -23,6 +25,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Entity
 @Table(name="Users")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
     @Id
     @NotNull
@@ -218,17 +221,4 @@ public class User {
         this.roleID = roleID;
         this.warehouseID = warehouseID;
     }
-
-    /*public User(String first_name, String last_name, String address, String phone, String email, String username, String password, int idRole, int idWarehouse) {
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.idRole = idRole;
-        this.idWarehouse = idWarehouse;
-    }*/
-
 }

@@ -1,5 +1,6 @@
 package com.example.ordermicroservice.Controllers;
 
+import com.example.ordermicroservice.DTOs.StatisticsDTO;
 import com.example.ordermicroservice.Models.Order;
 import com.example.ordermicroservice.Services.OrderService;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.ws.rs.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -63,5 +67,19 @@ public class OrderController {
     public List<Order> getOrdersByCustomerId(@PathVariable Long id)
     {
         return orderService.getOrdersByCustomerId(id);
+    }
+
+    @GetMapping("/orders/weekly/{truth}")
+    @ApiOperation("Returns number of orders per each day from this week.")
+    ResponseEntity getAllOrdersFromThisWeek(@RequestBody StatisticsDTO ids, @PathVariable Long truth)
+    {
+        return orderService.getAllOrdersFromThisWeek(ids, truth);
+    }
+
+    @GetMapping("/orders/monthly/{truth}")
+    @ApiOperation("Returns number of orders per each day from this month.")
+    ResponseEntity getAllOrdersFromThisMonth(@RequestBody List<Long> ids, @PathVariable Long truth)
+    {
+        return orderService.getAllOrdersFromThisMonth(ids, truth);
     }
 }

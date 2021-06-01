@@ -1,6 +1,8 @@
 package com.example.usermicroservice.Models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name="Warehouses")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Warehouse {
     @Id
     @NotNull
@@ -32,7 +35,7 @@ public class Warehouse {
     @PastOrPresent(message = "The date should be in the past or present date!")
     private Date inventory_start_date;
 
-    @OneToMany(mappedBy = "warehouseID", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @OneToMany(mappedBy = "warehouseID", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<User> users;
 
     public Warehouse() { }

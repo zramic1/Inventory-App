@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 
 import { Form, Input, Button, Alert } from "antd";
 
-import { userLogged, getUserInformation, getUserIsSupplier } from "./actions/loginActions";
+import { userLogged, getUserInformation, getUserIsSupplier, getAllCustomers } from "./actions/loginActions";
 import { useDispatch } from "react-redux";
 
 import { UrlContext } from "../urlContext";
@@ -75,12 +75,39 @@ function Login() {
             console.log("Odgovor za suppliere je: ", res2.data);
             dispatch(getUserIsSupplier(res2.data));
           })
+          getCustomers();
         })
       })
       .catch((error) => {
         setAlertVisible(true);
         console.log("Status");
         //console.log(error.response.status);
+        console.log("Greska!");
+        console.log(error);
+      });
+  };
+
+  const getCustomers = () => {
+    let url = loginContext.user;
+    axiosInstance(url)
+      .get("/customers")
+      .then((res) => {
+        let sviCustomeri = [];
+        for (let i = 0; i < res.data.length; i++) {
+          let or = res.data[i];
+          sviCustomeri.push({
+            id: or.id,
+            address: or.address,
+            email: or.email,
+            first_name: or.first_name,
+            last_name: or.last_name,
+            phone: or.phone,
+          });
+        }
+        dispatch(getAllCustomers(sviCustomeri));
+      })
+      .catch((error) => {
+        console.log("Status");
         console.log("Greska!");
         console.log(error);
       });
