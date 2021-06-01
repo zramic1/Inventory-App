@@ -24,7 +24,7 @@ public class Customer {
     @Size(min = 1, max = 45, message = "First Name must be between 1 and 45 characters long!")
     private String first_name;
 
-    @Column(name = "Last_mame")
+    @Column(name = "Last_name")
     @NotEmpty(message = "Last Name cannot be empty!")
     @Size(min = 1, max = 45, message = "Last Name must be between 1 and 45 characters long!")
     private String last_name;
