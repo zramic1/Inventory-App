@@ -116,6 +116,45 @@ const ProductDetails = () => {
       });
   };
 
+  const onFinish = (data) => {
+    console.log("data", data);
+  };
+
+  const addProduct = (val) => {
+    const {
+      category,
+      description,
+      image_url,
+      name,
+      order_details,
+      price,
+      quantity,
+      status,
+      supplier,
+      unit,
+      warehouse,
+    } = val;
+    console.log("Vrijednosti", val);
+    let url = productContext.product;
+    axiosInstance(url)
+      .post("/products", {
+        dateOfOrder: date_of_order,
+        status: status,
+        customerId: customeri[customer],
+        userId: supplieri[supplier],
+      })
+      .then((res) => {
+        getOrders();
+        dispatch(addNewOrder());
+        console.log("Order je: ", res.data);
+      })
+      .catch((error) => {
+        console.log("Status");
+        console.log("Greska!");
+        console.log(error);
+      });
+  };
+
   const onFormLayoutChange = ({ size }) => {
     setComponentSize(size);
   };
@@ -159,43 +198,47 @@ const ProductDetails = () => {
         }}
         onValuesChange={onFormLayoutChange}
         size={componentSize}
+        onFinish={onFinish}
       >
-        <Form.Item label="Name">
+        <Form.Item label="Name" name="name">
           <Input />
         </Form.Item>
-        <Form.Item label="Description">
+        <Form.Item label="Description" name="description">
           <Input.TextArea />
         </Form.Item>
-        <Form.Item label="Unit">
+        <Form.Item label="Image URL" name="image_url">
           <Input />
         </Form.Item>
-        <Form.Item label="Price">
-          <InputNumber style={{ width: "-webkit-fill-available" }} />
-        </Form.Item>
-        <Form.Item label="Quantity">
-          <InputNumber style={{ width: "-webkit-fill-available" }} />
-        </Form.Item>
-        <Form.Item label="Status">
+        <Form.Item label="Unit" name="unit">
           <Input />
         </Form.Item>
-        <Form.Item label="Order Details">
+        <Form.Item label="Price" name="price">
+          <InputNumber style={{ width: "-webkit-fill-available" }} />
+        </Form.Item>
+        <Form.Item label="Quantity" name="quantity">
+          <InputNumber style={{ width: "-webkit-fill-available" }} />
+        </Form.Item>
+        <Form.Item label="Status" name="status">
+          <Input />
+        </Form.Item>
+        <Form.Item label="Order Details" name="order_details">
           <Input.TextArea />
         </Form.Item>
-        <Form.Item label="Warehouse">
+        <Form.Item label="Warehouse" name="warehouse">
           <Select>
             {warehousi?.map((w, i) => (
               <Option value={i}>{"Warehouse " + i}</Option>
             ))}
           </Select>
         </Form.Item>
-        <Form.Item label="Category">
+        <Form.Item label="Category" name="category">
           <Select>
             {categorije?.map((categorie, i) => (
               <Option value={i}>{categorie?.category_name}</Option>
             ))}
           </Select>
         </Form.Item>
-        <Form.Item label="Supplier">
+        <Form.Item label="Supplier" name="supplier">
           <Select>
             {supplieri?.map((supplier, i) => (
               <Option value={i}>{supplier?.name}</Option>
