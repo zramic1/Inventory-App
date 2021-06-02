@@ -57,11 +57,16 @@ function Dashboard() {
             niz.push(allCustomers[i].id);
         }
         let body = userIsSupplier ? [userIsSupplier.id] : niz;
-        console.log("Tip je: ", typeof (body));
-        console.log("Body weekly je:", { "listElements": Array([1]) });
-        axiosInstance(url).get(`/orders/weekly/${isCustomer}`, { "listElements": [1] }).then((res) => {
-            dispatch(getWeeklyStats(res.data));
-        })
+        console.log("Salje se: ", { listElements: body });
+        let objekat = {
+            listElements: body
+        };
+        console.log("Salje se: ", objekat);
+        axiosInstance(url)
+            .post(`/orders/weekly/${isCustomer}`, objekat)
+            .then((res) => {
+                dispatch(getWeeklyStats(res.data));
+            })
     }
 
     const getMonthlyStatistics = () => {
@@ -72,8 +77,10 @@ function Dashboard() {
             niz.push(parseInt(allCustomers[i].id));
         }
         let body = userIsSupplier ? [parseInt(userIsSupplier.id)] : niz;
-        console.log("Body je:", body);
-        axiosInstance(url).get(`/orders/monthly/${isCustomer}`, body).then((res) => {
+        let objekat = {
+            listElements: body
+        };
+        axiosInstance(url).post(`/orders/monthly/${isCustomer}`, objekat).then((res) => {
             dispatch(getMonthlyStats(res.data));
         })
     }
@@ -102,10 +109,6 @@ function Dashboard() {
         getMonthlyStatistics();
         getAllStatistics();
     }, [])
-
-    /*useEffect(() => {
-        getAllStatistics();
-    })*/
 
     return <div>
         <Row>
