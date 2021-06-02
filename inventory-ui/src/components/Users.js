@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import CreateStaffForm from "./CreateStaffForm";
 import DataGrid from "./TableGrid/DataGrid";
+import { Form } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
 import { UrlContext } from "../urlContext";
@@ -9,6 +10,8 @@ import { getAllUsers } from "./actions/loginActions";
 import axiosInstance from "../api/axiosInstance";
 
 function Users() {
+  const [CreateForm] = Form.useForm();
+  const [UpdateForm] = Form.useForm();
   const usersContext = useContext(UrlContext);
   const dispatch = useDispatch();
   const staff = useSelector((state) => state.logovani.allUsers);
@@ -20,6 +23,24 @@ function Users() {
       .then((res) => {
         dispatch(getAllUsers(res.data));
         console.log("Useri su: ", res.data);
+      })
+      .catch((error) => {
+        console.log("Status");
+        //console.log(error.response.status);
+        console.log("Greska!");
+        console.log(error);
+      });
+  };
+
+  const deleteUser = (rowData) => {
+    console.log("rowData", rowData);
+    const { id } = rowData;
+    let url = usersContext.user;
+    axiosInstance(url)
+      .delete(`/deleteUser/${id}`)
+      .then((res) => {
+        getAllStaff();
+        dispatch(deleteUser());
       })
       .catch((error) => {
         console.log("Status");
@@ -73,8 +94,22 @@ function Users() {
             },
           ],
           dataSource: staff,
-          Form: <CreateStaffForm />,
+          Form: <CreateStaffForm form={CreateForm} />,
+          UpdateForm: <CreateStaffForm form={UpdateForm} />,
+          formInstance: CreateForm,
+          updateFormInstance: UpdateForm,
           visible: false,
+          rowData: {
+            username: "",
+            password: "",
+            repeatPassword: "",
+            firstName: "",
+            lastName: "",
+            address: "",
+            phone: "",
+            email: "",
+          },
+          onDelete: deleteUser,
         }}
       ></DataGrid>
     </div>
