@@ -66,8 +66,8 @@ public class Seeder {
         paymentRepository.save(payment2);
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Order order1=new Order(format.parse("2021-05-24"),"approved",suplajer1,customer1);
-        Order order2=new Order(format.parse("2021-05-20"),"transit",suplajer2,customer2);
+        Order order1=new Order(format.parse("2021-06-01"),"approved",suplajer1,customer1);
+        Order order2=new Order(format.parse("2021-06-01"),"transit",suplajer2,customer2);
 
         orderRepository.save(order1);
         orderRepository.save(order2);

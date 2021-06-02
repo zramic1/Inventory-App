@@ -69,16 +69,16 @@ public class OrderController {
         return orderService.getOrdersByCustomerId(id);
     }
 
-    @GetMapping("/orders/weekly/{truth}")
+    @PostMapping("/orders/weekly/{truth}")
     @ApiOperation("Returns number of orders per each day from this week.")
     ResponseEntity getAllOrdersFromThisWeek(@RequestBody StatisticsDTO ids, @PathVariable Long truth)
     {
         return orderService.getAllOrdersFromThisWeek(ids, truth);
     }
 
-    @GetMapping("/orders/monthly/{truth}")
+    @PostMapping("/orders/monthly/{truth}")
     @ApiOperation("Returns number of orders per each day from this month.")
-    ResponseEntity getAllOrdersFromThisMonth(@RequestBody List<Long> ids, @PathVariable Long truth)
+    ResponseEntity getAllOrdersFromThisMonth(@RequestBody StatisticsDTO ids, @PathVariable Long truth)
     {
         return orderService.getAllOrdersFromThisMonth(ids, truth);
     }

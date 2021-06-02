@@ -121,25 +121,23 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ResponseEntity getAllOrdersFromThisWeek(StatisticsDTO ids, Long isCustomer) {
-        System.out.println("Customer je:");
-        System.out.println(isCustomer);
-        int[] idevi=ids.getListElements();
+        ArrayList<Integer> idevi=ids.getListElements();
         List<Order> sviOrderi=new ArrayList<>();
-        for(int i=0;i<idevi.length;i++){
+        for(int i=0;i<idevi.size();i++){
             if(isCustomer==1) {
-                if (!customerRepository.existsByID(Long.valueOf(idevi[i]))) {
-                    throw new CustomerNotFoundException(Long.valueOf(idevi[i]));
+                if (!customerRepository.existsByID(Long.valueOf(idevi.get(i)))) {
+                    throw new CustomerNotFoundException(Long.valueOf(idevi.get(i)));
                 }
-                List<Order> or = customerRepository.findByID(Long.valueOf(idevi[i])).getOrder();
+                List<Order> or = customerRepository.findByID(Long.valueOf(idevi.get(i))).getOrder();
                 for (int j = 0; j < or.size(); j++) {
                     sviOrderi.add(or.get(j));
                 }
             }
             else{
-                if (!supplierRepository.existsByid(Long.valueOf(idevi[i]))) {
-                    throw new SupplierNotFoundException(Long.valueOf(idevi[i]));
+                if (!supplierRepository.existsByid(Long.valueOf(idevi.get(i)))) {
+                    throw new SupplierNotFoundException(Long.valueOf(idevi.get(i)));
                 }
-                List<Order> or = supplierRepository.findByid(Long.valueOf(idevi[i])).getOrder();
+                List<Order> or = supplierRepository.findByid(Long.valueOf(idevi.get(i))).getOrder();
                 for (int j = 0; j < or.size(); j++) {
                     sviOrderi.add(or.get(j));
                 }
@@ -170,26 +168,28 @@ public class OrderServiceImpl implements OrderService {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity(objekat.toString(), responseHeaders, HttpStatus.OK);
+        //return new ResponseEntity(ids, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity getAllOrdersFromThisMonth(List<Long> ids, Long isCustomer) {
+    public ResponseEntity getAllOrdersFromThisMonth(StatisticsDTO ids, Long isCustomer) {
+        ArrayList<Integer> idevi=ids.getListElements();
         List<Order> sviOrderi=new ArrayList<>();
-        for(int i=0;i<ids.size();i++){
+        for(int i=0;i<idevi.size();i++){
             if(isCustomer==1) {
-                if (!customerRepository.existsByID(ids.get(i))) {
-                    throw new CustomerNotFoundException(ids.get(i));
+                if (!customerRepository.existsByID(Long.valueOf(idevi.get(i)))) {
+                    throw new CustomerNotFoundException(Long.valueOf(idevi.get(i)));
                 }
-                List<Order> or = customerRepository.findByID(ids.get(i)).getOrder();
+                List<Order> or = customerRepository.findByID(Long.valueOf(idevi.get(i))).getOrder();
                 for (int j = 0; j < or.size(); j++) {
                     sviOrderi.add(or.get(j));
                 }
             }
             else{
-                if (!supplierRepository.existsByid(ids.get(i))) {
-                    throw new SupplierNotFoundException(ids.get(i));
+                if (!supplierRepository.existsByid(Long.valueOf(idevi.get(i)))) {
+                    throw new SupplierNotFoundException(Long.valueOf(idevi.get(i)));
                 }
-                List<Order> or = supplierRepository.findByid(ids.get(i)).getOrder();
+                List<Order> or = supplierRepository.findByid(Long.valueOf(idevi.get(i))).getOrder();
                 for (int j = 0; j < or.size(); j++) {
                     sviOrderi.add(or.get(j));
                 }
