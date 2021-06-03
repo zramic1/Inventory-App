@@ -64,4 +64,10 @@ public class UserController {
     public ResponseEntity getRoleByUsername(@PathVariable String username) {
         return userService.getUserRoleByUsername(username);
     }
+
+    @GetMapping(value = "/users/warehouse/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation("Returns Warehouse of a specific User by their identifier. 404 if does not exist.")
+    public ResponseEntity getWarehoyseByUserId(@PathVariable Long id) {
+        return userService.getWarehouseByUserId(id);
+    }
 }

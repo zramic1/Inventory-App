@@ -1,7 +1,11 @@
 package com.example.ordermicroservice.Services;
 
 import com.example.ordermicroservice.Exceptions.OrderDetailNotFoundException;
+import com.example.ordermicroservice.Exceptions.OrderNotFoundException;
+import com.example.ordermicroservice.Models.Order;
 import com.example.ordermicroservice.Models.OrderDetail;
+import com.example.ordermicroservice.Models.Payment;
+import com.example.ordermicroservice.Models.Product;
 import com.example.ordermicroservice.Repositories.OrderDetailsRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -80,5 +84,38 @@ public class OrderDetailServiceImpl implements OrderDetailService{
     @Override
     public List<OrderDetail> readAll(){
         return orderDetailsRepository.findAll();
+    }
+
+    @Override
+    public ResponseEntity getProductByOrderDetailsId(Long id) {
+        if(orderDetailsRepository.existsByid(id)){
+            Product product=orderDetailsRepository.findByid(id).getProductId();
+            return new ResponseEntity(product,HttpStatus.OK);
+        }
+        else{
+            throw new OrderNotFoundException(id);
+        }
+    }
+
+    @Override
+    public ResponseEntity getOrderByOrderDetailsId(Long id) {
+        if(orderDetailsRepository.existsByid(id)){
+            Order order=orderDetailsRepository.findByid(id).getOrderId();
+            return new ResponseEntity(order,HttpStatus.OK);
+        }
+        else{
+            throw new OrderNotFoundException(id);
+        }
+    }
+
+    @Override
+    public ResponseEntity getPaymentByOrderDetailsId(Long id) {
+        if(orderDetailsRepository.existsByid(id)){
+            Payment payment=orderDetailsRepository.findByid(id).getPaymentId();
+            return new ResponseEntity(payment,HttpStatus.OK);
+        }
+        else{
+            throw new OrderNotFoundException(id);
+        }
     }
 }

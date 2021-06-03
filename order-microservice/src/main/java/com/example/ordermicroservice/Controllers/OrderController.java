@@ -82,4 +82,18 @@ public class OrderController {
     {
         return orderService.getAllOrdersFromThisMonth(ids, truth);
     }
+
+    @GetMapping("/customer/order/{id}")
+    @ApiOperation("Returns a Customer by Order identifier. 404 if does not exist.")
+    public ResponseEntity getCustomerByOrderId(@PathVariable Long id)
+    {
+        return orderService.getCustomerByOrderId(id);
+    }
+
+    @GetMapping("/supplier/order/{id}")
+    @ApiOperation("Returns a Supplier by Order identifier. 404 if does not exist.")
+    public ResponseEntity getSupplierByOrderId(@PathVariable Long id)
+    {
+        return orderService.getSupplierByOrderId(id);
+    }
 }

@@ -142,4 +142,15 @@ public class CustomerServiceImpl implements CustomerService {
             throw new RecordNotFoundException("Customer does not exist!");
         }
     }
+
+    @Override
+    public ResponseEntity getUserByCustomerId(Long id) {
+        if(customerRepository.existsByID(id)){
+            User user=customerRepository.findByID(id).getUserID();
+            return new ResponseEntity(user,HttpStatus.OK);
+        }
+        else{
+            throw new RecordNotFoundException("Customer does not exist!");
+        }
+    }
 }

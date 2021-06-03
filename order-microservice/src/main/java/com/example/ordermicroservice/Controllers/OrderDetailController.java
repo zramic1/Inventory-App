@@ -51,4 +51,25 @@ public class OrderDetailController {
     public ResponseEntity delete(@PathVariable Long id) throws JSONException {
         return orderDetailService.delete(id);
     }
+
+    @GetMapping("/product/order-details/{id}")
+    @ApiOperation("Returns Product of a specific Order detail by their identifier. 404 if does not exist.")
+    public ResponseEntity getProductByOrderDetailId(@PathVariable Long id)
+    {
+        return orderDetailService.getProductByOrderDetailsId(id);
+    }
+
+    @GetMapping("/order/order-details/{id}")
+    @ApiOperation("Returns Order of a specific Order detail by their identifier. 404 if does not exist.")
+    public ResponseEntity getrderByOrderDetailId(@PathVariable Long id)
+    {
+        return orderDetailService.getOrderByOrderDetailsId(id);
+    }
+
+    @GetMapping("/payment/order-details/{id}")
+    @ApiOperation("Returns Payment of a specific Order detail by their identifier. 404 if does not exist.")
+    public ResponseEntity getPaymentByOrderDetailId(@PathVariable Long id)
+    {
+        return orderDetailService.getPaymentByOrderDetailsId(id);
+    }
 }

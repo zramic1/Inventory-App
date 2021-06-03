@@ -52,4 +52,10 @@ public class UserController {
     public ResponseEntity getByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
     }
+
+    @GetMapping(value = "/supplier/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation("Returns Supplier of a specific User by their identifier. 404 if does not exist.")
+    public ResponseEntity getSupplierByUserId(@PathVariable Long id) {
+        return userService.getSupplierByUserId(id);
+    }
 }

@@ -12,4 +12,7 @@ public interface OrderDetailService {
     OrderDetail update(OrderDetail newOrderDetail, Long id);
     ResponseEntity delete(Long id) throws JSONException;
     List<OrderDetail> readAll();
+    ResponseEntity getProductByOrderDetailsId(Long id);
+    ResponseEntity getOrderByOrderDetailsId(Long id);
+    ResponseEntity getPaymentByOrderDetailsId(Long id);
 }

@@ -1,4 +1,4 @@
-import { GET_ALL_CUSTOMERS, GET_ALL_ORDERS, GET_ALL_PRODUCTS_FOR_USER, GET_ALL_SUPPLIERS, GET_ALL_USERS, GET_ALL_WAREHOUSES, GET_MONTHLY_STATS, GET_UNIQUE_PRODUCTS_FOR_USER, GET_USER_INFORMATION, GET_USER_IS_SUPPLIER, GET_WEEKLY_STATS, SHOW_NOTIFICATION_FOR_LOW_QUANTITY, USER_LOGGED } from "../actions/action-types/actionTypes"
+import { GET_ALL_CUSTOMERS, GET_ALL_ORDERS, GET_ALL_PRODUCTS_FOR_USER, GET_ALL_SUPPLIERS, GET_ALL_USERS, GET_ALL_WAREHOUSES, GET_CUSTOMER_BY_ORDER_ID, GET_MONTHLY_STATS, GET_SUPPLIER_BY_ORDER_ID, GET_UNIQUE_PRODUCTS_FOR_USER, GET_USER_INFORMATION, GET_USER_IS_SUPPLIER, GET_USER_ROLE, GET_WEEKLY_STATS, SHOW_NOTIFICATION_FOR_LOW_QUANTITY, USER_LOGGED } from "../actions/action-types/actionTypes"
 
 const initState = {
   logged: false,
@@ -7,6 +7,11 @@ const initState = {
     username: "",
     password: "",
     jwt: "",
+  },
+  role: {
+    id: "",
+    role_name: "",
+    description: ""
   },
   /*warehouses: [],
   allUsers: [],
@@ -36,7 +41,7 @@ const initState = {
   }],
   allOrders: [{
     id: null,
-    dateOfOrder: null,
+    date_of_order: null,
     status: "",
     customer: "",
     supplier: ""
@@ -70,6 +75,12 @@ export default function (state = initState, action) {
       }
     }
   }
+  else if (action.type === GET_USER_ROLE) {
+    return {
+      ...state,
+      role: action.payload
+    }
+  }
   else if (action.type === GET_ALL_WAREHOUSES) {
     return {
       ...state,
@@ -83,9 +94,17 @@ export default function (state = initState, action) {
     }
   }
   else if (action.type === GET_ALL_ORDERS) {
+    let trenutniOrderi = state.allOrders;
+    console.log("PAAAAAAAAYLOAD je: ", action.payload);
+    for (let i = 0; i < action.payload.length; i++) {
+      trenutniOrderi[i].id = action.payload[i].id;
+      trenutniOrderi[i].date_of_order = action.payload[i].date_of_order;
+      trenutniOrderi[i].status = action.payload[i].status;
+    }
+    console.log("Trenutni orderi su: ", trenutniOrderi);
     return {
       ...state,
-      allOrders: action.payload
+      allOrders: trenutniOrderi
     }
   }
   else if (action.type === GET_USER_INFORMATION) {
@@ -164,6 +183,21 @@ export default function (state = initState, action) {
       monthlyStats: action.payload
     }
   }
-
+  else if (action.type === GET_CUSTOMER_BY_ORDER_ID) {
+    let trenutniOrderi = state.allOrders;
+    trenutniOrderi[action.payload.orderId].customer = `${action.payload.first_name} ${action.payload.last_name}`;
+    return {
+      ...state,
+      allOrders: trenutniOrderi
+    }
+  }
+  else if (action.type === GET_SUPPLIER_BY_ORDER_ID) {
+    let trenutniOrderi = state.allOrders;
+    trenutniOrderi[action.payload.orderId].supplier = action.payload.name;
+    return {
+      ...state,
+      allOrders: trenutniOrderi
+    }
+  }
   return state;
 }

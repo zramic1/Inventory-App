@@ -15,6 +15,9 @@ import {
   DELETE_ORDER,
   GET_WEEKLY_STATS,
   GET_MONTHLY_STATS,
+  GET_USER_ROLE,
+  GET_CUSTOMER_BY_ORDER_ID,
+  GET_SUPPLIER_BY_ORDER_ID,
 } from "./action-types/actionTypes";
 
 export const userLogged = (user) => {
@@ -126,5 +129,26 @@ export const getMonthlyStats = (monthlyStats) => {
   return {
     type: GET_MONTHLY_STATS,
     payload: monthlyStats
+  };
+};
+
+export const getUserRole = (role) => {
+  return {
+    type: GET_USER_ROLE,
+    payload: role
+  };
+};
+
+export const getCustomerByOrder = (customer) => {
+  return {
+    type: GET_CUSTOMER_BY_ORDER_ID,
+    payload: customer
+  };
+};
+
+export const getSupplierByOrder = (supplier) => {
+  return {
+    type: GET_SUPPLIER_BY_ORDER_ID,
+    payload: supplier
   };
 };

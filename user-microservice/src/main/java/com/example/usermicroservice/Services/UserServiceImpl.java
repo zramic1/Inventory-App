@@ -4,6 +4,7 @@ import com.example.usermicroservice.ErrorHandling.AlreadyExistsException;
 import com.example.usermicroservice.ErrorHandling.RecordNotFoundException;
 import com.example.usermicroservice.Models.Role;
 import com.example.usermicroservice.Models.User;
+import com.example.usermicroservice.Models.Warehouse;
 import com.example.usermicroservice.Repositories.RoleRepository;
 import com.example.usermicroservice.Repositories.UserRepository;
 import org.json.JSONException;
@@ -201,6 +202,16 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByUsername(username)) {
             Role role=userRepository.findByUsername(username).getRoleID();
             return new ResponseEntity(role, HttpStatus.OK);
+        } else {
+            throw new RecordNotFoundException("User does not exist!");
+        }
+    }
+
+    @Override
+    public ResponseEntity getWarehouseByUserId(Long id) {
+        if (userRepository.existsByID(id)) {
+            Warehouse warehouse = userRepository.findByID(id).getWarehouseID();
+            return new ResponseEntity(warehouse, HttpStatus.OK);
         } else {
             throw new RecordNotFoundException("User does not exist!");
         }

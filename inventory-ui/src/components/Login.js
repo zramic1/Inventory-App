@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 
 import { Form, Input, Button, Alert } from "antd";
 
-import { userLogged, getUserInformation, getUserIsSupplier, getAllCustomers } from "./actions/loginActions";
+import { userLogged, getUserInformation, getUserIsSupplier, getAllCustomers, getUserRole } from "./actions/loginActions";
 import { useDispatch } from "react-redux";
 
 import { UrlContext } from "../urlContext";
@@ -74,6 +74,15 @@ function Login() {
           axiosInstance(url2).get(`/suppliers/user/${res1.data.id}`).then((res2) => {
             console.log("Odgovor za suppliere je: ", res2.data);
             dispatch(getUserIsSupplier(res2.data));
+          })
+          let url3 = loginContext.user;
+          axiosInstance(url3).get(`/users/role/username/${allValues.username}`).then((res3) => {
+            console.log("Odgovor za role je: ", res3.data);
+            dispatch(getUserRole({
+              id: res3.data.id,
+              role_name: res3.data.roleName,
+              description: res3.data.description
+            }));
           })
           getCustomers();
         })

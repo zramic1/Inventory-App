@@ -46,4 +46,10 @@ public class CustomerController {
     public ResponseEntity updateCustomer(@Valid @RequestBody Customer customer, @PathVariable Long id) {
         return customerService.updateCustomer(id, customer);
     }
+
+    @GetMapping(value = "/user/customer/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation("Returns User of a specific Customer by their identifier. 404 if does not exist.")
+    public ResponseEntity getUserByCustomerId(@PathVariable Long id) {
+        return customerService.getUserByCustomerId(id);
+    }
 }

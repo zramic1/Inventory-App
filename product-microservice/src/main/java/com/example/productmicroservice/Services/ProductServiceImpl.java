@@ -3,6 +3,7 @@ package com.example.productmicroservice.Services;
 import com.example.productmicroservice.Exceptions.ProductNotFoundException;
 import com.example.productmicroservice.Exceptions.UserNotFoundException;
 import com.example.productmicroservice.Exceptions.WarehouseNotFoundException;
+import com.example.productmicroservice.Models.Category;
 import com.example.productmicroservice.Models.Product;
 import com.example.productmicroservice.Models.Supplier;
 import com.example.productmicroservice.Models.Warehouse;
@@ -169,6 +170,39 @@ public class ProductServiceImpl implements ProductService {
         }
         else{
             throw new UserNotFoundException(id);
+        }
+    }
+
+    @Override
+    public ResponseEntity getSupplierByProductId(Long id) {
+        if(productRepository.existsByid(id)){
+            Supplier supplier=productRepository.findByid(id).getSupplierId();
+            return new ResponseEntity(supplier,HttpStatus.OK);
+        }
+        else{
+            throw new ProductNotFoundException(id);
+        }
+    }
+
+    @Override
+    public ResponseEntity getWarehouseByProductId(Long id) {
+        if(productRepository.existsByid(id)){
+            Warehouse warehouse=productRepository.findByid(id).getWarehouseId();
+            return new ResponseEntity(warehouse,HttpStatus.OK);
+        }
+        else{
+            throw new ProductNotFoundException(id);
+        }
+    }
+
+    @Override
+    public ResponseEntity getCategoryByProductId(Long id) {
+        if(productRepository.existsByid(id)){
+            Category category=productRepository.findByid(id).getCategoryId();
+            return new ResponseEntity(category,HttpStatus.OK);
+        }
+        else{
+            throw new ProductNotFoundException(id);
         }
     }
 }

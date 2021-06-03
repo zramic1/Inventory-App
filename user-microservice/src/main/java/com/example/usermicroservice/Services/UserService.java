@@ -21,4 +21,6 @@ public interface UserService {
     ResponseEntity deleteUser(Long id);
 
     ResponseEntity getUserRoleByUsername(String username);
+
+    ResponseEntity getWarehouseByUserId(Long id);
 }

@@ -1,6 +1,7 @@
 package com.example.productmicroservice.Services;
 
 import com.example.productmicroservice.Exceptions.UserNotFoundException;
+import com.example.productmicroservice.Models.Supplier;
 import com.example.productmicroservice.Models.User;
 import com.example.productmicroservice.Repositories.UserRepository;
 import org.json.JSONException;
@@ -87,6 +88,17 @@ public class UserServiceImpl implements UserService {
             }
             return new ResponseEntity(objekat.toString(), HttpStatus.OK);
         } else {
+            throw new UserNotFoundException(id);
+        }
+    }
+
+    @Override
+    public ResponseEntity getSupplierByUserId(Long id) {
+        if(userRepository.existsByID(id)){
+            Supplier supplier=userRepository.findByID(id).getSupplierID();
+            return new ResponseEntity(supplier,HttpStatus.OK);
+        }
+        else{
             throw new UserNotFoundException(id);
         }
     }

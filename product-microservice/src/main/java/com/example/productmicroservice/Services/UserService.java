@@ -17,4 +17,6 @@ public interface UserService {
     ResponseEntity updateUser(Long id, User user);
 
     ResponseEntity deleteUser(Long id);
+
+    ResponseEntity getSupplierByUserId(Long id);
 }

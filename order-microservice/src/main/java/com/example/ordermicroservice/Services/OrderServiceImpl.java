@@ -4,8 +4,10 @@ import com.example.ordermicroservice.Exceptions.CustomerNotFoundException;
 import com.example.ordermicroservice.Exceptions.OrderDetailNotFoundException;
 import com.example.ordermicroservice.Exceptions.OrderNotFoundException;
 import com.example.ordermicroservice.Exceptions.SupplierNotFoundException;
+import com.example.ordermicroservice.Models.Customer;
 import com.example.ordermicroservice.Models.Order;
 import com.example.ordermicroservice.Models.OrderDetail;
+import com.example.ordermicroservice.Models.Supplier;
 import com.example.ordermicroservice.Repositories.CustomerRepository;
 import com.example.ordermicroservice.Repositories.OrderRepository;
 import com.example.ordermicroservice.Repositories.SupplierRepository;
@@ -232,6 +234,28 @@ public class OrderServiceImpl implements OrderService {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity(objekat.toString(), responseHeaders, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity getCustomerByOrderId(Long id) {
+        if(customerRepository.existsByID(id)){
+            Customer customer=orderRepository.findByid(id).getCustomerId();
+            return new ResponseEntity(customer,HttpStatus.OK);
+        }
+        else{
+            throw new OrderNotFoundException(id);
+        }
+    }
+
+    @Override
+    public ResponseEntity getSupplierByOrderId(Long id) {
+        if(customerRepository.existsByID(id)){
+            Supplier supplier=orderRepository.findByid(id).getSupplierId();
+            return new ResponseEntity(supplier,HttpStatus.OK);
+        }
+        else{
+            throw new OrderNotFoundException(id);
+        }
     }
 
     public static boolean isDateInCurrentWeek(Date date) {

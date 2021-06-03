@@ -11,7 +11,9 @@ import {
   getAllCustomers,
   getAllSuppliers,
   addNewOrder,
-  getAllWarehouses
+  getAllWarehouses,
+  getCustomerByOrder,
+  getSupplierByOrder
 } from "./actions/loginActions";
 import axiosInstance from "../api/axiosInstance";
 import { Button, Menu, Dropdown } from "antd";
@@ -112,6 +114,34 @@ function Order() {
               dispatch(getAllWarehouses(noviWarehouseNiz));
               //console.log("Warehousi su: ", res.data);
               dispatch(getAllOrders(sviOrderi));
+              const promises1 = sviOrderi.map(el => {
+                return axiosInstance(url)
+                  .get(`/customer/order/${el.id}`).then(res => res.data)
+              });
+
+              const promises2 = sviOrderi.map(el => {
+                return axiosInstance(url)
+                  .get(`/supplier/order/${el.id}`).then(res => res.data)
+              });
+
+              Promise.all(promises1).then(data => {
+                for (let i = 0; i < data.length; i++) {
+                  dispatch(getCustomerByOrder({
+                    orderId: i,
+                    first_name: data[i].first_name,
+                    last_name: data[i].last_name
+                  }));
+                }
+              });
+
+              Promise.all(promises2).then(data => {
+                for (let i = 0; i < data.length; i++) {
+                  dispatch(getSupplierByOrder({
+                    orderId: i,
+                    name: data[i].name
+                  }));
+                }
+              });
             })
             .catch((error) => {
               console.log("Status");
@@ -367,8 +397,8 @@ function Order() {
       title: "Status",
       dataIndex: "status",
       key: "status",
-    }
-    /*{
+    },
+    {
       title: "Customer",
       dataIndex: "customer",
       key: "customer",
@@ -377,7 +407,7 @@ function Order() {
       title: "Supplier",
       dataIndex: "supplier",
       key: "supplier",
-    }*/
+    }
     /*userIsSupplier.id !== undefined && userIsSupplier.id !== null ? {
       title: "Change status",
       dataIndex: "changeStatus",

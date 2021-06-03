@@ -22,4 +22,6 @@ public interface OrderService {
     List<Order> getOrdersByCustomerId(Long id);
     ResponseEntity getAllOrdersFromThisWeek(StatisticsDTO ids, Long isCustomer);
     ResponseEntity getAllOrdersFromThisMonth(StatisticsDTO ids, Long isCustomer);
+    ResponseEntity getCustomerByOrderId(Long id);
+    ResponseEntity getSupplierByOrderId(Long id);
 }

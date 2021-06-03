@@ -66,4 +66,25 @@ public class ProductController {
     {
         return productService.getProductsByUserId(id);
     }
+
+    @GetMapping("/supplier/product/{id}")
+    @ApiOperation("Returns Supplier of a specific Product by their identifier. 404 if does not exist.")
+    public ResponseEntity getSupplierByProductId(@PathVariable Long id)
+    {
+        return productService.getSupplierByProductId(id);
+    }
+
+    @GetMapping("/warehouse/product/{id}")
+    @ApiOperation("Returns Warehouse of a specific Product by their identifier. 404 if does not exist.")
+    public ResponseEntity getWarehouseByProductId(@PathVariable Long id)
+    {
+        return productService.getWarehouseByProductId(id);
+    }
+
+    @GetMapping("/category/product/{id}")
+    @ApiOperation("Returns Category of a specific Product by their identifier. 404 if does not exist.")
+    public ResponseEntity getCategoryByProductId(@PathVariable Long id)
+    {
+        return productService.getCategoryByProductId(id);
+    }
 }
