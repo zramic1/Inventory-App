@@ -61,6 +61,7 @@ function Login() {
         dispatch(userLogged({ logged: true, user: { username: allValues.username, password: allValues.password, jwt: res.data.jwt } }));
         let url1 = loginContext.user;
         axiosInstance(url1).get(`/users/username/${allValues.username}`).then((res1) => {
+          console.log("ODGOVOR je: ", res1.data);
           dispatch(getUserInformation({
             id: res1.data.id,
             first_name: res1.data.first_name,

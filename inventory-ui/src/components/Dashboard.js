@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { Row, Col, Card, Avatar } from 'antd';
 import { FaWarehouse, FaBoxOpen, FaReceipt, FaUsers } from "react-icons/fa";
 
@@ -30,18 +30,18 @@ for (let i = 0; i < 12; i += 1) {
 
 function Dashboard() {
     const [loading, setLoading] = useState([false, false, false, false]);
-    const totalStaffMembers = useSelector(state => state.logovani.allUsers.length);
-    const totalOrders = useSelector(state => state.logovani.allOrders.length);
-    const totalWarehouses = useSelector(state => state.logovani.allUsers.length);
-    const totalProducts = useSelector(state => state.logovani.allProductsForUser.length);
-    const weeklyStats = useSelector(state => state.logovani.weeklyStats);
-    const monthlyStats = useSelector(state => state.logovani.monthlyStats);
+    const totalStaffMembers = useSelector((state) => state.logovani.allUsers.length);
+    const totalOrders = useSelector((state) => state.logovani.allOrders.length);
+    const totalWarehouses = useSelector((state) => state.logovani.allUsers.length);
+    const totalProducts = useSelector((state) => state.logovani.allProductsForUser.length);
+    const weeklyStats = useSelector((state) => state.logovani.weeklyStats);
+    const monthlyStats = useSelector((state) => state.logovani.monthlyStats);
     const dashboardContext = useContext(UrlContext);
     const dispatch = useDispatch();
     const [salesData, setSalesData] = useState([]);
     const [salesData1, setSalesData1] = useState([]);
-    const userIsSupplier = useSelector(state => state.logovani.userIsSupplier);
-    const allCustomers = useSelector(state => state.logovani.allCustomers);
+    const userIsSupplier = useSelector((state) => state.logovani.userIsSupplier);
+    const allCustomers = useSelector((state) => state.logovani.allCustomers);
 
     function onChangeLoading(pozicija) {
         let load = loading;
@@ -107,8 +107,11 @@ function Dashboard() {
     useEffect(() => {
         getWeeklyStatistics();
         getMonthlyStatistics();
-        getAllStatistics();
     }, [])
+
+    useEffect(() => {
+        getAllStatistics();
+    }, [weeklyStats, monthlyStats])
 
     return <div>
         <Row>

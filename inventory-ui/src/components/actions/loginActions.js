@@ -13,11 +13,13 @@ import {
   GET_UNIQUE_PRODUCTS_FOR_USER,
   ADD_NEW_ORDER,
   DELETE_ORDER,
+  DELETE_USER,
   GET_WEEKLY_STATS,
   GET_MONTHLY_STATS,
   GET_USER_ROLE,
   GET_CUSTOMER_BY_ORDER_ID,
   GET_SUPPLIER_BY_ORDER_ID,
+  GET_ALL_CATEGORIES,
 } from "./action-types/actionTypes";
 
 export const userLogged = (user) => {
@@ -48,9 +50,23 @@ export const getAllOrders = (orders) => {
   };
 };
 
+export const getAllCategories = (categories) => {
+  return {
+    type: GET_ALL_CATEGORIES,
+    payload: categories,
+  };
+};
+
 export const deleteOrder = () => {
   return {
     type: DELETE_ORDER,
+    payload: [],
+  };
+};
+
+export const deleteUser = () => {
+  return {
+    type: DELETE_USER,
     payload: [],
   };
 };
@@ -86,28 +102,28 @@ export const addNewWarehouse = () => {
 export const getAllProductsForUser = (products) => {
   return {
     type: GET_ALL_PRODUCTS_FOR_USER,
-    payload: products
+    payload: products,
   };
 };
 
 export const getUserIsSupplier = (supplier) => {
   return {
     type: GET_USER_IS_SUPPLIER,
-    payload: supplier
+    payload: supplier,
   };
 };
 
 export const setShowNotificationForLowQuantity = (truth) => {
   return {
     type: SHOW_NOTIFICATION_FOR_LOW_QUANTITY,
-    payload: truth
+    payload: truth,
   };
 };
 
 export const getUniqueProductsForUser = (products) => {
   return {
     type: GET_UNIQUE_PRODUCTS_FOR_USER,
-    payload: products
+    payload: products,
   };
 };
 
@@ -121,14 +137,14 @@ export const addNewOrder = () => {
 export const getWeeklyStats = (weeklyStats) => {
   return {
     type: GET_WEEKLY_STATS,
-    payload: weeklyStats
+    payload: weeklyStats,
   };
 };
 
 export const getMonthlyStats = (monthlyStats) => {
   return {
     type: GET_MONTHLY_STATS,
-    payload: monthlyStats
+    payload: monthlyStats,
   };
 };
 

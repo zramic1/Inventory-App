@@ -17,57 +17,49 @@ import {
 } from "./actions/loginActions";
 import axiosInstance from "../api/axiosInstance";
 import { Button, Menu, Dropdown } from "antd";
-import axios from "axios";
-import { WaterWave } from "ant-design-pro/lib/Charts";
 
 import { FaWarehouse } from "react-icons/fa";
 
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined } from "@ant-design/icons";
 
 function Order() {
   const [CreateForm] = Form.useForm();
   const [UpdateForm] = Form.useForm();
   const orderContext = useContext(UrlContext);
   const dispatch = useDispatch();
-  const orderi = useSelector(state => state.logovani.allOrders);
+  const orderi = useSelector((state) => state.logovani.allOrders);
   //promijeniti na sve moguce warehouse
-  const warehousiUsera = useSelector(state => state.logovani.warehouses);
+  const warehousiUsera = useSelector((state) => state.logovani.warehouses);
   const trenutniKorisnikId = useSelector(
     (state) => state.logovani.otherUserInformation.id
   );
-  const [dropdownText, setDropdownText] = useState(warehousiUsera.length > 0 ? `Warehouse ${warehousiUsera[0].id}` : "None");
-  const userIsSupplier = useSelector(state => state.logovani.userIsSupplier);
-  const otherUserInformation = useSelector(state => state.logovani.otherUserInformation);
+  const [dropdownText, setDropdownText] = useState(
+    warehousiUsera.length > 0 ? `Warehouse ${warehousiUsera[0].id}` : "None"
+  );
+  const userIsSupplier = useSelector((state) => state.logovani.userIsSupplier);
+  const otherUserInformation = useSelector(
+    (state) => state.logovani.otherUserInformation
+  );
 
   // menu za izbor warehouse za approve ordera
   const menu = (
     <Menu onClick={handleMenuClick}>
       {warehousiUsera.map((element, indeks) => {
-        return (<Menu.Item key={element.id} icon={<FaWarehouse style={{ marginRight: "10px" }} />}>
-          {`Warehouse ${element.id}`}
-        </Menu.Item>);
+        return (
+          <Menu.Item
+            key={element.id}
+            icon={<FaWarehouse style={{ marginRight: "10px" }} />}
+          >
+            {`Warehouse ${element.id}`}
+          </Menu.Item>
+        );
       })}
     </Menu>
   );
 
-  // menu za izbor warehouse za approve ordera
-  /*const menu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="1" icon={<FaWarehouse style={{ marginRight: "10px" }} />}>
-        1st menu item
-      </Menu.Item>
-      <Menu.Item key="2" icon={<FaWarehouse />}>
-        2nd menu item
-      </Menu.Item>
-      <Menu.Item key="3" icon={<FaWarehouse />}>
-        3rd menu item
-      </Menu.Item>
-    </Menu>
-  );*/
-
   function handleMenuClick(e) {
     setDropdownText(`Warehouse ${e.key}`);
-    console.log('click', e);
+    console.log("click", e);
   }
   const customeri = useSelector((state) => state.logovani.allCustomers);
   const supplieri = useSelector((state) => state.logovani.allSuppliers);
@@ -89,7 +81,7 @@ function Order() {
               supplier: or.userId.name,
               userId: or.userId,
               customerId: or.customerId*/
-            })
+            });
           }
           let url1 = orderContext.user;
           axiosInstance(url1)
@@ -158,15 +150,15 @@ function Order() {
           console.log("Greska!");
           console.log(error);
         });
-    }
-    else {
+    } else {
       console.log("Customeri su: ", otherUserInformation.customers);
-      const promises = otherUserInformation.customers.map(el => {
+      const promises = otherUserInformation.customers.map((el) => {
         return axiosInstance(url)
-          .get(`/orders/customer/${el.id}`).then(res => res.data)
+          .get(`/orders/customer/${el.id}`)
+          .then((res) => res.data);
       });
 
-      Promise.all(promises).then(data => {
+      Promise.all(promises).then((data) => {
         console.log("Vratio ugnijezdjeni axios: ", data);
         let sviOrderi = [];
         for (let i = 0; i < data.length; i++) {
@@ -184,38 +176,9 @@ function Order() {
           }
         }
         dispatch(getAllOrders(sviOrderi));
-      })
+      });
     }
-  }
-
-  useEffect(() => {
-    console.log("POZVAN DRUGIIIIIIIIIII");
-    let kol = kolone;
-    if (userIsSupplier.id !== undefined && userIsSupplier.id !== null) {
-      kol.push(
-        {
-          title: "Change status",
-          dataIndex: "changeStatus",
-          key: "changeStatus",
-          render: (text, render) =>
-            render.status !== "approved"
-              ? <>
-                <Dropdown overlay={menu}>
-                  <Button>
-                    {dropdownText} <DownOutlined />
-                  </Button>
-                </Dropdown>
-                <Button type="primary" onClick={() => { approveOrder(render) }}>
-                  Approve
-                </Button>
-              </>
-              : <Button type="primary" style={{ marginLeft: "17%" }} disabled>Approved</Button>
-        }
-      )
-    }
-    setKolone(kol);
-    console.log("KOLONE SU: ", kolone);
-  }, [])
+  };
 
   const deleteOrder = (rowData) => {
     const { id } = rowData;
@@ -330,16 +293,6 @@ function Order() {
       });
   };
 
-  useEffect(() => {
-    console.log("POZVANO OKURRRRR!");
-    console.log("Orderi su: ", orderi);
-    console.log("Customeri su: ", customeri);
-    console.log("Supplieri su: ", supplieri);
-    getOrders();
-    getSuppliers();
-    getCustomers();
-  }, []);
-
   const approveOrder = (order) => {
     console.log("OrderId je: ", order);
     let url = orderContext.order;
@@ -354,8 +307,8 @@ function Order() {
           .get(`/orders/${order.id}`)
           .then((res1) => {
             if (warehousiUsera.length > 0) {
-              let parsirajId = parseInt(dropdownText.replace(/[^0-9]/g, ''));
-              let wh = warehousiUsera.find(x => x.id === parsirajId);
+              let parsirajId = parseInt(dropdownText.replace(/[^0-9]/g, ""));
+              let wh = warehousiUsera.find((x) => x.id === parsirajId);
               let orderDetailOvogOrdera = res1.data.orderDetail;
               orderDetailOvogOrdera.forEach((orDetail) => {
                 let productJe = orDetail.productId;
@@ -377,15 +330,15 @@ function Order() {
                         console.log("Res3 je: ", res3);
                       });
                   });
-              })
+              });
             }
           });
       })
       .catch((error) => {
         console.log("Greska");
         console.log(error);
-      })
-  }
+      });
+  };
 
   const [kolone, setKolone] = useState([
     {
@@ -427,6 +380,74 @@ function Order() {
           : <Button type="primary" style={{ marginLeft: "17%" }} disabled>Approved</Button>
     } : {}*/
   ]);
+
+  useEffect(() => {
+    console.log("POZVANO OKURRRRR!");
+    console.log("Orderi su: ", orderi);
+    getOrders();
+    getSuppliers();
+    getCustomers();
+  }, []);
+
+  useEffect(() => {
+    console.log("POZVAN DRUGIIIIIIIIIII");
+    let kol = kolone;
+    if (userIsSupplier.id !== undefined && userIsSupplier.id !== null && kol[kol.length - 1].key !== "changeStatus") {
+      kol.push({
+        title: "Change status",
+        dataIndex: "changeStatus",
+        key: "changeStatus",
+        render: (text, render) =>
+          render.status !== "approved" ? (
+            <>
+              <Dropdown overlay={menu}>
+                <Button>
+                  {dropdownText} <DownOutlined />
+                </Button>
+              </Dropdown>
+              <Button
+                type="primary"
+                onClick={() => {
+                  approveOrder(render);
+                }}
+              >
+                Approve
+              </Button>
+            </>
+          ) : (
+            <Button type="primary" style={{ marginLeft: "17%" }} disabled>
+              Approved
+            </Button>
+          ),
+      });
+    }
+    else if (userIsSupplier.id !== undefined && userIsSupplier.id !== null) {
+      kol[kol.length - 1].render = (text, render) =>
+        render.status !== "approved" ? (
+          <>
+            <Dropdown overlay={menu}>
+              <Button>
+                {dropdownText} <DownOutlined />
+              </Button>
+            </Dropdown>
+            <Button
+              type="primary"
+              onClick={() => {
+                approveOrder(render);
+              }}
+            >
+              Approve
+          </Button>
+          </>
+        ) : (
+          <Button type="primary" style={{ marginLeft: "17%" }} disabled>
+            Approved
+          </Button>
+        );
+      setKolone(kol);
+      console.log("KOLONE SU: ", kolone);
+    }
+  }, [warehousiUsera]);
 
   return (
     <div style={{ height: "100vh" }}>
@@ -472,7 +493,6 @@ function Order() {
           ),
         }}
       ></DataGrid>
-      {console.log("Kolone se mijenjaju: ", kolone)}
     </div>
   );
 }

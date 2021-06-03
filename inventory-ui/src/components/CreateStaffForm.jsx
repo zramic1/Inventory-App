@@ -1,8 +1,8 @@
 import { Input, Form, Select } from "antd";
 const { Option } = Select;
 
-const CreateStaffForm = ({ rowData }) => (
-  <Form layout={"vertical"}>
+const CreateStaffForm = ({ form, rowData }) => (
+  <Form layout={"vertical"} form={form}>
     <Form.Item style={{ display: "none" }} name="id" initialValue={rowData?.id}>
       <Input />
     </Form.Item>
@@ -21,8 +21,7 @@ const CreateStaffForm = ({ rowData }) => (
     </Form.Item>
     <Form.Item
       label="Password"
-      name="password"
-      initialValue={rowData?.password}
+      name="firstPassword"
       rules={[
         {
           required: true,
@@ -35,7 +34,6 @@ const CreateStaffForm = ({ rowData }) => (
     <Form.Item
       label="Repeat password"
       name="repeatPassword"
-      initialValue={rowData?.repeatPassword}
       rules={[
         {
           required: true,
@@ -48,7 +46,7 @@ const CreateStaffForm = ({ rowData }) => (
     <Form.Item
       label="First Name"
       name="firstName"
-      initialValue={rowData?.firstName}
+      initialValue={rowData?.first_name}
       rules={[
         {
           required: true,
@@ -61,7 +59,7 @@ const CreateStaffForm = ({ rowData }) => (
     <Form.Item
       label="Last name"
       name="lastName"
-      initialValue={rowData?.lastName}
+      initialValue={rowData?.last_name}
       rules={[
         {
           required: true,
@@ -72,9 +70,9 @@ const CreateStaffForm = ({ rowData }) => (
       <Input />
     </Form.Item>
     <Form.Item
-      label="Adress"
-      name="adress"
-      initialValue={rowData?.adress}
+      label="Address"
+      name="address"
+      initialValue={rowData?.address}
       rules={[
         {
           required: true,
@@ -87,7 +85,7 @@ const CreateStaffForm = ({ rowData }) => (
     <Form.Item
       label="Phone Number"
       name="phoneNumber"
-      initialValue={rowData?.phoneNumber}
+      initialValue={rowData?.phone}
       rules={[
         {
           required: true,
@@ -106,6 +104,7 @@ const CreateStaffForm = ({ rowData }) => (
           required: true,
           message: "Required field!",
         },
+        { type: "email" },
       ]}
     >
       <Input />
@@ -113,7 +112,7 @@ const CreateStaffForm = ({ rowData }) => (
     <Form.Item
       label="Warehouse"
       name="warehouse"
-      initialValue={rowData?.warehouse}
+      initialValue={rowData?.warehouse_id}
       rules={[
         {
           required: true,
@@ -129,7 +128,7 @@ const CreateStaffForm = ({ rowData }) => (
     <Form.Item
       label="Role"
       name="role"
-      initialValue={rowData?.supplier}
+      initialValue={rowData?.supplier_id}
       rules={[
         {
           required: true,

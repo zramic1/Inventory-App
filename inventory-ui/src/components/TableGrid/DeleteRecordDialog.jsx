@@ -11,7 +11,7 @@ export default class DeleteRecordDialog extends React.Component {
 
     return (
       <div>
-        {console.log("ON DELETE je: ", onDelete)}
+        {console.log("ON DELETE je: ", rowData)}
         <Modal
           title="Deleting item"
           visible={visible}

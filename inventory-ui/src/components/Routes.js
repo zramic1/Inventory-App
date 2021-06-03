@@ -17,8 +17,82 @@ import { Row, Col, Card, Typography } from "antd";
 const { Title } = Typography;
 
 function Routes() {
-  const logged = useSelector(state => state.logovani.logged);
+  const logged = useSelector((state) => state.logovani.logged);
+  const userIsSupplier = false;
+  const userIsAdmin = true;
+  const userIsUser = false;
   console.log("Logovan je u Routes:", logged);
+  return (
+    <Fragment>
+      {userIsSupplier && <SupplierRoutes logged={logged} />}
+      {userIsAdmin && <AdminRoutes logged={logged} />}
+      {userIsUser && <UserRoutes logged={logged} />}
+    </Fragment>
+  );
+}
+
+function UserRoutes({ logged }) {
+  return (
+    <Fragment>
+      <Route exact path="/">
+        {logged ? <Dashboard /> : <Redirect to="/login"></Redirect>}
+      </Route>
+      {logged && (
+        <Route exact path="/products">
+          <Product />
+        </Route>
+      )}
+      {logged && (
+        <Route exact path="/orders">
+          <Order />
+        </Route>
+      )}
+      {logged && (
+        <Route exact path="/product-details">
+          <ProductDetails />
+        </Route>
+      )}
+      {logged && (
+        <Route exact path="/add-product">
+          <ProductDetails />
+        </Route>
+      )}
+      {!logged && (
+        <Route exact path="/login">
+          <Row
+            style={{ height: "100vh" }}
+            justify="space-around"
+            align="middle"
+          >
+            <Col span={12}>
+              <Card
+                title={<Title level={2}>Login</Title>}
+                style={{ textAlign: "center", fontSize: "20px" }}
+              >
+                <Login />
+              </Card>
+            </Col>
+          </Row>
+        </Route>
+      )}
+      {!logged && (
+        <Route exact path="/register">
+          <Row
+            style={{ height: "100vh" }}
+            justify="space-around"
+            align="middle"
+          >
+            <Col span={24}>
+              <Register />
+            </Col>
+          </Row>
+        </Route>
+      )}
+    </Fragment>
+  );
+}
+
+function AdminRoutes({ logged }) {
   return (
     <Fragment>
       <Route exact path="/">
@@ -56,14 +130,16 @@ function Routes() {
       )}
       {!logged && (
         <Route exact path="/login">
-          {/*<Row style={{ height: "100vh" }} justify="space-around" align="middle">
+          <Row
+            style={{ height: "100vh" }}
+            justify="space-around"
+            align="middle"
+          >
             <Col span={12}>
-              <Login />
-            </Col>
-      </Row>*/}
-          <Row style={{ height: "100vh" }} justify="space-around" align="middle">
-            <Col span={12}>
-              <Card title={<Title level={2}>Login</Title>} style={{ textAlign: "center", fontSize: "20px" }}>
+              <Card
+                title={<Title level={2}>Login</Title>}
+                style={{ textAlign: "center", fontSize: "20px" }}
+              >
                 <Login />
               </Card>
             </Col>
@@ -72,7 +148,56 @@ function Routes() {
       )}
       {!logged && (
         <Route exact path="/register">
-          <Row style={{ height: "100vh" }} justify="space-around" align="middle">
+          <Row
+            style={{ height: "100vh" }}
+            justify="space-around"
+            align="middle"
+          >
+            <Col span={24}>
+              <Register />
+            </Col>
+          </Row>
+        </Route>
+      )}
+    </Fragment>
+  );
+}
+function SupplierRoutes({ logged }) {
+  return (
+    <Fragment>
+      <Route exact path="/">
+        {logged ? <Dashboard /> : <Redirect to="/login"></Redirect>}
+      </Route>
+      {logged && (
+        <Route exact path="/orders">
+          <Order />
+        </Route>
+      )}
+      {!logged && (
+        <Route exact path="/login">
+          <Row
+            style={{ height: "100vh" }}
+            justify="space-around"
+            align="middle"
+          >
+            <Col span={12}>
+              <Card
+                title={<Title level={2}>Login</Title>}
+                style={{ textAlign: "center", fontSize: "20px" }}
+              >
+                <Login />
+              </Card>
+            </Col>
+          </Row>
+        </Route>
+      )}
+      {!logged && (
+        <Route exact path="/register">
+          <Row
+            style={{ height: "100vh" }}
+            justify="space-around"
+            align="middle"
+          >
             <Col span={24}>
               <Register />
             </Col>
