@@ -29,7 +29,7 @@ const initState = {
   role: {
     id: "",
     role_name: "",
-    description: ""
+    description: "",
   },
   /*warehouses: [],
   allUsers: [],
@@ -96,17 +96,15 @@ export default function (state = initState, action) {
       currentlyLoggedUser: {
         username: action.payload.user.username,
         password: action.payload.user.password,
-        jwt: action.payload.user.jwt
-      }
-    }
-  }
-  else if (action.type === GET_USER_ROLE) {
+        jwt: action.payload.user.jwt,
+      },
+    };
+  } else if (action.type === GET_USER_ROLE) {
     return {
       ...state,
-      role: action.payload
-    }
-  }
-  else if (action.type === GET_ALL_WAREHOUSES) {
+      role: action.payload,
+    };
+  } else if (action.type === GET_ALL_WAREHOUSES) {
     return {
       ...state,
       warehouses: action.payload,
@@ -114,10 +112,9 @@ export default function (state = initState, action) {
   } else if (action.type === GET_ALL_USERS) {
     return {
       ...state,
-      allUsers: action.payload
-    }
-  }
-  else if (action.type === GET_ALL_ORDERS) {
+      allUsers: action.payload,
+    };
+  } else if (action.type === GET_ALL_ORDERS) {
     let trenutniOrderi = [...state.allOrders];
     console.log("PAAAAAAAAYLOAD je: ", action.payload);
     for (let i = 0; i < action.payload.length; i++) {
@@ -128,16 +125,14 @@ export default function (state = initState, action) {
     console.log("Trenutni orderi su: ", trenutniOrderi);
     return {
       ...state,
-      allOrders: trenutniOrderi
-    }
-  }
-  else if (action.type === GET_ALL_CATEGORIES) {
+      allOrders: trenutniOrderi,
+    };
+  } else if (action.type === GET_ALL_CATEGORIES) {
     return {
       ...state,
       allCategories: action.payload,
     };
-  }
-  else if (action.type === GET_ALL_CATEGORIES) {
+  } else if (action.type === GET_ALL_CATEGORIES) {
     return {
       ...state,
       allCategories: action.payload,
@@ -165,13 +160,21 @@ export default function (state = initState, action) {
   } else if (action.type === GET_UNIQUE_PRODUCTS_FOR_USER) {
     let sviProdukti = action.payload;
     let noviNiz = [];
+    console.log("svi produkti", sviProdukti);
     for (let i = 0; i < sviProdukti.length; i++) {
       let pr = sviProdukti[i];
       noviNiz.push({
+        id: pr.id,
         title: pr.title,
         description: pr.description,
         src: pr.src,
         quantity: pr.quantity,
+        unit: pr.unit,
+        price: pr.price,
+        supplier: pr.supplier,
+        category: pr.category,
+        status: pr.status,
+        warehouse: pr.warehouse,
       });
     }
     // daj jedinstvene produkte po nazivu
@@ -213,22 +216,22 @@ export default function (state = initState, action) {
       ...state,
       monthlyStats: action.payload,
     };
-  }
-  else if (action.type === GET_CUSTOMER_BY_ORDER_ID) {
+  } else if (action.type === GET_CUSTOMER_BY_ORDER_ID) {
     let trenutniOrderi = [...state.allOrders];
-    trenutniOrderi[action.payload.orderId].customer = `${action.payload.first_name} ${action.payload.last_name}`;
+    trenutniOrderi[
+      action.payload.orderId
+    ].customer = `${action.payload.first_name} ${action.payload.last_name}`;
     return {
       ...state,
-      allOrders: trenutniOrderi
-    }
-  }
-  else if (action.type === GET_SUPPLIER_BY_ORDER_ID) {
+      allOrders: trenutniOrderi,
+    };
+  } else if (action.type === GET_SUPPLIER_BY_ORDER_ID) {
     let trenutniOrderi = [...state.allOrders];
     trenutniOrderi[action.payload.orderId].supplier = action.payload.name;
     return {
       ...state,
-      allOrders: trenutniOrderi
-    }
+      allOrders: trenutniOrderi,
+    };
   }
   return state;
 }

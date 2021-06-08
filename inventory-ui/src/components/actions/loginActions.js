@@ -20,6 +20,7 @@ import {
   GET_CUSTOMER_BY_ORDER_ID,
   GET_SUPPLIER_BY_ORDER_ID,
   GET_ALL_CATEGORIES,
+  ADD_NEW_PRODUCT,
 } from "./action-types/actionTypes";
 
 export const userLogged = (user) => {
@@ -134,6 +135,13 @@ export const addNewOrder = () => {
   };
 };
 
+export const addNewProduct = () => {
+  return {
+    type: ADD_NEW_PRODUCT,
+    payload: [],
+  };
+};
+
 export const getWeeklyStats = (weeklyStats) => {
   return {
     type: GET_WEEKLY_STATS,
@@ -151,20 +159,20 @@ export const getMonthlyStats = (monthlyStats) => {
 export const getUserRole = (role) => {
   return {
     type: GET_USER_ROLE,
-    payload: role
+    payload: role,
   };
 };
 
 export const getCustomerByOrder = (customer) => {
   return {
     type: GET_CUSTOMER_BY_ORDER_ID,
-    payload: customer
+    payload: customer,
   };
 };
 
 export const getSupplierByOrder = (supplier) => {
   return {
     type: GET_SUPPLIER_BY_ORDER_ID,
-    payload: supplier
+    payload: supplier,
   };
 };

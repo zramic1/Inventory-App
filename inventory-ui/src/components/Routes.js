@@ -7,7 +7,7 @@ import Dashboard from "./Dashboard";
 import Login from "./Login";
 import Register from "./Register";
 
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, useLocation } from "react-router-dom";
 import ProductDetails from "./ProductDetails";
 
 import { useSelector } from "react-redux";
@@ -32,6 +32,8 @@ function Routes() {
 }
 
 function UserRoutes({ logged }) {
+  const location = useLocation();
+  const data = location?.state?.data;
   return (
     <Fragment>
       <Route exact path="/">
@@ -49,7 +51,7 @@ function UserRoutes({ logged }) {
       )}
       {logged && (
         <Route exact path="/product-details">
-          <ProductDetails />
+          <ProductDetails data={data} />
         </Route>
       )}
       {logged && (
@@ -93,6 +95,8 @@ function UserRoutes({ logged }) {
 }
 
 function AdminRoutes({ logged }) {
+  const location = useLocation();
+  const data = location.state?.data;
   return (
     <Fragment>
       <Route exact path="/">
@@ -120,7 +124,7 @@ function AdminRoutes({ logged }) {
       )}
       {logged && (
         <Route exact path="/product-details">
-          <ProductDetails />
+          <ProductDetails data={data} />
         </Route>
       )}
       {logged && (
