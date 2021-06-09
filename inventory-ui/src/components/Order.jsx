@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import DataGrid from "./TableGrid/DataGrid";
 import CreateOrderForm from "./CreateOrderForm";
-
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { UrlContext } from "../urlContext";
@@ -13,7 +13,7 @@ import {
   addNewOrder,
   getAllWarehouses,
   getCustomerByOrder,
-  getSupplierByOrder
+  getSupplierByOrder,
 } from "./actions/loginActions";
 import axiosInstance from "../api/axiosInstance";
 import { Button, Menu, Dropdown } from "antd";
@@ -33,8 +33,8 @@ function Order() {
   const trenutniKorisnikId = useSelector(
     (state) => state.logovani.otherUserInformation.id
   );
-  const [dropdownText, setDropdownText] = useState(
-    warehousiUsera.length > 0 ? `Warehouse ${warehousiUsera[0].id}` : "None"
+  let [dropdownText, setDropdownText] = useState(
+    warehousiUsera[0].id !== undefined ? `Warehouse ${warehousiUsera[0].id}` : "None"
   );
   const userIsSupplier = useSelector((state) => state.logovani.userIsSupplier);
   const otherUserInformation = useSelector(
@@ -58,7 +58,7 @@ function Order() {
   );
 
   function handleMenuClick(e) {
-    setDropdownText(`Warehouse ${e.key}`);
+    dropdownText = (`Warehouse ${e.key}`);
     console.log("click", e);
   }
   const customeri = useSelector((state) => state.logovani.allCustomers);
@@ -73,19 +73,22 @@ function Order() {
           let sviOrderi = [];
           for (let i = 0; i < res.data.length; i++) {
             let or = res.data[i];
+            console.log("Svi orderiii", or);
             sviOrderi.push({
               id: or.id,
               date_of_order: or.dateOfOrder,
               status: or.status,
+              order_details: or.orderDetail,
               /*customer: `${or.customerId.first_name} ${or.customerId.last_name}`,
               supplier: or.userId.name,
               userId: or.userId,
               customerId: or.customerId*/
             });
           }
+
           let url1 = orderContext.user;
           axiosInstance(url1)
-            .get(`/warehouses/user/${trenutniKorisnikId}`)
+            .get(`/warehouses`)
             .then((res) => {
               console.log(
                 "Vrati warehouse od korisnika ",
@@ -106,32 +109,38 @@ function Order() {
               dispatch(getAllWarehouses(noviWarehouseNiz));
               //console.log("Warehousi su: ", res.data);
               dispatch(getAllOrders(sviOrderi));
-              const promises1 = sviOrderi.map(el => {
+              const promises1 = sviOrderi.map((el) => {
                 return axiosInstance(url)
-                  .get(`/customer/order/${el.id}`).then(res => res.data)
+                  .get(`/customer/order/${el.id}`)
+                  .then((res) => res.data);
               });
 
-              const promises2 = sviOrderi.map(el => {
+              const promises2 = sviOrderi.map((el) => {
                 return axiosInstance(url)
-                  .get(`/supplier/order/${el.id}`).then(res => res.data)
+                  .get(`/supplier/order/${el.id}`)
+                  .then((res) => res.data);
               });
 
-              Promise.all(promises1).then(data => {
+              Promise.all(promises1).then((data) => {
                 for (let i = 0; i < data.length; i++) {
-                  dispatch(getCustomerByOrder({
-                    orderId: i,
-                    first_name: data[i].first_name,
-                    last_name: data[i].last_name
-                  }));
+                  dispatch(
+                    getCustomerByOrder({
+                      orderId: i,
+                      first_name: data[i].first_name,
+                      last_name: data[i].last_name,
+                    })
+                  );
                 }
               });
 
-              Promise.all(promises2).then(data => {
+              Promise.all(promises2).then((data) => {
                 for (let i = 0; i < data.length; i++) {
-                  dispatch(getSupplierByOrder({
-                    orderId: i,
-                    name: data[i].name
-                  }));
+                  dispatch(
+                    getSupplierByOrder({
+                      orderId: i,
+                      name: data[i].name,
+                    })
+                  );
                 }
               });
             })
@@ -168,6 +177,7 @@ function Order() {
               id: or.id,
               date_of_order: or.dateOfOrder,
               status: or.status,
+              order_details: or.orderDetail,
               /*customer: `${or.customerId.first_name} ${or.customerId.last_name}`,
               supplier: or.userId.name,
               userId: or.userId,
@@ -248,15 +258,16 @@ function Order() {
   };
 
   const addOrder = (val) => {
-    const { date_of_order, status, customer, supplier } = val;
-    console.log("Vrijednosti", date_of_order, status, customer, supplier);
+    const { dateOfOrder, status, customer, supplier } = val;
+    console.log("Vrijednosti", dateOfOrder, status, customer, supplier);
+    console.log(supplieri);
     let url = orderContext.order;
     axiosInstance(url)
       .post("/orders", {
-        dateOfOrder: date_of_order,
+        dateOfOrder: dateOfOrder,
         status: status,
         customerId: customeri[customer],
-        userId: supplieri[supplier],
+        supplierId: supplieri[supplier],
       })
       .then((res) => {
         getOrders();
@@ -271,15 +282,22 @@ function Order() {
   };
 
   const updateOrder = (val) => {
-    const { id, date_of_order, status, customer, supplier } = val;
-    console.log("Vrijednosti", id, date_of_order, status, customer, supplier);
+    const { id, dateOfOrder, status, customer, supplier } = val;
+    console.log(
+      "update rijednosti",
+      id,
+      dateOfOrder,
+      status,
+      customeri[customer],
+      supplieri[supplier]
+    );
     let url = orderContext.order;
     axiosInstance(url)
       .put(`/orders/${id}`, {
-        dateOfOrder: date_of_order,
+        dateOfOrder: dateOfOrder,
         status: status,
         customerId: customeri[customer],
-        userId: supplieri[supplier],
+        supplierId: supplieri[supplier],
       })
       .then((res) => {
         getOrders();
@@ -360,25 +378,25 @@ function Order() {
       title: "Supplier",
       dataIndex: "supplier",
       key: "supplier",
-    }
-    /*userIsSupplier.id !== undefined && userIsSupplier.id !== null ? {
-      title: "Change status",
-      dataIndex: "changeStatus",
-      key: "changeStatus",
-      render: (text, render) =>
-        render.status !== "approved"
-          ? <>
-            <Dropdown overlay={menu}>
-              <Button>
-                {dropdownText} <DownOutlined />
-              </Button>
-            </Dropdown>
-            <Button type="primary" onClick={() => { approveOrder(render) }}>
-              Approve
-            </Button>
-          </>
-          : <Button type="primary" style={{ marginLeft: "17%" }} disabled>Approved</Button>
-    } : {}*/
+    },
+    {
+      title: "Details",
+      dataIndex: "details",
+      key: "details",
+      render: (text, render) => (
+        <Link
+          to={{
+            pathname: "/order-details",
+            state: {
+              data: { render },
+            },
+          }}
+          params={{ render }}
+        >
+          ORDER DETAILS
+        </Link>
+      ),
+    },
   ]);
 
   useEffect(() => {
@@ -392,7 +410,11 @@ function Order() {
   useEffect(() => {
     console.log("POZVAN DRUGIIIIIIIIIII");
     let kol = kolone;
-    if (userIsSupplier.id !== undefined && userIsSupplier.id !== null && kol[kol.length - 1].key !== "changeStatus") {
+    if (
+      userIsSupplier.id !== undefined &&
+      userIsSupplier.id !== null &&
+      kol[kol.length - 1].key !== "changeStatus"
+    ) {
       kol.push({
         title: "Change status",
         dataIndex: "changeStatus",
@@ -420,8 +442,7 @@ function Order() {
             </Button>
           ),
       });
-    }
-    else if (userIsSupplier.id !== undefined && userIsSupplier.id !== null) {
+    } else if (userIsSupplier.id !== undefined && userIsSupplier.id !== null) {
       kol[kol.length - 1].render = (text, render) =>
         render.status !== "approved" ? (
           <>
@@ -437,7 +458,7 @@ function Order() {
               }}
             >
               Approve
-          </Button>
+            </Button>
           </>
         ) : (
           <Button type="primary" style={{ marginLeft: "17%" }} disabled>

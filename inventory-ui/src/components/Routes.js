@@ -8,8 +8,9 @@ import Login from "./Login";
 import Register from "./Register";
 import Customers from "./Customers";
 import Suppliers from "./Suppliers";
+import OrderDetails from "./OrderDetails";
 
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, useLocation } from "react-router-dom";
 import ProductDetails from "./ProductDetails";
 
 import { useSelector } from "react-redux";
@@ -20,7 +21,7 @@ const { Title } = Typography;
 
 function Routes() {
   const logged = useSelector((state) => state.logovani.logged);
-  const userIsSupplier = useSelector(state => state.logovani.userIsSupplier.id) === undefined;
+  const userIsSupplier = useSelector(state => state.logovani.userIsSupplier.id) !== undefined;
   const userIsAdmin = useSelector(state => state.logovani.role.role_name) === "ADMIN";
   const userIsUser = useSelector(state => state.logovani.role.role_name) === "USER";
   return (
@@ -67,6 +68,8 @@ function Routes() {
 }
 
 function UserRoutes({ logged }) {
+  const location = useLocation();
+  const data = location?.state?.data;
   return (
     <Fragment>
       {/*<Route exact path="/">
@@ -89,12 +92,17 @@ function UserRoutes({ logged }) {
       )}
       {logged && (
         <Route exact path="/product-details">
-          <ProductDetails />
+          <ProductDetails data={data} />
         </Route>
       )}
       {logged && (
         <Route exact path="/add-product">
           <ProductDetails />
+        </Route>
+      )}
+      {logged && (
+        <Route exact path="/order-details">
+          <OrderDetails props={data} />
         </Route>
       )}
       {!logged && (
@@ -133,6 +141,8 @@ function UserRoutes({ logged }) {
 }
 
 function AdminRoutes({ logged }) {
+  const location = useLocation();
+  const data = location.state?.data;
   return (
     <Fragment>
       {/*<Route exact path="/">
@@ -170,12 +180,17 @@ function AdminRoutes({ logged }) {
       )}
       {logged && (
         <Route exact path="/product-details">
-          <ProductDetails />
+          <ProductDetails data={data} />
         </Route>
       )}
       {logged && (
         <Route exact path="/add-product">
-          <ProductDetails />
+          <ProductDetails props={data} />
+        </Route>
+      )}
+      {logged && (
+        <Route exact path="/order-details">
+          <OrderDetails props={data} />
         </Route>
       )}
       {!logged && (
@@ -212,7 +227,10 @@ function AdminRoutes({ logged }) {
     </Fragment>
   );
 }
+
 function SupplierRoutes({ logged }) {
+  const location = useLocation();
+  const data = location.state?.data;
   return (
     <Fragment>
       {/*<Route exact path="/">
@@ -221,6 +239,11 @@ function SupplierRoutes({ logged }) {
       {logged && (
         <Route exact path="/orders">
           <Order />
+        </Route>
+      )}
+      {logged && (
+        <Route exact path="/order-details">
+          <OrderDetails props={data} />
         </Route>
       )}
       {!logged && (

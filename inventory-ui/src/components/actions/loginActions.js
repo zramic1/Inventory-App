@@ -21,6 +21,10 @@ import {
   GET_SUPPLIER_BY_ORDER_ID,
   GET_ALL_CATEGORIES,
   GET_USER_SUPPLIERS,
+  ADD_NEW_PRODUCT,
+  GET_ALL_ORDER_DETAILS,
+  ADD_NEW_ORDER_DETAIL,
+  GET_PAYMENT_TYPES,
 } from "./action-types/actionTypes";
 
 export const userLogged = (user) => {
@@ -34,6 +38,20 @@ export const getAllWarehouses = (warehouses) => {
   return {
     type: GET_ALL_WAREHOUSES,
     payload: warehouses,
+  };
+};
+
+export const getPaymentTypes = (paymentTypes) => {
+  return {
+    type: GET_PAYMENT_TYPES,
+    payload: paymentTypes,
+  };
+};
+
+export const getAllOrderDetails = (orderDetails) => {
+  return {
+    type: GET_ALL_ORDER_DETAILS,
+    payload: orderDetails,
   };
 };
 
@@ -100,6 +118,13 @@ export const addNewWarehouse = () => {
   };
 };
 
+export const addNewOrderDetail = () => {
+  return {
+    type: ADD_NEW_ORDER_DETAIL,
+    payload: [],
+  };
+};
+
 export const getAllProductsForUser = (products) => {
   return {
     type: GET_ALL_PRODUCTS_FOR_USER,
@@ -135,6 +160,13 @@ export const addNewOrder = () => {
   };
 };
 
+export const addNewProduct = () => {
+  return {
+    type: ADD_NEW_PRODUCT,
+    payload: [],
+  };
+};
+
 export const getWeeklyStats = (weeklyStats) => {
   return {
     type: GET_WEEKLY_STATS,
@@ -152,21 +184,21 @@ export const getMonthlyStats = (monthlyStats) => {
 export const getUserRole = (role) => {
   return {
     type: GET_USER_ROLE,
-    payload: role
+    payload: role,
   };
 };
 
 export const getCustomerByOrder = (customer) => {
   return {
     type: GET_CUSTOMER_BY_ORDER_ID,
-    payload: customer
+    payload: customer,
   };
 };
 
 export const getSupplierByOrder = (supplier) => {
   return {
     type: GET_SUPPLIER_BY_ORDER_ID,
-    payload: supplier
+    payload: supplier,
   };
 };
 

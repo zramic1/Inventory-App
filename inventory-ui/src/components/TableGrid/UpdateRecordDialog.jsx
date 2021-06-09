@@ -22,7 +22,7 @@ export default class UpdateRecordDialog extends React.Component {
       rowData,
       formActions,
     } = this.props;
-
+    console.log("ROW DATAAA", rowData);
     formInstance?.setFieldsValue(rowData);
 
     return (

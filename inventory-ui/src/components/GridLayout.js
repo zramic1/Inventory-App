@@ -11,7 +11,6 @@ import {
 import { BsPlusSquare, BsPersonLinesFill, BsPerson } from "react-icons/bs";
 import { FaWarehouse, FaBoxOpen, FaTruck } from "react-icons/fa";
 import { CgDetailsMore } from "react-icons/cg";
-
 import {
   BrowserRouter as Router,
   Switch,
@@ -31,7 +30,7 @@ const { SubMenu } = Menu;
 
 function GridLayout() {
   const logged = useSelector((state) => state.logovani.logged);
-  const userIsSupplier = useSelector(state => state.logovani.userIsSupplier.id) === undefined;
+  const userIsSupplier = useSelector(state => state.logovani.userIsSupplier.id) !== undefined;
   const userIsAdmin = useSelector(state => state.logovani.role.role_name) === "ADMIN";
   const userIsUser = useSelector(state => state.logovani.role.role_name) === "USER";
 
@@ -83,7 +82,7 @@ function UserMeni({ logged }) {
               title="Orders"
             >
               <Menu.Item key="9" icon={<CgDetailsMore />}>
-                <Link to="/orders">Order details</Link>
+                <Link to="/orders">Orders</Link>
               </Menu.Item>
             </SubMenu>
           </Menu>
@@ -116,7 +115,7 @@ function SupplierMeni({ logged }) {
               title="Orders"
             >
               <Menu.Item key="9" icon={<CgDetailsMore />}>
-                <Link to="/orders">Order details</Link>
+                <Link to="/orders">Orders</Link>
               </Menu.Item>
             </SubMenu>
           </Menu>
@@ -187,7 +186,7 @@ function AdminMeni({ logged }) {
               title="Orders"
             >
               <Menu.Item key="9" icon={<CgDetailsMore />}>
-                <Link to="/orders">Order details</Link>
+                <Link to="/orders">Orders</Link>
               </Menu.Item>
             </SubMenu>
           </Menu>
