@@ -4,6 +4,7 @@ import com.example.usermicroservice.ErrorHandling.AlreadyExistsException;
 import com.example.usermicroservice.ErrorHandling.RecordNotFoundException;
 import com.example.usermicroservice.Models.Role;
 import com.example.usermicroservice.Models.User;
+import com.example.usermicroservice.Models.Warehouse;
 import com.example.usermicroservice.Repositories.RoleRepository;
 import com.example.usermicroservice.Repositories.UserRepository;
 import org.json.JSONException;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -24,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public List<User> getAllUsers() {
@@ -84,12 +89,20 @@ public class UserServiceImpl implements UserService {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String sifra = user.getPassword();
         user.setPassword(passwordEncoder.encode(sifra));
+
         userRepository.save(user);
         try {
             objekat.put("message", "User is successfully added!");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        // poziv za product mikroservis
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<User> request = new HttpEntity<>(user, headers);
+        User user1 = restTemplate.postForObject("http://product/user", request, User.class);
+
         return new ResponseEntity(user, HttpStatus.CREATED);
     }
 
@@ -112,7 +125,7 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        if (!Long.toString(user.getRoleID().getID()).equals(Integer.toString(0))) {
+        if (user.getRoleID() != null && !Long.toString(user.getRoleID().getID()).equals(Integer.toString(0))) {
             Role uloga = roleRepository.findByID(Long.valueOf(user.getRoleID().getID()));
             if (uloga == null) {
                 throw new RecordNotFoundException("Role does not exist!");
@@ -126,6 +139,9 @@ public class UserServiceImpl implements UserService {
         }
         if (!user.getFirst_name().isEmpty()) {
             korisnik.setFirst_name(user.getFirst_name());
+        }
+        if (!user.getLast_name().isEmpty()) {
+            korisnik.setLast_name(user.getLast_name());
         }
         if (!user.getAddress().isEmpty()) {
             korisnik.setAddress(user.getAddress());
@@ -154,6 +170,12 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
 
+        // poziv za product mikroservis
+        HttpHeaders httpHeaders=new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<User> request=new HttpEntity<>(user,httpHeaders);
+        restTemplate.put("http://product/updateUser/"+id.toString(),request);
+
         return new ResponseEntity<>(korisnik, HttpStatus.OK);
     }
 
@@ -167,6 +189,8 @@ public class UserServiceImpl implements UserService {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            // poziv za product mikroservis
+            restTemplate.delete("http://product/deleteUser/"+id.toString());
             return new ResponseEntity(objekat.toString(), HttpStatus.OK);
         } else {
             throw new RecordNotFoundException("User does not exist!");
@@ -178,6 +202,16 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByUsername(username)) {
             Role role=userRepository.findByUsername(username).getRoleID();
             return new ResponseEntity(role, HttpStatus.OK);
+        } else {
+            throw new RecordNotFoundException("User does not exist!");
+        }
+    }
+
+    @Override
+    public ResponseEntity getWarehouseByUserId(Long id) {
+        if (userRepository.existsByID(id)) {
+            Warehouse warehouse = userRepository.findByID(id).getWarehouseID();
+            return new ResponseEntity(warehouse, HttpStatus.OK);
         } else {
             throw new RecordNotFoundException("User does not exist!");
         }

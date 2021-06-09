@@ -11,4 +11,5 @@ public interface SupplierService {
     ResponseEntity<Supplier> store(Supplier supplier);
     Supplier update(Supplier supplier, Long id);
     ResponseEntity delete(Long id);
+    Supplier getSupplierByUserId(Long id);
 }

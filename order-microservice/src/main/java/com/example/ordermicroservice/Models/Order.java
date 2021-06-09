@@ -1,4 +1,6 @@
 package com.example.ordermicroservice.Models;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -6,6 +8,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -17,8 +20,6 @@ public class Order {
     private Long id;
 
     @Column(name = "date_of_order")
-    @NotNull
-    @NotEmpty(message = "Date of order may not be empty")
     private Date dateOfOrder;
 
     @Column(name = "status")
@@ -28,21 +29,33 @@ public class Order {
 
     @ManyToOne()
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn (name = "supplier_id")
-    private Supplier userId;
+    @JoinColumn (name = "customerId")
+    private Customer customerId;
+
+    /*@JoinColumn (name = "supplier_id")
+    private Supplier supplierId;*/
 
     @ManyToOne()
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn (name = "customer_id")
-    private Customer customerId;
+    @JoinColumn (name = "supplierId")
+    private Supplier supplierId;
+
+    @JsonBackReference(value="supplierIDFromOrder")
+    public Supplier getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Supplier supplierId) {
+        this.supplierId = supplierId;
+    }
 
     public Order() { }
 
 
-    public Order(@NotEmpty(message = "Date of order may not be empty") Date dateOfOrder, @NotEmpty(message = "Status may not be empty") String status, Supplier userId, Customer customerId) {
+    public Order(Date dateOfOrder, @NotEmpty(message = "Status may not be empty") String status, Supplier supplierId, Customer customerId) {
         this.dateOfOrder = dateOfOrder;
         this.status = status;
-        this.userId = userId;
+        this.supplierId = supplierId;
         this.customerId = customerId;
     }
 
@@ -70,19 +83,33 @@ public class Order {
         this.status = status;
     }
 
-    public Supplier getUserId() {
-        return userId;
+
+    /*public Supplier getUserId() {
+        return supplierId;
     }
 
     public void setUserId(Supplier userId) {
-        this.userId = userId;
-    }
+        this.supplierId = userId;
+    }*/
 
+    @JsonBackReference(value="customerIDFromOrder")
     public Customer getCustomerId() {
         return customerId;
     }
 
     public void setCustomerId(Customer customerId) {
         this.customerId = customerId;
+    }
+
+    @OneToMany(mappedBy = "orderId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetails;
+
+    @JsonManagedReference(value="orderIDFromOrderDetail")
+    public List<OrderDetail> getOrderDetail() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 }

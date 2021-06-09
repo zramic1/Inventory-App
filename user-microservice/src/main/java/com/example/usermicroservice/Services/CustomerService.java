@@ -15,4 +15,6 @@ public interface CustomerService {
     ResponseEntity updateCustomer(Long id, Customer customer);
 
     ResponseEntity deleteCustomer(Long id);
+
+    ResponseEntity getUserByCustomerId(Long id);
 }

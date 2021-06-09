@@ -1,6 +1,8 @@
 package com.example.usermicroservice.Models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name="Customers")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Customer {
     @Id
     @NotNull
@@ -24,7 +27,7 @@ public class Customer {
     @Size(min = 1, max = 45, message = "First Name must be between 1 and 45 characters long!")
     private String first_name;
 
-    @Column(name = "Last_mame")
+    @Column(name = "Last_name")
     @NotEmpty(message = "Last Name cannot be empty!")
     @Size(min = 1, max = 45, message = "Last Name must be between 1 and 45 characters long!")
     private String last_name;
@@ -43,6 +46,11 @@ public class Customer {
     @NotEmpty(message = "Email cannot be empty!")
     @Email
     private String email;
+
+    @ManyToOne()
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "UserID")
+    private User userID;
 
     public Long getID() {
         return ID;
@@ -123,21 +131,5 @@ public class Customer {
         this.email = email;
         this.userID = userID;
     }
-
-    /*public Customer(String first_name, String last_name, String address, String phone, String email, int idUser) {
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
-        this.idUser = idUser;
-    }*/
-
-    @ManyToOne()
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "UserID")
-    private User userID;
-
-
 
 }

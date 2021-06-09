@@ -1,4 +1,5 @@
 package com.example.ordermicroservice.Models;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -18,27 +19,22 @@ public class OrderDetail {
 
     @Column(name = "unit_price")
     @NotNull
-    @NotEmpty(message = "Unit price may not be empty")
     private Double unitPrice;
 
     @Column(name = "size")
     @NotNull
-    @NotEmpty(message = "Size may not be empty")
     private Integer size;
 
     @Column(name = "quantity")
     @NotNull
-    @NotEmpty(message = "Quantity may not be empty")
     private Integer quantity;
 
     @Column(name = "total")
     @NotNull
-    @NotEmpty(message = "Total may not be empty")
     private Double total;
 
     @Column(name = "date")
     @NotNull
-    @NotEmpty(message = "Date may not be empty")
     private Date date;
 
     @ManyToOne()
@@ -58,7 +54,7 @@ public class OrderDetail {
 
     public OrderDetail() { }
 
-    public OrderDetail(@NotEmpty(message = "Unit price may not be empty") Double unitPrice, @NotEmpty(message = "Size may not be empty") Integer size, @NotEmpty(message = "Quantity may not be empty") Integer quantity, @NotEmpty(message = "Total may not be empty") Double total, @NotEmpty(message = "Date may not be empty") Date date, Order orderId, Payment paymentId, Product productId) {
+    public OrderDetail(Double unitPrice, Integer size, @NotEmpty(message = "Quantity may not be empty") Integer quantity, @NotEmpty(message = "Total may not be empty") Double total, @NotEmpty(message = "Date may not be empty") Date date, Order orderId, Payment paymentId, Product productId) {
         this.unitPrice = unitPrice;
         this.size = size;
         this.quantity = quantity;
@@ -117,14 +113,6 @@ public class OrderDetail {
         this.date = date;
     }
 
-    public Order getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Order orderId) {
-        this.orderId = orderId;
-    }
-
     public Payment getPaymentId() {
         return paymentId;
     }
@@ -139,5 +127,14 @@ public class OrderDetail {
 
     public void setProductId(Product productId) {
         this.productId = productId;
+    }
+
+    @JsonBackReference(value="orderIDFromOrderDetail")
+    public Order getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Order orderId) {
+        this.orderId = orderId;
     }
 }

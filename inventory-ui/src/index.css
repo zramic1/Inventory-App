@@ -7,7 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.content{
+.content {
   background-color: white;
 }
 
@@ -17,7 +17,7 @@ code {
 }
 
 .datagrid {
-  padding: 3%
+  padding: 3%;
 }
 
 .datagrid-header {
@@ -202,7 +202,11 @@ code {
 }
 
 .ant-form-vertical .ant-form-item {
-  margin-bottom: 6px;
+  margin-bottom: 12px;
+}
+
+.ant-card-cover {
+  height: 200px;
 }
 
 .ant-form-item {
@@ -234,4 +238,13 @@ code {
 .ant-form-item-explain {
   font-size: 10px !important;
   min-height: 10px;
+}
+
+.ant-tabs-nav-list {
+  width: 100%;
+}
+
+.ant-tabs-tab .ant-tabs-tab-active {
+  width: 100%;
+  justify-content: center;
 }

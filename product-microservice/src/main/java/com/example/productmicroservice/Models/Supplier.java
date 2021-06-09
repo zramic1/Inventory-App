@@ -1,11 +1,14 @@
 package com.example.productmicroservice.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.List;
 
 @Entity
 @Table(name = "suppliers")
@@ -44,21 +47,42 @@ public class Supplier {
     @Column(name = "other_details")
     private String otherDetails;
 
-    @ManyToOne()
+    /*@ManyToOne()
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn (name = "user_id")
-    private User userId;
+    @JoinColumn(name = "UserID")
+    private User userID;
+
+    @JsonBackReference(value="userIDFromSupplier")
+    public User getUserID() {
+        return userID;
+    }
+
+    public void setUserID(User userID) {
+        this.userID = userID;
+    }
+    */
+
+    @OneToMany(mappedBy = "supplierID", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<User> users;
+
+    @JsonManagedReference(value="supplierIDFromUser")
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 
     public Supplier() { }
 
-    public Supplier(String name, String address, String phone, String fax, @Email String email, String otherDetails, User userId) {
+    public Supplier(String name, String address, String phone, String fax, @Email String email, String otherDetails) {
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.fax = fax;
         this.email = email;
         this.otherDetails = otherDetails;
-        this.userId = userId;
     }
 
     public Long getId() {
@@ -117,11 +141,5 @@ public class Supplier {
         this.otherDetails = otherDetails;
     }
 
-    public User getUserId() {
-        return userId;
-    }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
-    }
 }
