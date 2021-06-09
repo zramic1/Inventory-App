@@ -16,6 +16,7 @@ import {
   GET_CUSTOMER_BY_ORDER_ID,
   GET_SUPPLIER_BY_ORDER_ID,
   GET_USER_ROLE,
+  GET_PAYMENT_TYPES,
 } from "../actions/action-types/actionTypes";
 
 const initState = {
@@ -69,6 +70,8 @@ const initState = {
   allUsers: [{}],
   allOrders: [{}],
   allCategories: [{}],
+  paymentTypes: [{}],
+  allOrderDetails: [{}],
   otherUserInformation: {
     id: "",
     first_name: "",
@@ -121,6 +124,7 @@ export default function (state = initState, action) {
       trenutniOrderi[i].id = action.payload[i].id;
       trenutniOrderi[i].date_of_order = action.payload[i].date_of_order;
       trenutniOrderi[i].status = action.payload[i].status;
+      trenutniOrderi[i].order_details = action.payload[i].order_details;
     }
     console.log("Trenutni orderi su: ", trenutniOrderi);
     return {
@@ -136,6 +140,11 @@ export default function (state = initState, action) {
     return {
       ...state,
       allCategories: action.payload,
+    };
+  } else if (action.type === GET_PAYMENT_TYPES) {
+    return {
+      ...state,
+      paymentTypes: action.payload,
     };
   } else if (action.type === GET_USER_INFORMATION) {
     return {

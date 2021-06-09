@@ -11,7 +11,6 @@ import {
 import { BsPlusSquare } from "react-icons/bs";
 import { FaWarehouse, FaBoxOpen } from "react-icons/fa";
 import { CgDetailsMore } from "react-icons/cg";
-
 import {
   BrowserRouter as Router,
   Switch,
@@ -71,7 +70,7 @@ function UserMeni({ logged }) {
               title="Orders"
             >
               <Menu.Item key="9" icon={<CgDetailsMore />}>
-                <Link to="/orders">Order details</Link>
+                <Link to="/orders">Orders</Link>
               </Menu.Item>
             </SubMenu>
           </Menu>
@@ -103,7 +102,7 @@ function SupplierMeni({ logged }) {
               title="Orders"
             >
               <Menu.Item key="9" icon={<CgDetailsMore />}>
-                <Link to="/orders">Order details</Link>
+                <Link to="/orders">Orders</Link>
               </Menu.Item>
             </SubMenu>
           </Menu>
@@ -164,7 +163,7 @@ function AdminMeni({ logged }) {
               title="Orders"
             >
               <Menu.Item key="9" icon={<CgDetailsMore />}>
-                <Link to="/orders">Order details</Link>
+                <Link to="/orders">Orders</Link>
               </Menu.Item>
             </SubMenu>
           </Menu>

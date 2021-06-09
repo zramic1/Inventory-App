@@ -1,10 +1,13 @@
 import { Input, Form, Select, DatePicker } from "antd";
 import moment from "moment";
 import { useEffect, useState } from "react";
+
+import React, { useContext } from "react";
 const { Option } = Select;
 
 function CreateOrderForm(props) {
   let [customerId, setCustomerId] = useState("");
+
   useEffect(() => {
     console.log(props);
     props?.data?.customers?.map((customer) => {
@@ -23,18 +26,23 @@ function CreateOrderForm(props) {
   }, []);
 
   return (
-    <Form layout={"vertical"} form={props.form}>
-      <Form.Item
-        style={{ display: "none" }}
-        name="id"
-        initialValue={props.rowData?.id}
-      >
+    <Form
+      layout={"vertical"}
+      form={props.form}
+      initialValues={{
+        id: props.rowData?.id,
+        dateOfOrder: moment(props.rowData?.date_of_order),
+        status: props.rowData?.status,
+        customer: customerId,
+        supplier: props.rowData?.supplier,
+      }}
+    >
+      <Form.Item style={{ display: "none" }} name="id">
         <Input />
       </Form.Item>
       <Form.Item
         label="Date of Order"
         name="dateOfOrder"
-        initialValue={moment(props.rowData?.date_of_order)}
         rules={[
           {
             required: true,
@@ -47,7 +55,6 @@ function CreateOrderForm(props) {
       <Form.Item
         label="Status"
         name="status"
-        initialValue={props.rowData?.status}
         rules={[
           {
             required: true,
@@ -60,7 +67,6 @@ function CreateOrderForm(props) {
       <Form.Item
         label="Customer"
         name="customer"
-        initialValue={customerId}
         rules={[
           {
             required: true,
@@ -68,7 +74,7 @@ function CreateOrderForm(props) {
           },
         ]}
       >
-        <Select value={customerId}>
+        <Select>
           {props.data?.customers?.map((customer, i) => (
             <Option value={i}>
               {customer?.first_name} {customer?.last_name}
@@ -79,7 +85,6 @@ function CreateOrderForm(props) {
       <Form.Item
         label="Supplier"
         name="supplier"
-        initialValue={props.rowData?.supplier}
         rules={[
           {
             required: true,

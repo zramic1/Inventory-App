@@ -6,6 +6,7 @@ import Product from "./Product";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
 import Register from "./Register";
+import OrderDetails from "./OrderDetails";
 
 import { Route, Redirect, useLocation } from "react-router-dom";
 import ProductDetails from "./ProductDetails";
@@ -57,6 +58,11 @@ function UserRoutes({ logged }) {
       {logged && (
         <Route exact path="/add-product">
           <ProductDetails />
+        </Route>
+      )}
+      {logged && (
+        <Route exact path="/order-details">
+          <OrderDetails props={data} />
         </Route>
       )}
       {!logged && (
@@ -129,7 +135,12 @@ function AdminRoutes({ logged }) {
       )}
       {logged && (
         <Route exact path="/add-product">
-          <ProductDetails />
+          <ProductDetails props={data} />
+        </Route>
+      )}
+      {logged && (
+        <Route exact path="/order-details">
+          <OrderDetails props={data} />
         </Route>
       )}
       {!logged && (
@@ -166,7 +177,10 @@ function AdminRoutes({ logged }) {
     </Fragment>
   );
 }
+
 function SupplierRoutes({ logged }) {
+  const location = useLocation();
+  const data = location.state?.data;
   return (
     <Fragment>
       <Route exact path="/">
@@ -175,6 +189,11 @@ function SupplierRoutes({ logged }) {
       {logged && (
         <Route exact path="/orders">
           <Order />
+        </Route>
+      )}
+      {logged && (
+        <Route exact path="/order-details">
+          <OrderDetails props={data} />
         </Route>
       )}
       {!logged && (

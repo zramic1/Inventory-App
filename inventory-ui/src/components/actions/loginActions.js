@@ -21,6 +21,9 @@ import {
   GET_SUPPLIER_BY_ORDER_ID,
   GET_ALL_CATEGORIES,
   ADD_NEW_PRODUCT,
+  GET_ALL_ORDER_DETAILS,
+  ADD_NEW_ORDER_DETAIL,
+  GET_PAYMENT_TYPES,
 } from "./action-types/actionTypes";
 
 export const userLogged = (user) => {
@@ -34,6 +37,20 @@ export const getAllWarehouses = (warehouses) => {
   return {
     type: GET_ALL_WAREHOUSES,
     payload: warehouses,
+  };
+};
+
+export const getPaymentTypes = (paymentTypes) => {
+  return {
+    type: GET_PAYMENT_TYPES,
+    payload: paymentTypes,
+  };
+};
+
+export const getAllOrderDetails = (orderDetails) => {
+  return {
+    type: GET_ALL_ORDER_DETAILS,
+    payload: orderDetails,
   };
 };
 
@@ -96,6 +113,13 @@ export const getUserInformation = (user) => {
 export const addNewWarehouse = () => {
   return {
     type: ADD_NEW_WAREHOSE,
+    payload: [],
+  };
+};
+
+export const addNewOrderDetail = () => {
+  return {
+    type: ADD_NEW_ORDER_DETAIL,
     payload: [],
   };
 };

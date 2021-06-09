@@ -17,11 +17,14 @@ function Warehouse() {
     (state) => state.logovani.otherUserInformation.id
   );
   const warehousi = useSelector((state) => state.logovani.warehouses);
-  const userIsSupplier = useSelector(state => state.logovani.userIsSupplier);
+  const userIsSupplier = useSelector((state) => state.logovani.userIsSupplier);
 
   const getWarehouses = () => {
     let url = warehouseContext.user;
-    let putanja = userIsSupplier.id !== undefined && userIsSupplier.id !== null ? `/warehouses` : `/warehouses/user/${trenutniKorisnikId}`;
+    let putanja =
+      userIsSupplier.id !== undefined && userIsSupplier.id !== null
+        ? `/warehouses`
+        : `/warehouses/user/${trenutniKorisnikId}`;
     //console.log("Trenutno je u warehouse logovan: ", trenutniKorisnikId);
     axiosInstance(url)
       .get(putanja)
@@ -54,18 +57,44 @@ function Warehouse() {
   };
 
   const addWarehouse = (val) => {
-    const { companyName, inventoryStartDate, location } = val;
-    console.log("Vrijednosti", companyName, inventoryStartDate, location);
+    const { company_name, inventoryStartDate, location } = val;
+    console.log(
+      "Vrijednosti",
+      company_name,
+      inventoryStartDate.format("YYYY-MM-DD"),
+      location
+    );
     let url = warehouseContext.user;
     axiosInstance(url)
       .post("/warehouse", {
-        company_name: companyName,
+        company_name: company_name,
         inventory_start_date: inventoryStartDate,
         location: location,
       })
       .then((res) => {
         getWarehouses();
-        let sviOrderi = [];
+        dispatch(addNewWarehouse());
+        console.log("Warehouse je: ", res.data);
+      })
+      .catch((error) => {
+        console.log("Status");
+        console.log("Greska!");
+        console.log(error);
+      });
+  };
+
+  const updateWarehouse = (val) => {
+    const { id, company_name, inventoryStartDate, location } = val;
+    console.log("UPDATEEEE", id, company_name, inventoryStartDate, location);
+    let url = warehouseContext.user;
+    axiosInstance(url)
+      .put(`/updateWarehouse/${id}`, {
+        company_name: company_name,
+        inventory_start_date: inventoryStartDate,
+        location: location,
+      })
+      .then((res) => {
+        getWarehouses();
         dispatch(addNewWarehouse());
         console.log("Warehouse je: ", res.data);
       })
@@ -107,7 +136,7 @@ function Warehouse() {
             {
               title: "Inventory Start Date",
               dataIndex: "inventory_start_date",
-              key: "inventory_start_date",
+              key: "isdate",
             },
           ],
           dataSource: warehousi,
@@ -122,6 +151,7 @@ function Warehouse() {
           formInstance: CreateForm,
           updateFormInstance: UpdateForm,
           UpdateForm: <CreateWarehouseForm form={UpdateForm} />,
+          updateOnSubmit: updateWarehouse,
           //onDelete: deleteWarehouse,
         }}
       ></DataGrid>
