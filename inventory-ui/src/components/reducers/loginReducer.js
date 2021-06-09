@@ -16,6 +16,7 @@ import {
   GET_CUSTOMER_BY_ORDER_ID,
   GET_SUPPLIER_BY_ORDER_ID,
   GET_USER_ROLE,
+  GET_USER_SUPPLIERS,
 } from "../actions/action-types/actionTypes";
 
 const initState = {
@@ -86,6 +87,7 @@ const initState = {
   allSuppliers: [],
   weeklyStats: {},
   monthlyStats: {},
+  userSuppliers: [],
 };
 
 export default function (state = initState, action) {
@@ -230,5 +232,12 @@ export default function (state = initState, action) {
       allOrders: trenutniOrderi
     }
   }
+  else if (action.type === GET_USER_SUPPLIERS) {
+    return {
+      ...state,
+      userSuppliers: action.payload
+    }
+  }
+
   return state;
 }

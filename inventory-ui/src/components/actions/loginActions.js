@@ -20,6 +20,7 @@ import {
   GET_CUSTOMER_BY_ORDER_ID,
   GET_SUPPLIER_BY_ORDER_ID,
   GET_ALL_CATEGORIES,
+  GET_USER_SUPPLIERS,
 } from "./action-types/actionTypes";
 
 export const userLogged = (user) => {
@@ -166,5 +167,12 @@ export const getSupplierByOrder = (supplier) => {
   return {
     type: GET_SUPPLIER_BY_ORDER_ID,
     payload: supplier
+  };
+};
+
+export const getUserSuppliers = (suppliers) => {
+  return {
+    type: GET_USER_SUPPLIERS,
+    payload: suppliers
   };
 };

@@ -8,8 +8,8 @@ import {
   TeamOutlined,
 } from "@ant-design/icons";
 
-import { BsPlusSquare } from "react-icons/bs";
-import { FaWarehouse, FaBoxOpen } from "react-icons/fa";
+import { BsPlusSquare, BsPersonLinesFill, BsPerson } from "react-icons/bs";
+import { FaWarehouse, FaBoxOpen, FaTruck } from "react-icons/fa";
 import { CgDetailsMore } from "react-icons/cg";
 
 import {
@@ -31,16 +31,23 @@ const { SubMenu } = Menu;
 
 function GridLayout() {
   const logged = useSelector((state) => state.logovani.logged);
-  const userIsSupplier = false;
-  const userIsAdmin = true;
-  const userIsUser = false;
+  const userIsSupplier = useSelector(state => state.logovani.userIsSupplier.id) === undefined;
+  const userIsAdmin = useSelector(state => state.logovani.role.role_name) === "ADMIN";
+  const userIsUser = useSelector(state => state.logovani.role.role_name) === "USER";
 
   return (
     <div style={{ height: !logged ? "100vh" : "" }}>
       <Router>
+        {!userIsSupplier && !userIsAdmin && !userIsUser ? <Layout style={{ height: !logged ? "100vh" : "" }}>
+          <Content className="content">
+            <Switch>
+              <Routes />
+            </Switch>
+          </Content>
+        </Layout > : ""}
         {userIsSupplier && <SupplierMeni logged={logged} />}
-        {userIsAdmin && <AdminMeni logged={logged} />}
-        {userIsUser && <UserMeni logged={logged} />}
+        {userIsAdmin && !userIsSupplier && <AdminMeni logged={logged} />}
+        {userIsUser && !userIsSupplier && <UserMeni logged={logged} />}
       </Router>
     </div>
   );
@@ -65,6 +72,11 @@ function UserMeni({ logged }) {
                 <Link to="/products">Product details</Link>
               </Menu.Item>
             </SubMenu>
+            <SubMenu key="sub5" icon={<BsPerson style={{ marginRight: "10px" }} />} title="Customers">
+              <Menu.Item key="6" icon={< BsPersonLinesFill />}>
+                < Link to="/customers">Customer details</Link>
+              </Menu.Item>
+            </SubMenu>
             <SubMenu
               key="sub4"
               icon={<FaBoxOpen size={14} style={{ marginRight: "10px" }} />}
@@ -76,13 +88,14 @@ function UserMeni({ logged }) {
             </SubMenu>
           </Menu>
         </Sider>
-      )}
+      )
+      }
       <Content className="content">
         <Switch>
           <Routes />
         </Switch>
       </Content>
-    </Layout>
+    </Layout >
   );
 }
 
@@ -139,6 +152,16 @@ function AdminMeni({ logged }) {
             <SubMenu key="sub1" icon={<UserOutlined />} title="Staff">
               <Menu.Item key="3" icon={<TeamOutlined />}>
                 <Link to="/staff">Staff details</Link>
+              </Menu.Item>
+            </SubMenu>
+            <SubMenu key="sub5" icon={<BsPerson style={{ marginRight: "10px" }} />} title="Customers">
+              <Menu.Item key="6" icon={< BsPersonLinesFill />}>
+                < Link to="/customers">Customer details</Link>
+              </Menu.Item>
+            </SubMenu>
+            <SubMenu key="sub6" icon={<FaTruck style={{ marginRight: "10px" }} />} title="Suppliers">
+              <Menu.Item key="8" icon={< CgDetailsMore />}>
+                < Link to="/suppliers">Supplier details</Link>
               </Menu.Item>
             </SubMenu>
             <SubMenu key="sub2" icon={<InboxOutlined />} title="Products">
