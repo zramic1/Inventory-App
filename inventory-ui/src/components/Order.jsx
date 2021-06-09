@@ -369,7 +369,7 @@ function Order() {
       dataIndex: "status",
       key: "status",
     },
-    {
+    /*{
       title: "Customer",
       dataIndex: "customer",
       key: "customer",
@@ -378,7 +378,7 @@ function Order() {
       title: "Supplier",
       dataIndex: "supplier",
       key: "supplier",
-    },
+    },*/
     {
       title: "Details",
       dataIndex: "details",

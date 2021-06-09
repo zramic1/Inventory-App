@@ -22,7 +22,7 @@ function Warehouse() {
   const getWarehouses = () => {
     let url = warehouseContext.user;
     let putanja =
-      userIsSupplier.id !== undefined && userIsSupplier.id !== null
+      userIsSupplier.id === undefined
         ? `/warehouses`
         : `/warehouses/user/${trenutniKorisnikId}`;
     //console.log("Trenutno je u warehouse logovan: ", trenutniKorisnikId);

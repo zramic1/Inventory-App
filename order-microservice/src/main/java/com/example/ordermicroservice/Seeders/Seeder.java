@@ -53,6 +53,7 @@ public class Seeder {
         Product produkt4=new Product("Goat","Mammals with horns and cloven hooves.");
         Product produkt5=new Product("Sheep","Species of domesticated ruminant mammal.");
         Product produkt6=new Product("Pineapple","Tropical plant with an edible fruit.");
+        Product produkt7=new Product("Kiwi","Sweet, citrusy, brownish-green fruit.");
 
         productRepository.save(produkt1);
         productRepository.save(produkt2);
@@ -60,6 +61,7 @@ public class Seeder {
         productRepository.save(produkt4);
         productRepository.save(produkt5);
         productRepository.save(produkt6);
+        productRepository.save(produkt7);
 
         Payment payment1=new Payment("cash","Paying with cash");
         Payment payment2=new Payment("credit card","Paying with credit card");
@@ -68,18 +70,30 @@ public class Seeder {
         paymentRepository.save(payment2);
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Order order1=new Order(format.parse("2021-06-07"),"approved",suplajer1,customer1);
+        Order order1=new Order(format.parse("2021-06-07"),"approved",suplajer1,customer3);
         Order order2=new Order(format.parse("2021-06-08"),"transit",suplajer2,customer2);
+        /*Order order3=new Order(format.parse("2021-06-05"),"approved",suplajer1,customer1);
+        Order order4=new Order(format.parse("2021-06-06"),"approved",suplajer1,customer1);
+        Order order5=new Order(format.parse("2021-06-06"),"approved",suplajer1,customer1);
+        Order order6=new Order(format.parse("2021-06-08"),"approved",suplajer1,customer1);
+        Order order7=new Order(format.parse("2021-06-02"),"approved",suplajer1,customer1);*/
 
         orderRepository.save(order1);
         orderRepository.save(order2);
+        /*orderRepository.save(order3);
+        orderRepository.save(order4);
+        orderRepository.save(order5);
+        orderRepository.save(order6);
+        orderRepository.save(order7);*/
 
         OrderDetail detalji1=new OrderDetail(2.0,2,2,4.0,format.parse("2021-06-07"),order1,payment1,produkt1);
         OrderDetail detalji2=new OrderDetail(1.0,1,2,2.0,format.parse("2021-06-08"),order2,payment2,produkt5);
-        OrderDetail detalji3=new OrderDetail(4.0,1,14,56.0,format.parse("2021-06-08"),order2,payment2,produkt6);
+        OrderDetail detalji3=new OrderDetail(4.0,1,4,16.0,format.parse("2021-06-08"),order2,payment2,produkt6);
+        OrderDetail detalji4=new OrderDetail(2.0,1,7,14.0,format.parse("2021-06-08"),order2,payment2,produkt7);
 
         orderDetailsRepository.save(detalji1);
         orderDetailsRepository.save(detalji2);
         orderDetailsRepository.save(detalji3);
+        orderDetailsRepository.save(detalji4);
     }
 }

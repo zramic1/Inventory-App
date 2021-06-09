@@ -86,10 +86,18 @@ function Dashboard() {
     }
 
     const getAllStatistics = () => {
+        var weekdays = new Array(7);
+        weekdays[0] = "Monday";
+        weekdays[1] = "Tuesday";
+        weekdays[2] = "Wednesday";
+        weekdays[3] = "Thursday";
+        weekdays[4] = "Friday";
+        weekdays[5] = "Saturday";
+        weekdays[6] = "Sunday";
         let niz = [];
         for (let el in weeklyStats) {
             niz.push({
-                x: `${parseInt(el) + 1}`,
+                x: `${weekdays[parseInt(el)]}`,
                 y: weeklyStats[el],
             });
         }

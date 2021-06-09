@@ -74,12 +74,13 @@ public class Seeder {
         categoryRepository.save(kategorija3);
         categoryRepository.save(kategorija4);
 
-        Product produkt1=new Product("Kiwi","Sweet, citrusy, brownish-green fruit","kg",2.0,10,"fresh","https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Kiwi_aka.jpg/800px-Kiwi_aka.jpg",skladiste2,kategorija2,suplajer1);
+        Product produkt1=new Product("Kiwi","Sweet, citrusy, brownish-green fruit","kg",2.0,1,"fresh","https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Kiwi_aka.jpg/800px-Kiwi_aka.jpg",skladiste2,kategorija2,suplajer1);
         Product produkt2=new Product("Tomato","Edible berry of tomato plant.","kg",1.0,5,"fresh","https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/721px-Tomato_je.jpg",null,kategorija3,suplajer1);
         Product produkt3=new Product("Chair","Piece of furniture for sitting.","piece",100.0,2,"new","https://loverthreads.com/wp-content/uploads/2021/02/81J5r9dANGL._SL1500_.jpg",skladiste1,kategorija4,suplajer1);
         Product produkt4=new Product("Goat","Mammals with horns and cloven hooves.","piece",200.0,5,"young","https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hausziege_04.jpg/1200px-Hausziege_04.jpg",skladiste2,kategorija1,suplajer2);
         Product produkt5=new Product("Sheep","Species of domesticated ruminant mammal.","piece",400.0,7,"adult","https://www.morningagclips.com/wp-content/uploads/2016/06/477334244_fb34fe6b5a_z-640x400.jpg",null,kategorija1,suplajer2);
-        Product produkt6=new Product("Pineapple","Tropical plant with an edible fruit.","kg",4.0,14,"fresh","https://www.tablicakalorija.com/wp-content/uploads/2013/08/ananas-730x430.jpg",null,kategorija2,suplajer2);
+        Product produkt6=new Product("Pineapple","Tropical plant with an edible fruit.","kg",4.0,4,"fresh","https://www.tablicakalorija.com/wp-content/uploads/2013/08/ananas-730x430.jpg",null,kategorija2,suplajer2);
+        Product produkt7=new Product("Kiwi","Sweet, citrusy, brownish-green fruit","kg",2.0,7,"fresh","https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Kiwi_aka.jpg/800px-Kiwi_aka.jpg",null,kategorija2,suplajer2);
 
         productRepository.save(produkt1);
         productRepository.save(produkt2);
@@ -87,13 +88,16 @@ public class Seeder {
         productRepository.save(produkt4);
         productRepository.save(produkt5);
         productRepository.save(produkt6);
+        productRepository.save(produkt7);
 
         OrderDetail detalji1=new OrderDetail(2.0,2,2,4.0,format.parse("2021-06-07"),produkt1);
         OrderDetail detalji2=new OrderDetail(1.0,1,2,2.0,format.parse("2021-06-08"),produkt5);
-        OrderDetail detalji3=new OrderDetail(4.0,1,14,56.0,format.parse("2021-06-08"),produkt6);
+        OrderDetail detalji3=new OrderDetail(4.0,1,4,16.0,format.parse("2021-06-08"),produkt6);
+        OrderDetail detalji4=new OrderDetail(2.0,1,7,14.0,format.parse("2021-06-08"),produkt7);
 
         orderDetailsRepository.save(detalji1);
         orderDetailsRepository.save(detalji2);
         orderDetailsRepository.save(detalji3);
+        orderDetailsRepository.save(detalji4);
     }
 }
