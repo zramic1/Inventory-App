@@ -58,7 +58,7 @@ public class OrderDetailServiceImpl implements OrderDetailService{
                     HttpHeaders httpHeaders=new HttpHeaders();
                     httpHeaders.setContentType(MediaType.APPLICATION_JSON);
                     HttpEntity<OrderDetail> request=new HttpEntity<>(newOrderDetail,httpHeaders);
-                    restTemplate.put("http://product/order-detail/"+id.toString(),request);
+                    restTemplate.put("http://product/order-details/"+id.toString(),request);
 
                     return orderDetailsRepository.save(orderDetail);
                 })
@@ -75,7 +75,7 @@ public class OrderDetailServiceImpl implements OrderDetailService{
             orderDetailsRepository.deleteById(id);
             object.put("message", "Order detail is successfully deleted");
             // poziv za product mikroservis
-            restTemplate.delete("http://product/order-detail/"+id.toString());
+            restTemplate.delete("http://product/order-details/"+id.toString());
             return new ResponseEntity<>(object.toString(), HttpStatus.OK);
         }
         object.put("message", "Order detail does not exist");

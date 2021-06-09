@@ -43,16 +43,16 @@ public class Seeder {
             roleRepository.save(user);
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Warehouse skladiste1 = new Warehouse("Kompanija 1", "Lokacija 1",format.parse("2021-04-08"));
-        Warehouse skladiste2 = new Warehouse("Kompanija 2", "Lokacija 2",format.parse("2021-04-09"));
-        Warehouse skladiste3 = new Warehouse("Kompanija 3", "Lokacija 3",format.parse("2021-04-10"));
-        Warehouse skladiste4 = new Warehouse("Kompanija 4", "Lokacija 4",format.parse("2021-04-11"));
-        Warehouse skladiste5 = new Warehouse("Kompanija 5", "Lokacija 5",format.parse("2021-04-12"));
+        Warehouse skladiste1 = new Warehouse("Wholesale Market", "La Plata, USA",format.parse("2021-04-08"));
+        Warehouse skladiste2 = new Warehouse("Large Scale Wholesale", "Kalghatgi, India",format.parse("2021-04-09"));
+        Warehouse skladiste3 = new Warehouse("Fully Stocked", "Ampass, Austria",format.parse("2021-04-10"));
+        Warehouse skladiste4 = new Warehouse("Sale To Sell", "Venice, Italy",format.parse("2021-04-11"));
+        Warehouse skladiste5 = new Warehouse("All in One", "Hereford, USA",format.parse("2021-04-12"));
 
         Role uloga1=roleRepository.findByroleName(RoleNames.ADMIN);
         Role uloga2=roleRepository.findByroleName(RoleNames.USER);
         BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
-        User korisnik1=new User("Damir","Pozderac","Adresa 1","Telefon 1", "dpozderac1@etf.unsa.ba", "dpozderac1",passwordEncoder.encode("Password1!"), uloga1,skladiste1);
+        User korisnik1=new User("Damir","Pozderac","Adresa 1","Telefon 1", "dpozderac1@etf.unsa.ba", "dpozderac1",passwordEncoder.encode("Password1!"), uloga2,skladiste1);
         User korisnik2=new User("Azra","Ibric","Adresa 2","Telefon 2", "aibricc1@etf.unsa.ba", "aibric1",passwordEncoder.encode("Password2!"), uloga2,skladiste2);
         User korisnik3=new User("Edina","Kovac","Adresa 3","Telefon 3", "ekovac2@etf.unsa.ba", "ekovac2",passwordEncoder.encode("Password3!"), uloga2,skladiste3);
         User korisnik4=new User("Amina","Kurtovic","Adresa 4","Telefon 4", "akurtovic2@etf.unsa.ba", "akurtovic2",passwordEncoder.encode("Password4!"), uloga1,skladiste4);
@@ -70,10 +70,10 @@ public class Seeder {
         userRepository.save(korisnik4);
         userRepository.save(korisnik5);
 
-        Customer customer1=new Customer("Ime 1", "Prezime 1","Adresa 1", "Telefon 1","kupac1@gmail.com",korisnik2);
-        Customer customer2=new Customer("Ime 2", "Prezime 2","Adresa 2", "Telefon 2","kupac1@gmail.com",korisnik2);
-        Customer customer3=new Customer("Ime 3", "Prezime 3","Adresa 3", "Telefon 3","kupac1@gmail.com",korisnik3);
-        Customer customer4=new Customer("Ime 4", "Prezime 4","Adresa 4", "Telefon 4","kupac1@gmail.com",korisnik3);
+        Customer customer1=new Customer("Liam", "Miller","4800  Green Avenue", "510-815-8632","liam@gmail.com",korisnik2);
+        Customer customer2=new Customer("Marta", "Naylor","4130  Midway Road", "479-573-3831","marta@gmail.com",korisnik2);
+        Customer customer3=new Customer("Brad", "White","1159  Harley Brook Lane", "814-571-7621","brad@gmail.com",korisnik3);
+        Customer customer4=new Customer("Zack", "Eastwood","4663  Walnut Hill Drive", "513-297-9095","zack@gmail.com",korisnik3);
 
         customerRepository.save(customer1);
         customerRepository.save(customer2);

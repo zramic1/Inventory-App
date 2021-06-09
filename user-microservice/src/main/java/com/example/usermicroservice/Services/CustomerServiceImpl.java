@@ -81,7 +81,7 @@ public class CustomerServiceImpl implements CustomerService {
         List<Customer> sviCustomeri = customerRepository.findAll();
         for (int i = 0; i < sviCustomeri.size(); i++) {
             Customer cus = sviCustomeri.get(i);
-            if (cus.getEmail().equals(customer.getEmail())) {
+            if (cus.getEmail().equals(customer.getEmail()) && cus.getID()!=id) {
                 throw new AlreadyExistsException("Customer with same e-mail address already exists!");
             }
         }
